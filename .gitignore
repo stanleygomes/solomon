@@ -13,5 +13,4 @@
 
 !/skills
 !/memories
-!/cron
-
+!/cron/jobs.json

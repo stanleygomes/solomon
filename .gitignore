@@ -7,4 +7,9 @@
 # allowed files
 !README.md
 !instructions.md
+!config.yaml
+!SOUL.md
+
 !/skills
+!/memories
+

@@ -1,0 +1,9 @@
+# ignore everything
+*
+
+# allow this file
+!.gitignore
+
+# allowed files
+!README.md
+!instructions.md

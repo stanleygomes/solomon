@@ -12,6 +12,8 @@ A lightweight, reliable, and state-persistent task coordinator written in **Go**
 
 This scheduler is specifically designed to solve task orchestration limits on personal computers (e.g., laptops) that do **not** run 24/7. Traditional cron engines fail if the computer is turned off during the scheduled hour. `solomon-cron` runs frequently (e.g., every 5 minutes) and uses a state lock file to ensure tasks run exactly once per day, hour, or customized time window—no matter when the system boots or sleeps.
 
+---
+
 ## ⚡ Features
 
 1. **State-Persistent Locks (`state.json`)**: Prevents tasks from double-executing. If a task is scheduled for `"daily"`, it will run exactly once per calendar day when the computer is online.
@@ -23,6 +25,31 @@ This scheduler is specifically designed to solve task orchestration limits on pe
 4. **Isolated Work Directories**: Each task can define its own working directory (`dir`) to resolve local scripts, assets, and env files appropriately.
 5. **No External Dependencies**: Built entirely with the standard Go library for maximum efficiency and security.
 
+---
+
+## 📂 File Structure
+
+```text
+cron/
+├── Makefile          # Automation shortcuts (build, run, clean, state reset)
+├── README.md         # This manual
+├── config.json       # Task definitions and schedules
+├── go.mod            # Go module definition
+├── state.json        # Execution tracking (git-ignored)
+├── cmd/              # Executable entrypoint
+│   └── solomon-cron/
+│       └── main.go   # Entrypoint CLI assembler
+├── internal/         # Private application logic (non-importable)
+│   ├── config/       # Config structures & JSON loading logic
+│   ├── logger/       # Thread-safe daily rotated log writer
+│   ├── scheduler/    # Scheduling parser and command execution motor
+│   └── state/        # Lock management & execution history serialization
+└── logs/             # Central log repository (git-ignored)
+    └── YYYY-MM-DD.log
+```
+
+---
+
 ## ⚙️ Configuration (`config.json`)
 
 Tasks are configured in the `config.json` file.
@@ -31,14 +58,21 @@ Tasks are configured in the `config.json` file.
 {
   "tasks": [
     {
+      "id": "hello-test",
+      "name": "Cron Scheduler Test Task",
+      "command": "echo",
+      "args": ["Hello from Solomon! The cron is alive and well."],
+      "dir": "",
+      "schedule": "hourly"
+    },
+    {
       "id": "daily-bread",
       "name": "Daily Bread Devotional Newsletter",
       "command": "./daily-bread",
       "args": ["-template", "devocional"],
       "dir": "../apps/daily-bread",
       "schedule": "daily"
-    },
-    ...
+    }
   ]
 }
 ```
@@ -56,7 +90,7 @@ Tasks are configured in the `config.json` file.
 
 ## 🚀 Execution & Automation
 
-All shortcuts are centralized in the [Makefile](file:///home/stanley/projects/solomon/Makefile):
+All shortcuts are centralized in the [Makefile](file:///home/stanley/projects/solomon/cron/Makefile):
 
 ### 1. Compile the Binary
 
@@ -64,7 +98,7 @@ All shortcuts are centralized in the [Makefile](file:///home/stanley/projects/so
 make build
 ```
 
-This generates the optimized `solomon-cron` binary.
+This generates the optimized `solomon-cron` binary inside the `cron/` folder.
 
 ### 2. Manual Test Run
 
@@ -98,17 +132,81 @@ And append the following entry (adjust paths to match your local setup):
 */5 * * * * cd /home/stanley/projects/solomon/cron && ./solomon-cron > /dev/null 2>&1
 ```
 
-With this, you will never miss a single newsletter dispatch or system maintenance routine again, even if you keep closing your laptop.
+With this, you will never miss a single newsletter dispatch or system maintenance routine again, even if you keep closing your laptop. 💅💀
 
 ---
 
 ## 🍞 Integrated Service: Daily Bread
 
-**Daily Bread** is a Go-based automation newsletter now fully integrated as an **internal service** inside the `solomon-cron` coordinator. It automates the generation and delivery of daily devotional emails with high theological quality, directly calling the **GitHub Copilot CLI** to generate deep reflections.
+**Daily Bread** is a Go-based automation newsletter now fully integrated as an **internal service** inside the `solomon-cron` coordinator. It automates the generation and delivery of daily devotional emails with high theological quality, directly calling the **GitHub Copilot CLI** to generate deep reflections. 🙄💅🤷‍♂️💀
+
+### 🔄 System Workflow
+
+When triggered by the scheduler or manual execution, the service performs the following steps:
+
+```mermaid
+graph TD
+    A[Start Process] --> B[Load Prompt from assets/prompts/]
+    B --> C[Execute GitHub Copilot CLI]
+    C --> D[Generate Devotional Markdown]
+    D --> E[Convert to HTML via Goldmark GFM]
+    E --> F[Inject into Template from assets/templates/]
+    F --> G[Write History HTML to assets/logs/html/]
+    G --> H[Send Secure Email via SMTP SSL/TLS or STARTTLS]
+    H --> I[Dispatch Completed]
+```
 
 ### ⚙️ Configuration & Environment
 
-The application requires a `.env` file in the root of the `cron/` directory. You can copy the template provided in [.env.example](file:///home/stanley/projects/solomon/.env.example) to get started.
+The application requires a `.env` file in the root of the `cron/` directory. You can copy the template provided in [.env.example](file:///home/stanley/projects/solomon/cron/.env.example) to get started:
+
+```ini
+SMTP_HOST=your-smtp-host
+SMTP_PORT=465 # Use 465 for SSL/TLS, or 587 for STARTTLS
+SMTP_USER=your-smtp-username
+SMTP_PASSWORD=your-smtp-password
+SMTP_USE_TLS=true
+
+EMAIL_FROM=Pão Diário <your-email@domain.com>
+EMAIL_TO=recipient@domain.com
+EMAIL_SUBJECT=Pão Diário - Edição de Hoje
+```
+
+#### Setup
+
+Add the following entry to your local system `crontab -e`:
+
+```text
+*/5 * * * * cd /home/stanley/projects/solomon/cron && ./solomon-cron > /dev/null 2>&1
+```
+
+### 🛠️ Execution & Shortcuts
+
+You can orchestrate and test the Daily Bread service using these shortcuts:
+
+#### 1. List Available Prompts and Templates
+
+Lists all configurable studies and templates currently residing inside your Go-recommended assets directories:
+
+```bash
+make list
+```
+
+#### 2. Run Standard Devotional Flow
+
+Runs the newsletter generation and delivery with the default `devocional` template (resolving `assets/prompts/devocional.md` and `assets/templates/devocional.html`):
+
+```bash
+make run-daily-bread
+```
+
+#### 3. Run Custom Devotionals
+
+Runs the flow with a custom template (e.g. `personagem` or `versiculo`):
+
+```bash
+make run-daily-bread TEMPLATE=personagem
+```
 
 ## 🤝 Como Contribuir
 

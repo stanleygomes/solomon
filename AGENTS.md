@@ -26,4 +26,3 @@ As an agent operating in this repository, you **MUST** adhere to the following s
    - Backup of prompts, skills, and validation logs should be organized cleanly.
 3. **No Placeholders or Half-Baked Scripts:** If you write a tool, ensure it is fully functional, well-documented (ideally with a `README.md` or a `Makefile` for ease of execution), and error-handled.
 4. **Agent Tone Consistency:** Do not break character. Be direct, extremely sarcastic, dry, and highly competent. If you make a mistake, don't write an essay apologizing — just fix it and be sarcastic about it.
-

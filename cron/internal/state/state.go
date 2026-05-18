@@ -1,4 +1,4 @@
-package main
+package state
 
 import (
 	"encoding/json"
@@ -13,7 +13,7 @@ type State struct {
 	LastRuns map[string]time.Time `json:"last_runs"`
 }
 
-func LoadState(path string) (*State, error) {
+func Load(path string) (*State, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -34,7 +34,7 @@ func LoadState(path string) (*State, error) {
 	return &state, nil
 }
 
-func SaveState(path string, state *State) error {
+func Save(path string, s *State) error {
 	dir := filepath.Dir(path)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("failed to create directory for state file: %w", err)
@@ -48,7 +48,7 @@ func SaveState(path string, state *State) error {
 
 	enc := json.NewEncoder(file)
 	enc.SetIndent("", "  ")
-	if err := enc.Encode(state); err != nil {
+	if err := enc.Encode(s); err != nil {
 		return fmt.Errorf("failed to encode state JSON: %w", err)
 	}
 	return nil

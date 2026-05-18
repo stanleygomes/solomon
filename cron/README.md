@@ -25,15 +25,18 @@ This scheduler is specifically designed to solve task orchestration limits on pe
 cron/
 ├── Makefile          # Automation shortcuts (build, run, clean, state reset)
 ├── README.md         # This manual
-├── config.go         # Configuration parsing
 ├── config.json       # Task definitions and schedules
 ├── go.mod            # Go module definition
-├── logger.go         # Thread-safe daily rotated log writer
-├── main.go           # CLI flags and initialization
-├── scheduler.go      # Execution engine and condition checker
-├── state.go          # State lock loading & saving
 ├── state.json        # Execution tracking (git-ignored)
-└── logs/             # Central log repository
+├── cmd/              # Executable entrypoint
+│   └── solomon-cron/
+│       └── main.go   # Entrypoint CLI assembler
+├── internal/         # Private application logic (non-importable)
+│   ├── config/       # Config structures & JSON loading logic
+│   ├── logger/       # Thread-safe daily rotated log writer
+│   ├── scheduler/    # Scheduling parser and command execution motor
+│   └── state/        # Lock management & execution history serialization
+└── logs/             # Central log repository (git-ignored)
     └── YYYY-MM-DD.log
 ```
 

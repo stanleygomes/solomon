@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"encoding/json"
@@ -19,7 +19,7 @@ type Config struct {
 	Tasks []TaskConfig `json:"tasks"`
 }
 
-func LoadConfig(path string) (*Config, error) {
+func Load(path string) (*Config, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open config file: %w", err)

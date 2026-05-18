@@ -1,4 +1,4 @@
 # Solomon Cron gitignore
-solomon-cron
+/solomon-cron
 state.json
 logs/

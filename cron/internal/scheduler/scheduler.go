@@ -1,25 +1,29 @@
-package main
+package scheduler
 
 import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
 	"time"
+
+	"solomon-cron/internal/config"
+	"solomon-cron/internal/logger"
+	"solomon-cron/internal/state"
 )
 
 type Scheduler struct {
-	config    *Config
-	state     *State
+	config    *config.Config
+	state     *state.State
 	statePath string
-	logger    *Logger
+	logger    *logger.Logger
 }
 
-func NewScheduler(cfg *Config, state *State, statePath string, logger *Logger) *Scheduler {
+func New(cfg *config.Config, s *state.State, statePath string, l *logger.Logger) *Scheduler {
 	return &Scheduler{
 		config:    cfg,
-		state:     state,
+		state:     s,
 		statePath: statePath,
-		logger:    logger,
+		logger:    l,
 	}
 }
 
@@ -48,10 +52,6 @@ func (s *Scheduler) Run() {
 		err = s.runTask(task)
 		if err != nil {
 			s.logger.Log("ERROR [%s]: Task execution failed: %v", task.ID, err)
-			// We still record the execution attempt if it started, or do we?
-			// Generally, if the script failed, we still want to block it from running again immediately
-			// to avoid spamming/looping. The user can retry manually or it will run next time.
-			// Let's update last run so it follows the configured interval / daily limit even if it failed.
 		} else {
 			s.logger.Log("SUCCESS [%s]: Task completed successfully", task.ID)
 		}
@@ -61,7 +61,7 @@ func (s *Scheduler) Run() {
 	}
 
 	if stateChanged {
-		if err := SaveState(s.statePath, s.state); err != nil {
+		if err := state.Save(s.statePath, s.state); err != nil {
 			s.logger.Log("ERROR: Failed to save execution state: %v", err)
 		} else {
 			s.logger.Log("State saved successfully to %s", s.statePath)
@@ -71,13 +71,12 @@ func (s *Scheduler) Run() {
 	s.logger.Log("=== Scheduler Execution Finished ===")
 }
 
-func (s *Scheduler) runTask(task TaskConfig) error {
+func (s *Scheduler) runTask(task config.TaskConfig) error {
 	cmdPath := task.Command
 	
 	cmd := exec.Command(cmdPath, task.Args...)
 	
 	if task.Dir != "" {
-		// Resolve absolute path for task.Dir
 		absDir, err := filepath.Abs(task.Dir)
 		if err != nil {
 			return fmt.Errorf("failed to resolve absolute path for working directory %q: %w", task.Dir, err)
@@ -85,7 +84,6 @@ func (s *Scheduler) runTask(task TaskConfig) error {
 		cmd.Dir = absDir
 	}
 
-	// Capture combined stdout and stderr
 	output, err := cmd.CombinedOutput()
 	if len(output) > 0 {
 		s.logger.LogTaskOutput(task.ID, output)
@@ -123,7 +121,6 @@ func shouldRun(schedule string, lastRun time.Time, now time.Time) (bool, string,
 		return false, fmt.Sprintf("Already ran this hour at %s", lastRun.Format("15:04:05")), nil
 
 	default:
-		// Attempt to parse as standard duration (e.g. "12h", "30m")
 		dur, err := time.ParseDuration(schedule)
 		if err != nil {
 			return false, "", fmt.Errorf("unknown schedule type or invalid duration: %q", schedule)

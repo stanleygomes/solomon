@@ -6,12 +6,12 @@ BINARY_NAME=solomon-cron
 
 # Default command to run the scheduler in-place
 run:
-	@go run .
+	@go run ./cmd/solomon-cron
 
 # Compiles the optimized binary executable
 build:
 	@echo "Compiling Go binary..."
-	@go build -o $(BINARY_NAME) .
+	@go build -o $(BINARY_NAME) ./cmd/solomon-cron
 	@echo "Done! Binary '$(BINARY_NAME)' successfully generated."
 
 # Installs/downloads Go module dependencies and sets up directories

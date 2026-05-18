@@ -1,4 +1,4 @@
-package main
+package logger
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ type Logger struct {
 	logDir string
 }
 
-func NewLogger(logDir string) (*Logger, error) {
+func New(logDir string) (*Logger, error) {
 	if err := os.MkdirAll(logDir, 0755); err != nil {
 		return nil, fmt.Errorf("failed to create log directory: %w", err)
 	}

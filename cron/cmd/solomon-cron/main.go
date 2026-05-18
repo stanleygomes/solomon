@@ -5,6 +5,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"solomon-cron/internal/config"
+	"solomon-cron/internal/logger"
+	"solomon-cron/internal/scheduler"
+	"solomon-cron/internal/state"
 )
 
 func main() {
@@ -37,35 +42,35 @@ func main() {
 	}
 
 	// 3. Initialize Logger
-	logger, err := NewLogger(logsDir)
+	loggerInstance, err := logger.New(logsDir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "FATAL: Failed to initialize logger: %v\n", err)
 		os.Exit(1)
 	}
 
-	logger.Log("Initializing Solomon Cron Coordinator")
-	logger.Log("Base Directory: %s", baseDir)
-	logger.Log("Config Path:    %s", configPath)
-	logger.Log("State Path:     %s", statePath)
-	logger.Log("Logs Directory: %s", logsDir)
+	loggerInstance.Log("Initializing Solomon Cron Coordinator")
+	loggerInstance.Log("Base Directory: %s", baseDir)
+	loggerInstance.Log("Config Path:    %s", configPath)
+	loggerInstance.Log("State Path:     %s", statePath)
+	loggerInstance.Log("Logs Directory: %s", logsDir)
 
 	// 4. Load Config
-	cfg, err := LoadConfig(configPath)
+	cfg, err := config.Load(configPath)
 	if err != nil {
-		logger.Log("FATAL: Failed to load configuration: %v", err)
+		loggerInstance.Log("FATAL: Failed to load configuration: %v", err)
 		os.Exit(1)
 	}
 
 	// 5. Load State
-	state, err := LoadState(statePath)
+	stateInstance, err := state.Load(statePath)
 	if err != nil {
-		logger.Log("FATAL: Failed to load execution state: %v", err)
+		loggerInstance.Log("FATAL: Failed to load execution state: %v", err)
 		os.Exit(1)
 	}
 
 	// 6. Run Scheduler
-	scheduler := NewScheduler(cfg, state, statePath, logger)
-	scheduler.Run()
+	schedulerInstance := scheduler.New(cfg, stateInstance, statePath, loggerInstance)
+	schedulerInstance.Run()
 }
 
 // getBaseDir returns the directory of the executable as the fallback base directory,
@@ -89,7 +94,7 @@ func getBaseDir() (string, error) {
 	// If running under 'go run', the executable is in a temp folder.
 	// In that case, use current working directory.
 	dir := filepath.Dir(execPath)
-	if filepath.Base(filepath.Dir(dir)) == "go-build" || filepath.Base(dir) == "exe" {
+	if filepath.Base(filepath.Dir(dir)) == "go-build" || filepath.Base(dir) == "exe" || filepath.Base(filepath.Dir(filepath.Dir(dir))) == "go-build" {
 		return os.Getwd()
 	}
 

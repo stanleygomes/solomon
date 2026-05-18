@@ -1,18 +1,23 @@
-# ignore everything
-*
 
-# allow this file
-!.gitignore
 
-# allowed files
-!README.md
-!instructions.md
-!config.yaml
-!SOUL.md
-!CLAUDE.md
 
-!/skills
-!/memories
-!/cron/jobs.json
-!/daily-bread/
-!/daily-bread/**
+
+
+# # ignore everything
+# *
+
+# # allow this file
+# !.gitignore
+
+# # allowed files
+# !README.md
+# !instructions.md
+# !config.yaml
+# !SOUL.md
+# !CLAUDE.md
+
+# !/skills
+# !/memories
+# !/cron/jobs.json
+# !/daily-bread/
+# !/daily-bread/**

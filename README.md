@@ -26,7 +26,6 @@ solomon/
 ├── apps/               # Self-contained automation mini-apps and executables
 │   └── daily-bread/    # Devotional newsletter automation in Go with AI and SMTP
 ├── cron/               # Scheduled scripts and system-level automatic hooks
-├── .vscode/            # Local development environment configurations
 ├── AGENTS.md           # Persona, rules, and context definitions for AI agents
 ├── SOUL.md             # Custom behavior and soul instructions for the local assistant
 └── README.md           # This glorious and comprehensive documentation guide
@@ -34,12 +33,12 @@ solomon/
 
 ### 🗺️ Active Components Map
 
-| Component | Type / Language | Description | Status |
-| :--- | :--- | :--- | :--- |
-| [AGENTS.md](file:///home/stanley/projects/solomon/AGENTS.md) | Persona & Guidelines | Personality guide and technical stack for AI assistants | Active |
-| [SOUL.md](file:///home/stanley/projects/solomon/SOUL.md) | Behavior Configuration | Custom behavior configuration for the Hermes Agent | Active |
-| [apps/daily-bread](file:///home/stanley/projects/solomon/apps/daily-bread) | Application / **Go** | Automated newsletter that generates daily studies via Copilot CLI and sends them via SMTP | Active |
-| [cron/](file:///home/stanley/projects/solomon/cron) | Automation scripts | Scheduled scripts for background automations | Ready for new workflows |
+| Component                                                                  | Type / Language        | Description                                                                               | Status                  |
+| :------------------------------------------------------------------------- | :--------------------- | :---------------------------------------------------------------------------------------- | :---------------------- |
+| [AGENTS.md](file:///home/stanley/projects/solomon/AGENTS.md)               | Persona & Guidelines   | Personality guide and technical stack for AI assistants                                   | Active                  |
+| [SOUL.md](file:///home/stanley/projects/solomon/SOUL.md)                   | Behavior Configuration | Custom behavior configuration for the Hermes Agent                                        | Active                  |
+| [apps/daily-bread](file:///home/stanley/projects/solomon/apps/daily-bread) | Application / **Go**   | Automated newsletter that generates daily studies via Copilot CLI and sends them via SMTP | Active                  |
+| [cron/](file:///home/stanley/projects/solomon/cron)                        | Automation scripts     | Scheduled scripts for background automations                                              | Ready for new workflows |
 
 ---
 
@@ -71,23 +70,23 @@ graph TD
 
 All interactions with the application have been simplified using a [Makefile](file:///home/stanley/projects/solomon/apps/daily-bread/Makefile):
 
-* **Setup Dependencies:**
+- **Setup Dependencies:**
   ```bash
   make setup
   ```
-* **List Available Prompts and Templates:**
+- **List Available Prompts and Templates:**
   ```bash
   make list
   ```
-* **Execute Default Daily Flow:**
+- **Execute Default Daily Flow:**
   ```bash
   make run
   ```
-* **Force Re-run and Overwrite Today's History Log:**
+- **Force Re-run and Overwrite Today's History Log:**
   ```bash
   make force
   ```
-* **Execute Specific Character Study:**
+- **Execute Specific Character Study:**
   ```bash
   make run PROMPT=personagem TEMPLATE=personagem
   ```
@@ -99,16 +98,19 @@ All interactions with the application have been simplified using a [Makefile](fi
 Solomon is continuously evolving. Here are the planned implementation phases for local and integrated process automations:
 
 ### 🌟 Phase 1: AI Engine & Prompts Expansion
+
 - [ ] Centralize an internal repository of **Structured Prompts** categorized by objective (Code Generation, Refactoring, Log Analysis, Creative Writing).
 - [ ] Build an automated test suite for prompts, validating that LLM outputs adhere to specific JSON schemas.
 - [ ] Integrate with multiple API providers (OpenAI, Anthropic Claude, Gemini) with smart fallback systems.
 
 ### ⚙️ Phase 2: Automations under `apps/` and `cron/`
+
 - [ ] **Automated Project Backups:** Script to package, encrypt, and sync critical local backups to Google Drive or AWS S3.
 - [ ] **Observability Log Checker:** A scheduled script via `cron` to parse production logs from Luizalabs (Datadog/Grafana) and send smart summaries of critical errors via Slack/Telegram/Email.
 - [ ] **Daily Task Optimizer:** Script integrated with productivity APIs to compile the day's tasks and generate a morning focus dashboard.
 
 ### 🧠 Phase 3: Local AI Agents (Skills & Agents)
+
 - [ ] Deploy autonomous **Custom AI Agents** that monitor files in the workspace and propose on-demand refactoring aligned with SOLID and Clean Architecture.
 - [ ] Export and validate reusable "Skills" for AI agents.
 

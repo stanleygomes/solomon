@@ -41,7 +41,7 @@ func (s *Service) Run(templateName string) error {
 	todayISO := time.Now().Format("2006-01-02")
 
 	promptFile := filepath.Join(s.assetsDir, "prompts", fmt.Sprintf("%s.md", templateName))
-	templateFile := filepath.Join(s.assetsDir, "templates", fmt.Sprintf("%s.html", templateName))
+	templateFile := filepath.Join(s.assetsDir, "templates", "template.html")
 
 	// 1. Execute Copilot CLI
 	markdownContent, err := s.executeCopilot(promptFile)

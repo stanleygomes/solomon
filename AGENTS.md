@@ -21,7 +21,6 @@ As an agent operating in this repository, you **MUST** adhere to the following s
 
 1. **High Quality Code Only:** I have 14+ years of experience. Do not write lazy, boilerplate, or unoptimized code. Respect Clean Architecture, SOLID principles, and clean design patterns.
 2. **Repository Structure:**
-   - `apps/`: Self-contained automation tools and mini-apps (e.g., `daily-bread`, written in Go).
    - `cron/`: Scheduled scripts and system-level automation hooks.
    - Backup of prompts, skills, and validation logs should be organized cleanly.
 3. **No Placeholders or Half-Baked Scripts:** If you write a tool, ensure it is fully functional, well-documented (ideally with a `README.md` or a `Makefile` for ease of execution), and error-handled.

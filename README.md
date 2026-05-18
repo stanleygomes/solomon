@@ -17,60 +17,205 @@ This repository is built to serve as a living knowledge base and local execution
 
 ---
 
-## 📂 Repository Structure
+A lightweight, reliable, and state-persistent task coordinator written in **Go**.
 
-The project follows a modular, highly scalable design:
-
-```text
-solomon/
-├── apps/               # Self-contained automation mini-apps and executables
-│   └── daily-bread/    # Devotional newsletter automation in Go with AI and SMTP
-├── cron/               # Scheduled scripts and system-level automatic hooks
-├── AGENTS.md           # Persona, rules, and context definitions for AI agents
-├── SOUL.md             # Custom behavior and soul instructions for the local assistant
-└── README.md           # This glorious and comprehensive documentation guide
-```
-
-### 🗺️ Active Components Map
-
-| Component                                                                  | Type / Language        | Description                                                                               | Status                  |
-| :------------------------------------------------------------------------- | :--------------------- | :---------------------------------------------------------------------------------------- | :---------------------- |
-| [AGENTS.md](file:///home/stanley/projects/solomon/AGENTS.md)               | Persona & Guidelines   | Personality guide and technical stack for AI assistants                                   | Active                  |
-| [SOUL.md](file:///home/stanley/projects/solomon/SOUL.md)                   | Behavior Configuration | Custom behavior configuration for the Hermes Agent                                        | Active                  |
-| [apps/daily-bread](file:///home/stanley/projects/solomon/apps/daily-bread) | Application / **Go**   | Automated newsletter that generates daily studies via Copilot CLI and sends them via SMTP | Active                  |
-| [cron/](file:///home/stanley/projects/solomon/cron)                        | Orchestrator / **Go**   | State-persistent task scheduler and automation coordinator                                | Active                  |
+This scheduler is specifically designed to solve task orchestration limits on personal computers (e.g., laptops) that do **not** run 24/7. Traditional cron engines fail if the computer is turned off during the scheduled hour. `solomon-cron` runs frequently (e.g., every 5 minutes) and uses a state lock file to ensure tasks run exactly once per day, hour, or customized time window—no matter when the system boots or sleeps.
 
 ---
 
-## ⚡ Featured Mini-Apps & Utilities
+## ⚡ Features
 
-### 🍞 Daily Bread (`apps/daily-bread`)
+1. **State-Persistent Locks (`state.json`)**: Prevents tasks from double-executing. If a task is scheduled for `"daily"`, it will run exactly once per calendar day when the computer is online.
+2. **Flexible & Intelligent Scheduling**:
+   - `"daily"`: Runs once per calendar day (local time zone).
+   - `"hourly"`: Runs once per calendar hour.
+   - Custom Durations (Go's `time.Duration` parsing): e.g., `"12h"`, `"4h"`, `"45m"`. Executes if the time elapsed since the last run exceeds the specified duration.
+3. **Daily Rotated Audit Logs**: Automatically writes execution summaries, stdout, and stderr to thread-safe files inside `cron/logs/YYYY-MM-DD.log`.
+4. **Isolated Work Directories**: Each task can define its own working directory (`dir`) to resolve local scripts, assets, and env files appropriately.
+5. **No External Dependencies**: Built entirely with the standard Go library for maximum efficiency and security.
 
-**Daily Bread** is a **Go**-based application designed to automate the generation and delivery of daily devotional emails with high aesthetic and theological quality. It integrates directly with the **GitHub Copilot CLI** to generate deep reflections based on structured prompts and dynamic HTML templates.
+---
 
-> [!TIP]
-> **Complete Documentation:** All technical details, system workflow diagram, environment setup instructions, and custom execution options can be found in the dedicated [apps/daily-bread/README.md](file:///home/stanley/projects/solomon/apps/daily-bread/README.md).
+## 📂 File Structure
 
-### ⏰ Solomon Cron Scheduler (`cron/`)
+```text
+cron/
+├── Makefile          # Automation shortcuts (build, run, clean, state reset)
+├── README.md         # This manual
+├── config.json       # Task definitions and schedules
+├── go.mod            # Go module definition
+├── state.json        # Execution tracking (git-ignored)
+├── cmd/              # Executable entrypoint
+│   └── solomon-cron/
+│       └── main.go   # Entrypoint CLI assembler
+├── internal/         # Private application logic (non-importable)
+│   ├── config/       # Config structures & JSON loading logic
+│   ├── logger/       # Thread-safe daily rotated log writer
+│   ├── scheduler/    # Scheduling parser and command execution motor
+│   └── state/        # Lock management & execution history serialization
+└── logs/             # Central log repository (git-ignored)
+    └── YYYY-MM-DD.log
+```
 
-A lightweight, reliable, and state-persistent task coordinator written in **Go** to orchestrate automations on local machines (like laptops) that are not online 24/7. It uses `state.json` execution locks to guarantee jobs run exactly once per period (daily, hourly, or custom intervals).
+---
+
+## ⚙️ Configuration (`config.json`)
+
+Tasks are configured in the `config.json` file.
+
+```json
+{
+  "tasks": [
+    {
+      "id": "hello-test",
+      "name": "Cron Scheduler Test Task",
+      "command": "echo",
+      "args": ["Hello from Solomon! The cron is alive and well."],
+      "dir": "",
+      "schedule": "hourly"
+    },
+    {
+      "id": "daily-bread",
+      "name": "Daily Bread Devotional Newsletter",
+      "command": "./daily-bread",
+      "args": ["-template", "devocional"],
+      "dir": "../apps/daily-bread",
+      "schedule": "daily"
+    }
+  ]
+}
+```
+
+### Properties:
+
+- `id`: Unique identifier for state-tracking.
+- `name`: Human-readable name for logging.
+- `command`: Target executable or command (e.g., `./daily-bread`, `go`, `bash`).
+- `args`: Array of command-line arguments.
+- `dir`: Working directory relative to `cron/` or absolute path.
+- `schedule`: `"daily"`, `"hourly"`, or durations like `"12h"`, `"30m"`.
+
+---
+
+## 🚀 Execution & Automation
+
+All shortcuts are centralized in the [Makefile](file:///home/stanley/projects/solomon/cron/Makefile):
+
+### 1. Compile the Binary
+
+```bash
+make build
+```
+
+This generates the optimized `solomon-cron` binary inside the `cron/` folder.
+
+### 2. Manual Test Run
+
+```bash
+make run
+```
+
+Runs the coordinator in place to check conditions and execute tasks immediately.
+
+### 3. Reset Scheduler State
+
+If you want to bypass the daily lock and force all tasks to run on the next execution, run:
+
+```bash
+make reset-state
+```
+
+---
+
+## 📅 System Integration (Setting Up your Local Cron)
+
+To configure `solomon-cron` to execute every 5 minutes and handle all orchestration under the hood, open your user crontab:
+
+```bash
+crontab -e
+```
+
+And append the following entry (adjust paths to match your local setup):
+
+```text
+*/5 * * * * cd /home/stanley/projects/solomon/cron && ./solomon-cron > /dev/null 2>&1
+```
+
+With this, you will never miss a single newsletter dispatch or system maintenance routine again, even if you keep closing your laptop. 💅💀
+
+---
+
+## 🍞 Integrated Service: Daily Bread
+
+**Daily Bread** is a Go-based automation newsletter now fully integrated as an **internal service** inside the `solomon-cron` coordinator. It automates the generation and delivery of daily devotional emails with high theological quality, directly calling the **GitHub Copilot CLI** to generate deep reflections. 🙄💅🤷‍♂️💀
+
+### 🔄 System Workflow
+
+When triggered by the scheduler or manual execution, the service performs the following steps:
+
+```mermaid
+graph TD
+    A[Start Process] --> B[Load Prompt from assets/prompts/]
+    B --> C[Execute GitHub Copilot CLI]
+    C --> D[Generate Devotional Markdown]
+    D --> E[Convert to HTML via Goldmark GFM]
+    E --> F[Inject into Template from assets/templates/]
+    F --> G[Write History HTML to assets/logs/html/]
+    G --> H[Send Secure Email via SMTP SSL/TLS or STARTTLS]
+    H --> I[Dispatch Completed]
+```
+
+### ⚙️ Configuration & Environment
+
+The application requires a `.env` file in the root of the `cron/` directory. You can copy the template provided in [.env.example](file:///home/stanley/projects/solomon/cron/.env.example) to get started:
+
+```ini
+SMTP_HOST=your-smtp-host
+SMTP_PORT=465 # Use 465 for SSL/TLS, or 587 for STARTTLS
+SMTP_USER=your-smtp-username
+SMTP_PASSWORD=your-smtp-password
+SMTP_USE_TLS=true
+
+EMAIL_FROM=Pão Diário <your-email@domain.com>
+EMAIL_TO=recipient@domain.com
+EMAIL_SUBJECT=Pão Diário - Edição de Hoje
+```
 
 #### Setup
+
 Add the following entry to your local system `crontab -e`:
 
 ```text
 */5 * * * * cd /home/stanley/projects/solomon/cron && ./solomon-cron > /dev/null 2>&1
 ```
 
-> [!TIP]
-> **Complete Documentation:** Check the dedicated [cron/README.md](file:///home/stanley/projects/solomon/cron/README.md) for full configuration options, commands, and reset shortcuts.
+### 🛠️ Execution & Shortcuts
 
----
+You can orchestrate and test the Daily Bread service using these shortcuts:
 
-## 🛡️ Local Contribution Guidelines (For AI Agents)
+#### 1. List Available Prompts and Templates
 
-> [!IMPORTANT]
-> If you are an AI agent operating in this repository, please consult the strict quality and personality guidelines defined in [AGENTS.md](file:///home/stanley/projects/solomon/AGENTS.md).
+Lists all configurable studies and templates currently residing inside your Go-recommended assets directories:
+
+```bash
+make list
+```
+
+#### 2. Run Standard Devotional Flow
+
+Runs the newsletter generation and delivery with the default `devocional` template (resolving `assets/prompts/devocional.md` and `assets/templates/devocional.html`):
+
+```bash
+make run-daily-bread
+```
+
+#### 3. Run Custom Devotionals
+
+Runs the flow with a custom template (e.g. `personagem` or `versiculo`):
+
+```bash
+make run-daily-bread TEMPLATE=personagem
+```
 
 ## 🤝 Como Contribuir
 

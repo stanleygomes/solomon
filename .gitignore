@@ -1,27 +1,10 @@
-# Ignore IDE files
+# Solomon Cron gitignore
+/solomon-cron
+state.json
+logs/
+
+.env
+
+#ignoreIDE files
 .idea/
 .vscode/
-.DS_Store
-Thumbs.db
-
-
-
-
-# # ignore everything
-# *
-
-# # allow this file
-# !.gitignore
-
-# # allowed files
-# !README.md
-# !instructions.md
-# !config.yaml
-# !SOUL.md
-# !CLAUDE.md
-
-# !/skills
-# !/memories
-# !/cron/jobs.json
-# !/daily-bread/
-# !/daily-bread/**

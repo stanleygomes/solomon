@@ -1,5 +1,0 @@
-# Solomon Cron gitignore
-/solomon-cron
-state.json
-logs/
-assets/logs/

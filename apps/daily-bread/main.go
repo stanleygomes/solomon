@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/smtp"
 	"os"
@@ -95,7 +96,7 @@ func compileNewsletter(contentMarkdown, templatePath, dateDisplay string) (strin
 		return "", fmt.Errorf("arquivo de template não encontrado em: %s", templatePath)
 	}
 
-	fmt.Println("Convertendo Markdown para HTML...")
+	log.Println("Convertendo Markdown para HTML...")
 	
 	// Configura o Goldmark com extensões GFM (inclui suporte a tabelas)
 	md := goldmark.New(
@@ -111,7 +112,7 @@ func compileNewsletter(contentMarkdown, templatePath, dateDisplay string) (strin
 	}
 	contentHTML := buf.String()
 
-	fmt.Printf("Carregando template de: %s...\n", templatePath)
+	log.Printf("Carregando template de: %s...", templatePath)
 	templateBytes, err := os.ReadFile(templatePath)
 	if err != nil {
 		return "", fmt.Errorf("falha ao ler template: %w", err)
@@ -126,23 +127,23 @@ func compileNewsletter(contentMarkdown, templatePath, dateDisplay string) (strin
 }
 
 func saveLog(htmlContent, dateStr string) (string, error) {
-	err := os.MkdirAll("logs", 0755)
+	err := os.MkdirAll(filepath.Join("logs", "html"), 0755)
 	if err != nil {
-		return "", fmt.Errorf("falha ao criar pasta logs: %w", err)
+		return "", fmt.Errorf("falha ao criar pasta logs/html: %w", err)
 	}
 	
-	logFile := filepath.Join("logs", fmt.Sprintf("%s.html", dateStr))
+	logFile := filepath.Join("logs", "html", fmt.Sprintf("%s.html", dateStr))
 	err = os.WriteFile(logFile, []byte(htmlContent), 0644)
 	if err != nil {
 		return "", fmt.Errorf("falha ao gravar log HTML: %w", err)
 	}
 	
-	fmt.Printf("Histórico salvo com sucesso em: %s\n", logFile)
+	log.Printf("Histórico salvo com sucesso em: %s", logFile)
 	return logFile, nil
 }
 
 func sendEmail(htmlContent string) error {
-	fmt.Println("Preparando envio de e-mail...")
+	log.Println("Preparando envio de e-mail...")
 	
 	host := os.Getenv("SMTP_HOST")
 	portStr := os.Getenv("SMTP_PORT")
@@ -182,7 +183,7 @@ func sendEmail(htmlContent string) error {
 	addr := host + ":" + portStr
 	auth := smtp.PlainAuth("", user, pass, host)
 
-	fmt.Printf("Conectando ao servidor SMTP %s...\n", addr)
+	log.Printf("Conectando ao servidor SMTP %s...", addr)
 	
 	if portStr == "465" {
 		// Conexão direta SSL/TLS
@@ -231,14 +232,14 @@ func sendEmail(htmlContent string) error {
 			return fmt.Errorf("erro ao fechar transmissão: %w", err)
 		}
 
-		fmt.Printf("Enviando e-mail para: %s...\n", emailTo)
+		log.Printf("Enviando e-mail para: %s...", emailTo)
 		return client.Quit()
 	} else {
 		// STARTTLS padrão (porta 587)
 		if useTLS {
-			fmt.Println("Iniciando conexão segura TLS (STARTTLS)...")
+			log.Println("Iniciando conexão segura TLS (STARTTLS)...")
 		}
-		fmt.Printf("Enviando e-mail para: %s...\n", emailTo)
+		log.Printf("Enviando e-mail para: %s...", emailTo)
 		
 		// Para o envelope SMTP (MAIL FROM), usamos o e-mail limpo (user)
 		err := smtp.SendMail(addr, auth, user, []string{emailTo}, msg.Bytes())
@@ -250,6 +251,22 @@ func sendEmail(htmlContent string) error {
 }
 
 func main() {
+	// Garante que a pasta logs/logs existe
+	_ = os.MkdirAll(filepath.Join("logs", "logs"), 0755)
+
+	// Arquivo de log rotacionado por ano-mes-dia (ex: 2026-05-18.log)
+	todayISO := time.Now().Format("2006-01-02")
+	logFilePath := filepath.Join("logs", "logs", fmt.Sprintf("%s.log", todayISO))
+
+	logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	if err == nil {
+		defer logFile.Close()
+		// Define a saída do log padrão para o console e o arquivo de log
+		log.SetOutput(io.MultiWriter(os.Stdout, logFile))
+	} else {
+		log.Printf("Aviso: Não foi possível criar o arquivo de log: %v", err)
+	}
+
 	// Carrega variáveis de ambiente
 	_ = godotenv.Load()
 
@@ -267,7 +284,6 @@ func main() {
 
 	promptVal := templateVal
 
-	todayISO := time.Now().Format("2006-01-02")
 	dateDisplay := getFormattedDate()
 
 	promptFile := filepath.Join("prompts", fmt.Sprintf("%s.md", promptVal))
@@ -297,6 +313,6 @@ func main() {
 		log.Fatalf("Erro de envio de e-mail: %v", err)
 	}
 
-	fmt.Println("E-mail enviado com sucesso!")
-	fmt.Println("Processo concluído com êxito absoluto!")
+	log.Println("E-mail enviado com sucesso!")
+	log.Println("Processo concluído com êxito absoluto!")
 }

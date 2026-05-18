@@ -77,4 +77,6 @@ make run TEMPLATE=personagem
 
 - `prompts/`: Contains structured markdown prompts used to instruct the AI agent.
 - `templates/`: Contains HTML layout templates utilizing the `{{date}}` and `{{content}}` dynamic placeholders.
-- `logs/`: Holds a record of generated HTML emails named by ISO date (`YYYY-MM-DD.html`) for archiving and historical reference.
+- `logs/`: Centralizes all execution output and historical archives:
+  - `logs/html/`: Stores the compiled daily HTML emails (`YYYY-MM-DD.html`).
+  - `logs/logs/`: Stores the daily execution stdout/stderr logs (`YYYY-MM-DD.log`).

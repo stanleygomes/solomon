@@ -38,7 +38,7 @@ solomon/
 | [AGENTS.md](file:///home/stanley/projects/solomon/AGENTS.md)               | Persona & Guidelines   | Personality guide and technical stack for AI assistants                                   | Active                  |
 | [SOUL.md](file:///home/stanley/projects/solomon/SOUL.md)                   | Behavior Configuration | Custom behavior configuration for the Hermes Agent                                        | Active                  |
 | [apps/daily-bread](file:///home/stanley/projects/solomon/apps/daily-bread) | Application / **Go**   | Automated newsletter that generates daily studies via Copilot CLI and sends them via SMTP | Active                  |
-| [cron/](file:///home/stanley/projects/solomon/cron)                        | Automation scripts     | Scheduled scripts for background automations                                              | Ready for new workflows |
+| [cron/](file:///home/stanley/projects/solomon/cron)                        | Orchestrator / **Go**   | State-persistent task scheduler and automation coordinator                                | Active                  |
 
 ---
 
@@ -50,6 +50,20 @@ solomon/
 
 > [!TIP]
 > **Complete Documentation:** All technical details, system workflow diagram, environment setup instructions, and custom execution options can be found in the dedicated [apps/daily-bread/README.md](file:///home/stanley/projects/solomon/apps/daily-bread/README.md).
+
+### ⏰ Solomon Cron Scheduler (`cron/`)
+
+A lightweight, reliable, and state-persistent task coordinator written in **Go** to orchestrate automations on local machines (like laptops) that are not online 24/7. It uses `state.json` execution locks to guarantee jobs run exactly once per period (daily, hourly, or custom intervals).
+
+#### Setup
+Add the following entry to your local system `crontab -e`:
+
+```text
+*/5 * * * * cd /home/stanley/projects/solomon/cron && ./solomon-cron > /dev/null 2>&1
+```
+
+> [!TIP]
+> **Complete Documentation:** Check the dedicated [cron/README.md](file:///home/stanley/projects/solomon/cron/README.md) for full configuration options, commands, and reset shortcuts.
 
 ---
 

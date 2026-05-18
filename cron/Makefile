@@ -1,8 +1,9 @@
 # Solomon Cron Scheduler - Automation Makefile
 
 BINARY_NAME=solomon-cron
+TEMPLATE ?= devocional
 
-.PHONY: run build setup clean help test
+.PHONY: run build setup clean help reset-state run-daily-bread list
 
 # Default command to run the scheduler in-place
 run:
@@ -13,6 +14,26 @@ build:
 	@echo "Compiling Go binary..."
 	@go build -o $(BINARY_NAME) ./cmd/solomon-cron
 	@echo "Done! Binary '$(BINARY_NAME)' successfully generated."
+
+# Runs the daily-bread devotional newsletter force-executing the internal service
+run-daily-bread:
+	@go run ./cmd/solomon-cron -run-task daily-bread -template $(TEMPLATE)
+
+# Dynamically lists available prompts and templates for daily-bread
+list:
+	@echo "=================================================="
+	@echo "  AVAILABLE PROMPTS (assets/prompts/ directory)"
+	@echo "=================================================="
+	@ls -1 assets/prompts/ | grep -v '^_' | sed 's/\.md//' | sed 's/^/ - /'
+	@echo ""
+	@echo "=================================================="
+	@echo "  AVAILABLE TEMPLATES (assets/templates/ directory)"
+	@echo "=================================================="
+	@ls -1 assets/templates/ | sed 's/\.html//' | sed 's/^/ - /'
+	@echo "=================================================="
+	@echo "To run a specific template, use:"
+	@echo "make run-daily-bread TEMPLATE=<name>"
+	@echo "=================================================="
 
 # Installs/downloads Go module dependencies and sets up directories
 setup:
@@ -36,7 +57,7 @@ reset-state:
 # Displays help information about Makefile usage
 help:
 	@echo "=========================================================================="
-	@echo "                 SOLOMON CRON SCHEDULER (GO)"
+	@echo "                 SOLOMON CRON SCHEDULER & SERVICES (GO)"
 	@echo "=========================================================================="
 	@echo "Useful commands:"
 	@echo "  make setup                       - Prepares module dependencies and creates log folder."
@@ -44,4 +65,9 @@ help:
 	@echo "  make run                         - Runs the scheduler immediately."
 	@echo "  make reset-state                 - Resets state.json to force-run all tasks."
 	@echo "  make clean                       - Removes compiled binary files."
+	@echo "=========================================================================="
+	@echo "Services (Daily Bread Devotional Newsletter):"
+	@echo "  make list                        - Shows all templates/prompts in assets/."
+	@echo "  make run-daily-bread             - Dispatches the daily devotional (devocional)."
+	@echo "  make run-daily-bread TEMPLATE=x  - Dispatches study using template 'x'."
 	@echo "=========================================================================="

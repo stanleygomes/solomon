@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Bread - Devocional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Email client resets and global styles */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f6f5f0;
+        font-family: "Cormorant Garamond", Georgia, serif;
+        color: #1a1a1a;
+        -webkit-font-smoothing: antialiased;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      img {
+        border: 0;
+        max-width: 100%;
+        height: auto;
+      }
+      a {
+        color: #aa820a;
+        text-decoration: none;
+        border-bottom: 1px dotted #d4af37;
+      }
+      a:hover {
+        color: #d4af37;
+        border-bottom: 1px solid #d4af37;
+      }
+
+      /* Typography & layout overrides */
+      .content {
+        font-size: 20px;
+        line-height: 1.6;
+        text-align: justify;
+      }
+      .content h1 {
+        font-family: "Cinzel", serif;
+        font-size: 28px;
+        color: #111111;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      .content h2,
+      .content h3 {
+        font-family: "Cinzel", serif;
+        color: #aa820a;
+        font-size: 22px;
+        margin-top: 35px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        border-bottom: 1px solid #f0e6cc;
+        padding-bottom: 5px;
+      }
+      /* Elegance drop cap for the first paragraph of the devotion */
+      .content > p:first-of-type::first-letter {
+        float: left;
+        font-family: "Cinzel", serif;
+        font-size: 65px;
+        line-height: 50px;
+        padding-top: 4px;
+        padding-right: 8px;
+        padding-left: 3px;
+        color: #d4af37;
+        font-weight: bold;
+      }
+      .content p {
+        margin-bottom: 20px;
+      }
+      .content blockquote {
+        border-left: 3px solid #d4af37;
+        background-color: #fcfbf7;
+        margin: 30px 0;
+        padding: 15px 25px;
+        font-style: italic;
+        color: #444444;
+      }
+      .content blockquote p {
+        margin: 0;
+      }
+      /* Custom list style */
+      .content ul {
+        padding-left: 20px;
+        list-style-type: none;
+      }
+      .content ul li {
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 15px;
+      }
+      .content ul li::before {
+        content: "•";
+        color: #d4af37;
+        font-size: 18px;
+        position: absolute;
+        left: 0;
+        top: -2px;
+      }
+      .content hr {
+        border: 0;
+        height: 1px;
+        background-color: #e5d8b8;
+        margin: 35px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="background-color: #f6f5f0; padding: 40px 0"
+    >
+      <tr>
+        <td align="center">
+          <!-- Main Container -->
+          <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              max-width: 650px;
+              background-color: #ffffff;
+              border: 1px solid #e5d8b8;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            "
+          >
+            <!-- Decorative Gold Top Line -->
+            <tr>
+              <td
+                height="5"
+                style="background-color: #d4af37; font-size: 0; line-height: 0"
+              ></td>
+            </tr>
+
+            <!-- Header -->
+            <tr>
+              <td align="center" style="padding: 45px 40px 30px 40px">
+                <span
+                  style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 11px;
+                    letter-spacing: 3px;
+                    color: #888888;
+                    text-transform: uppercase;
+                  "
+                  >A Palavra da Cruz</span
+                >
+                <h1
+                  style="
+                    font-family: &quot;Cinzel&quot;, serif;
+                    font-size: 38px;
+                    font-weight: 700;
+                    margin: 10px 0 5px 0;
+                    color: #111111;
+                    letter-spacing: 2px;
+                  "
+                >
+                  Daily Bread
+                </h1>
+                <div
+                  style="
+                    width: 60px;
+                    height: 1px;
+                    background-color: #d4af37;
+                    margin: 15px auto;
+                  "
+                ></div>
+                <span
+                  style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 12px;
+                    letter-spacing: 1px;
+                    color: #aa820a;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                  "
+                  >{{date}}</span
+                >
+              </td>
+            </tr>
+
+            <!-- Divider -->
+            <tr>
+              <td style="padding: 0 40px">
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="border-top: 1px double #d4af37"
+                >
+                  <tr>
+                    <td height="1"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Body Content -->
+            <tr>
+              <td style="padding: 40px 50px; background-color: #ffffff">
+                <div class="content">{{content}}</div>
+              </td>
+            </tr>
+
+            <!-- Divider -->
+            <tr>
+              <td style="padding: 0 40px">
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="border-top: 1px solid #ebd07f"
+                >
+                  <tr>
+                    <td height="1"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td
+                align="center"
+                style="padding: 35px 40px; background-color: #faf9f6"
+              >
+                <div
+                  style="
+                    font-family: &quot;Cinzel&quot;, serif;
+                    font-size: 15px;
+                    color: #aa820a;
+                    margin-bottom: 8px;
+                    letter-spacing: 1px;
+                  "
+                >
+                  Soli Deo Gloria
+                </div>
+                <p
+                  style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 11px;
+                    color: #888888;
+                    line-height: 1.6;
+                    max-width: 480px;
+                    margin: 0;
+                  "
+                >
+                  Enviado automaticamente de seu notebook.<br />
+                  Desenvolvido para instrução, correção e maturidade espiritual
+                  sólida nas Escrituras Sagradas.
+                </p>
+                <div
+                  style="
+                    margin-top: 20px;
+                    font-family: &quot;Cinzel&quot;, serif;
+                    font-size: 12px;
+                    color: #d4af37;
+                  "
+                >
+                  ♦
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

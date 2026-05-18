@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Bread - Estudo de Personagem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Email resets */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #faf9f6;
+        font-family: "Cormorant Garamond", Georgia, serif;
+        color: #1a1a1a;
+        -webkit-font-smoothing: antialiased;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      a {
+        color: #aa820a;
+        text-decoration: none;
+        border-bottom: 1px dotted #d4af37;
+      }
+      a:hover {
+        color: #d4af37;
+        border-bottom: 1px solid #d4af37;
+      }
+
+      /* Typography */
+      .content {
+        font-size: 19px;
+        line-height: 1.65;
+        text-align: justify;
+      }
+      .content h1 {
+        font-family: "Cinzel", serif;
+        font-size: 26px;
+        color: #111111;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      .content h2,
+      .content h3 {
+        font-family: "Cinzel", serif;
+        color: #111111;
+        font-size: 20px;
+        margin-top: 35px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .content h2::after {
+        content: "";
+        display: block;
+        width: 40px;
+        height: 2px;
+        background-color: #d4af37;
+        margin-top: 5px;
+      }
+      .content p {
+        margin-bottom: 20px;
+      }
+      .content blockquote {
+        border-left: 3px solid #d4af37;
+        background-color: #fdfcf7;
+        margin: 30px 0;
+        padding: 15px 25px;
+        font-style: italic;
+        color: #333333;
+      }
+      .content blockquote p {
+        margin: 0;
+      }
+
+      /* Tabela de Perfil do Personagem (Markdown support) */
+      .content table {
+        width: 100%;
+        margin: 30px 0;
+        border: 1px solid #d4af37;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+      }
+      .content th {
+        background-color: #111111;
+        color: #ebd07f;
+        font-family: "Cinzel", serif;
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: 600;
+        padding: 12px 16px;
+        border: 1px solid #d4af37;
+        text-align: left;
+        text-transform: uppercase;
+      }
+      .content td {
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        color: #222222;
+        padding: 12px 16px;
+        border: 1px solid #e5d8b8;
+        background-color: #fcfbf7;
+      }
+      .content tr:nth-child(even) td {
+        background-color: #fdfcf9;
+      }
+
+      /* Lists */
+      .content ul,
+      .content ol {
+        padding-left: 20px;
+        margin: 20px 0;
+      }
+      .content ul li,
+      .content ol li {
+        margin-bottom: 10px;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 19px;
+      }
+      .content ul li::marker {
+        color: #d4af37;
+      }
+      .content hr {
+        border: 0;
+        height: 1px;
+        background-color: #ebd07f;
+        margin: 40px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="background-color: #faf9f6; padding: 40px 0"
+    >
+      <tr>
+        <td align="center">
+          <!-- Main Container -->
+          <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              max-width: 650px;
+              background-color: #ffffff;
+              border: 1px solid #e5d8b8;
+            "
+          >
+            <!-- Top accent -->
+            <tr>
+              <td
+                height="4"
+                style="background-color: #111111; font-size: 0; line-height: 0"
+              ></td>
+            </tr>
+
+            <!-- Header -->
+            <tr>
+              <td align="center" style="padding: 45px 40px 30px 40px">
+                <span
+                  style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 11px;
+                    letter-spacing: 3px;
+                    color: #888888;
+                    text-transform: uppercase;
+                  "
+                  >Biografia & Doutrina</span
+                >
+                <h1
+                  style="
+                    font-family: &quot;Cinzel&quot;, serif;
+                    font-size: 34px;
+                    font-weight: 700;
+                    margin: 10px 0 5px 0;
+                    color: #111111;
+                    letter-spacing: 2px;
+                  "
+                >
+                  ESTUDO DE PERSONAGEM
+                </h1>
+                <div
+                  style="
+                    width: 100px;
+                    height: 1px;
+                    background-color: #d4af37;
+                    margin: 15px auto;
+                  "
+                ></div>
+                <span
+                  style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 12px;
+                    letter-spacing: 1px;
+                    color: #aa820a;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                  "
+                  >{{date}}</span
+                >
+              </td>
+            </tr>
+
+            <!-- Double border line -->
+            <tr>
+              <td style="padding: 0 40px">
+                <div
+                  style="
+                    border-top: 1px solid #ebd07f;
+                    border-bottom: 1px solid #ebd07f;
+                    height: 2px;
+                  "
+                ></div>
+              </td>
+            </tr>
+
+            <!-- Body Content -->
+            <tr>
+              <td style="padding: 40px 50px; background-color: #ffffff">
+                <div class="content">{{content}}</div>
+              </td>
+            </tr>
+
+            <!-- Divider -->
+            <tr>
+              <td style="padding: 0 40px">
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="border-top: 1px solid #ebd07f"
+                >
+                  <tr>
+                    <td height="1"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td
+                align="center"
+                style="padding: 35px 40px; background-color: #fdfcfb"
+              >
+                <div
+                  style="
+                    font-family: &quot;Cinzel&quot;, serif;
+                    font-size: 14px;
+                    color: #111111;
+                    margin-bottom: 8px;
+                    letter-spacing: 2px;
+                    font-weight: bold;
+                  "
+                >
+                  SOLA SCRIPTURA
+                </div>
+                <p
+                  style="
+                    font-family: &quot;Inter&quot;, sans-serif;
+                    font-size: 11px;
+                    color: #888888;
+                    line-height: 1.6;
+                    max-width: 480px;
+                    margin: 0;
+                  "
+                >
+                  Enviado automaticamente de seu notebook.<br />
+                  Estudo de personagens bíblicos focado na glória de Deus e no
+                  exemplo doutrinário.
+                </p>
+                <div
+                  style="
+                    margin-top: 20px;
+                    font-family: &quot;Cinzel&quot;, serif;
+                    font-size: 12px;
+                    color: #d4af37;
+                  "
+                >
+                  ♦
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -118,3 +118,64 @@ And append the following entry (adjust paths to match your local setup):
 ```
 
 With this, you will never miss a single newsletter dispatch or system maintenance routine again, even if you keep closing your laptop. 💅💀
+
+---
+
+## 🍞 Integrated Service: Daily Bread
+
+**Daily Bread** is a Go-based automation newsletter now fully integrated as an **internal service** inside the `solomon-cron` coordinator. It automates the generation and delivery of daily devotional emails with high theological quality, directly calling the **GitHub Copilot CLI** to generate deep reflections. 🙄💅🤷‍♂️💀
+
+### 🔄 System Workflow
+
+When triggered by the scheduler or manual execution, the service performs the following steps:
+
+```mermaid
+graph TD
+    A[Start Process] --> B[Load Prompt from assets/prompts/]
+    B --> C[Execute GitHub Copilot CLI]
+    C --> D[Generate Devotional Markdown]
+    D --> E[Convert to HTML via Goldmark GFM]
+    E --> F[Inject into Template from assets/templates/]
+    F --> G[Write History HTML to assets/logs/html/]
+    G --> H[Send Secure Email via SMTP SSL/TLS or STARTTLS]
+    H --> I[Dispatch Completed]
+```
+
+### ⚙️ Configuration & Environment
+
+The application requires a `.env` file in the root of the `cron/` directory. You can copy the template provided in [.env.example](file:///home/stanley/projects/solomon/cron/.env.example) to get started:
+
+```ini
+SMTP_HOST=your-smtp-host
+SMTP_PORT=465 # Use 465 for SSL/TLS, or 587 for STARTTLS
+SMTP_USER=your-smtp-username
+SMTP_PASSWORD=your-smtp-password
+SMTP_USE_TLS=true
+
+EMAIL_FROM=Pão Diário <your-email@domain.com>
+EMAIL_TO=recipient@domain.com
+EMAIL_SUBJECT=Pão Diário - Edição de Hoje
+```
+
+### 🛠️ Execution & Shortcuts
+
+You can orchestrate and test the Daily Bread service using these shortcuts:
+
+#### 1. List Available Prompts and Templates
+Lists all configurable studies and templates currently residing inside your Go-recommended assets directories:
+```bash
+make list
+```
+
+#### 2. Run Standard Devotional Flow
+Runs the newsletter generation and delivery with the default `devocional` template (resolving `assets/prompts/devocional.md` and `assets/templates/devocional.html`):
+```bash
+make run-daily-bread
+```
+
+#### 3. Run Custom Devotionals
+Runs the flow with a custom template (e.g. `personagem` or `versiculo`):
+```bash
+make run-daily-bread TEMPLATE=personagem
+```
+

@@ -17,6 +17,9 @@ func main() {
 	configFlag := flag.String("config", "", "Path to the configuration file (config.json)")
 	stateFlag := flag.String("state", "", "Path to the execution state file (state.json)")
 	logsFlag := flag.String("logs", "", "Path to the logs directory")
+	runTaskFlag := flag.String("run-task", "", "Force-run a specific task by ID immediately, bypassing scheduler checks")
+	_ = flag.String("template", "devocional", "Override template for the internal daily-bread service")
+	_ = flag.String("t", "", "Override template for the internal daily-bread service (shorthand)")
 	flag.Parse()
 
 	// 2. Resolve default directories
@@ -70,6 +73,16 @@ func main() {
 
 	// 6. Run Scheduler
 	schedulerInstance := scheduler.New(cfg, stateInstance, statePath, loggerInstance)
+
+	// Intercept one-off run task execution
+	if *runTaskFlag != "" {
+		err := schedulerInstance.ForceRunTask(*runTaskFlag)
+		if err != nil {
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
+
 	schedulerInstance.Run()
 }
 

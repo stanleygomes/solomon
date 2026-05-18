@@ -11,9 +11,9 @@
     {
       "id": "daily-bread",
       "name": "Daily Bread Devotional Newsletter",
-      "command": "./daily-bread",
+      "command": "internal:daily-bread",
       "args": ["-template", "devocional"],
-      "dir": "../apps/daily-bread",
+      "dir": "",
       "schedule": "daily"
     }
   ]

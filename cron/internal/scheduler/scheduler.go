@@ -1,12 +1,15 @@
 package scheduler
 
 import (
+	"flag"
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"solomon-cron/internal/config"
+	"solomon-cron/internal/dailybread"
 	"solomon-cron/internal/logger"
 	"solomon-cron/internal/state"
 )
@@ -71,9 +74,37 @@ func (s *Scheduler) Run() {
 	s.logger.Log("=== Scheduler Execution Finished ===")
 }
 
-func (s *Scheduler) runTask(task config.TaskConfig) error {
-	cmdPath := task.Command
+func (s *Scheduler) ForceRunTask(taskID string) error {
+	s.logger.Log("=== Force-Running Task %s ===", taskID)
 	
+	var targetTask *config.TaskConfig
+	for _, task := range s.config.Tasks {
+		if task.ID == taskID {
+			targetTask = &task
+			break
+		}
+	}
+	
+	if targetTask == nil {
+		return fmt.Errorf("task ID %q not found in config", taskID)
+	}
+
+	err := s.runTask(*targetTask)
+	if err != nil {
+		s.logger.Log("ERROR [%s]: Task execution failed: %v", taskID, err)
+		return err
+	}
+	
+	s.logger.Log("SUCCESS [%s]: Task completed successfully", taskID)
+	return nil
+}
+
+func (s *Scheduler) runTask(task config.TaskConfig) error {
+	if strings.HasPrefix(task.Command, "internal:") {
+		return s.runInternalService(task)
+	}
+
+	cmdPath := task.Command
 	cmd := exec.Command(cmdPath, task.Args...)
 	
 	if task.Dir != "" {
@@ -94,6 +125,41 @@ func (s *Scheduler) runTask(task config.TaskConfig) error {
 	}
 
 	return nil
+}
+
+func (s *Scheduler) runInternalService(task config.TaskConfig) error {
+	serviceName := strings.TrimPrefix(task.Command, "internal:")
+	
+	switch serviceName {
+	case "daily-bread":
+		templateName := "devocional"
+		// 1. Check task configuration args
+		for i, arg := range task.Args {
+			if (arg == "-template" || arg == "-t") && i+1 < len(task.Args) {
+				templateName = task.Args[i+1]
+				break
+			}
+		}
+		// 2. Override with CLI flags if provided
+		if tVal := flag.Lookup("template").Value.String(); tVal != "" && tVal != "devocional" {
+			templateName = tVal
+		}
+		if tVal := flag.Lookup("t").Value.String(); tVal != "" {
+			templateName = tVal
+		}
+
+		// Resolve assets directory in the root of the cron scheduler app
+		baseDir, err := filepath.Abs("assets")
+		if err != nil {
+			return fmt.Errorf("failed to resolve absolute path for assets: %w", err)
+		}
+
+		dbService := dailybread.New(s.logger, baseDir)
+		return dbService.Run(templateName)
+		
+	default:
+		return fmt.Errorf("unknown internal service: %s", serviceName)
+	}
 }
 
 func shouldRun(schedule string, lastRun time.Time, now time.Time) (bool, string, error) {

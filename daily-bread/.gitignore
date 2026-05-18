@@ -1,19 +1,17 @@
 # Local Environment SMTP Credentials (contains passwords)
 .env
 
-# Python Virtual Environment
-venv/
-.venv/
-env/
+# Go Compiled Binaries
+daily-bread
+daily-bread.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 
 # Newsletter Daily Generated History Logs (local history)
 logs/
-
-# Python caching and compiled files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
 
 # Operating system files
 .DS_Store

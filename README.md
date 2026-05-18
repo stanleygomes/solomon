@@ -57,8 +57,6 @@ solomon/
 
 > [!IMPORTANT]
 > If you are an AI agent operating in this repository, please consult the strict quality and personality guidelines defined in [AGENTS.md](file:///home/stanley/projects/solomon/AGENTS.md).
->
-> Remember: the owner of this repository is an highly experienced Senior Developer. Do not submit lazy code, empty placeholders, or sloppy formatting.
 
 ## 🤝 Como Contribuir
 

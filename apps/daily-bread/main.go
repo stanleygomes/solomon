@@ -64,6 +64,22 @@ func executeCopilot(promptPath string) (string, error) {
 	}
 	promptContent := strings.TrimSpace(string(promptBytes))
 
+	if filepath.Base(promptPath) != "_base.md" {
+		basePromptPath := filepath.Join(filepath.Dir(promptPath), "_base.md")
+		if _, err := os.Stat(basePromptPath); err == nil {
+			fmt.Printf("Mesclando com o prompt base de: %s...\n", basePromptPath)
+			baseBytes, err := os.ReadFile(basePromptPath)
+			if err == nil {
+				baseContent := strings.TrimSpace(string(baseBytes))
+				if baseContent != "" {
+					promptContent = baseContent + "\n\n" + promptContent
+				}
+			} else {
+				fmt.Printf("Aviso: Falha ao ler arquivo de prompt base: %v\n", err)
+			}
+		}
+	}
+
 	fmt.Println("Executando o Copilot CLI (isso pode levar alguns instantes)...")
 	
 	// Executa copilot com as flags para não interagir e rodar silenciosamente

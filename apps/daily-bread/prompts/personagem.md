@@ -1,9 +1,7 @@
 Escreva um estudo biográfico teológico profundo sobre um personagem bíblico (ex: Jó, Elias, Jeremias, Pedro, Paulo, Moisés, Rute ou Oséias).
 
-Instruções cruciais para a geração:
-1. **Sem Romantização**: Trate o personagem com realismo bíblico. Mostre a soberania de Deus, a gravidade de suas falhas (pecados, fraquezas) e a firmeza de seu chamado. Nada de sentimentalismo barato ou lições morais fáceis. O tom deve ser sério, direto e confrontador.
-2. **Passagens Bíblicas**: Liste e cite as principais passagens bíblicas que relatam a trajetória deste personagem.
-3. **Formato do Output**: Retorne APENAS o conteúdo em Markdown. Não inclua introduções conversacionais como "Aqui está o estudo..." nem conclusões fora do texto. Comece diretamente no título.
+Diretrizes específicas:
+1. **Passagens Bíblicas**: Liste e cite as principais passagens bíblicas que relatam a trajetória deste personagem.
 
 Estrutura esperada do Markdown:
 - Um título solene (ex: "# Elias: O Profeta do Fogo e o Deserto da Fraqueza").

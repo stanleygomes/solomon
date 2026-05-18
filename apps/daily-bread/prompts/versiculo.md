@@ -1,9 +1,5 @@
 Escolha um versículo bíblico profundo e teologicamente exigente (ex: Mateus 7:21, Lucas 9:23, Romanos 9:16, Hebreus 10:31, Hebreus 12:29, Tiago 2:19) e realize um estudo exegetico e expositivo rigoroso.
 
-Instruções cruciais para a geração:
-1. **Foco e Profundidade**: Evite clichês vazios de "consolo" superficial. Examine a passagem em seu contexto literário e histórico. O tom deve ser direto, afiado e sério. Fale sobre a doutrina pura e a exigência de Cristo.
-2. **Formato do Output**: Retorne APENAS o conteúdo em Markdown. Não inclua introduções conversacionais nem notas do assistente. Comece diretamente no título.
-
 Estrutura esperada do Markdown:
 - Um título focado no versículo (ex: "# Romanos 9:16 - A Soberania da Misericórdia").
 - **O Texto Sagrado**: O versículo destacado em itálico e sua referência exata.

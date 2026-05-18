@@ -39,7 +39,7 @@ list:
 	@echo "=================================================="
 	@echo "  AVAILABLE PROMPTS (prompts/ directory)"
 	@echo "=================================================="
-	@ls -1 prompts/ | sed 's/\.md//' | sed 's/^/ - /'
+	@ls -1 prompts/ | grep -v '^_' | sed 's/\.md//' | sed 's/^/ - /'
 	@echo ""
 	@echo "=================================================="
 	@echo "  AVAILABLE TEMPLATES (templates/ directory)"

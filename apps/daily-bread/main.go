@@ -38,19 +38,6 @@ func getFormattedDate() string {
 	return fmt.Sprintf("%d de %s de %d", now.Day(), months[now.Month()], now.Year())
 }
 
-func checkAlreadyRun(dateStr string, force bool) bool {
-	logFile := filepath.Join("logs", fmt.Sprintf("%s.html", dateStr))
-	if _, err := os.Stat(logFile); err == nil {
-		if force {
-			fmt.Printf("Aviso: A edição de hoje (%s) já existe, mas a execução foi forçada.\n", logFile)
-			return true
-		}
-		fmt.Printf("Erro de Validação: O e-mail de hoje já foi gerado e enviado! (%s)\n", logFile)
-		fmt.Println("Para forçar o envio e sobrescrever, execute com '--force' (ou 'make force').")
-		return false
-	}
-	return true
-}
 
 func executeCopilot(promptPath string) (string, error) {
 	if _, err := os.Stat(promptPath); os.IsNotExist(err) {
@@ -269,9 +256,6 @@ func main() {
 	// Flags de linha de comando
 	tFlag := flag.String("t", "", "Nome do template/prompt na pasta templates/ e prompts/ (sem extensão)")
 	templateFlag := flag.String("template", "devocional", "Nome do template/prompt na pasta templates/ e prompts/ (sem extensão)")
-	
-	fFlag := flag.Bool("f", false, "Força a execução mesmo se a edição de hoje já tiver sido gerada")
-	forceFlag := flag.Bool("force", false, "Força a execução mesmo se a edição de hoje já tiver sido gerada")
 
 	flag.Parse()
 
@@ -282,15 +266,9 @@ func main() {
 	}
 
 	promptVal := templateVal
-	forceVal := *forceFlag || *fFlag
 
 	todayISO := time.Now().Format("2006-01-02")
 	dateDisplay := getFormattedDate()
-
-	// 1. Validação de Execução Diária
-	if !checkAlreadyRun(todayISO, forceVal) {
-		os.Exit(0)
-	}
 
 	promptFile := filepath.Join("prompts", fmt.Sprintf("%s.md", promptVal))
 	templateFile := filepath.Join("templates", fmt.Sprintf("%s.html", templateVal))

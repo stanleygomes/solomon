@@ -2,24 +2,15 @@
 
 # Default parameters (can be overridden on command call)
 TEMPLATE ?= devocional
-FORCE ?= 0
 
 # Configure flags to pass to the Go executable
 FLAGS = -template $(TEMPLATE)
 
-ifeq ($(FORCE), 1)
-FLAGS += -force
-endif
-
-.PHONY: run force build list setup help
+.PHONY: run build list setup help
 
 # Default command to compile and run today's newsletter
 run:
 	@go run main.go $(FLAGS)
-
-# Short command to force execution if today's newsletter has already been generated
-force:
-	@go run main.go $(FLAGS) -force
 
 # Compiles the optimized binary executable
 build:
@@ -59,7 +50,5 @@ help:
 	@echo "  make build                       - Compiles the project into a local binary."
 	@echo "  make list                        - Shows all current prompts and templates."
 	@echo "  make run                         - Runs the default newsletter for today (devocional)."
-	@echo "  make force                       - Runs the default newsletter forcing overwrite."
 	@echo "  make run TEMPLATE=personagem     - Runs study for a specific character."
-	@echo "  make force TEMPLATE=versiculo    - Runs study for a specific verse forcing resend."
 	@echo "=========================================================================="

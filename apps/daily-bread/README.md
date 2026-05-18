@@ -10,9 +10,7 @@ The mini-app executes the following steps on every run:
 
 ```mermaid
 graph TD
-    A[Start Process] --> B{Already run today?}
-    B -- Yes --> C[Block Delivery / Requires --force]
-    B -- No --> D[Load Prompt from prompts/]
+    A[Start Process] --> D[Load Prompt from prompts/]
     D --> E[Call GitHub Copilot CLI]
     E --> F[Generate Devotional Markdown]
     F --> G[Convert to HTML via Goldmark GFM]
@@ -66,11 +64,6 @@ Runs the newsletter generation and delivery with the default `devocional` templa
 make run
 ```
 
-### 🔄 4. Force Re-run
-Forces a re-run of the default generation even if today's issue has already been generated and sent:
-```bash
-make force
-```
 
 ### 🎯 5. Custom Devotionals
 Runs the flow with a custom template (which automatically resolves the prompt of the same name):
@@ -84,4 +77,4 @@ make run TEMPLATE=personagem
 
 - `prompts/`: Contains structured markdown prompts used to instruct the AI agent.
 - `templates/`: Contains HTML layout templates utilizing the `{{date}}` and `{{content}}` dynamic placeholders.
-- `logs/`: Holds a record of generated HTML emails named by ISO date (`YYYY-MM-DD.html`), acting as an idempotency lock to prevent duplicate sends.
+- `logs/`: Holds a record of generated HTML emails named by ISO date (`YYYY-MM-DD.html`) for archiving and historical reference.

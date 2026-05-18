@@ -48,71 +48,8 @@ solomon/
 
 **Daily Bread** is a **Go**-based application designed to automate the generation and delivery of daily devotional emails with high aesthetic and theological quality. It integrates directly with the **GitHub Copilot CLI** to generate deep reflections based on structured prompts and dynamic HTML templates.
 
-#### 🔄 System Workflow
-
-The mini-app executes the following steps on every run:
-
-```mermaid
-graph TD
-    A[Start Process] --> B{Already run today?}
-    B -- Yes --> C[Block Delivery / Requires --force]
-    B -- No --> D[Load Prompt from prompts/]
-    D --> E[Call GitHub Copilot CLI]
-    E --> F[Generate Devotional Markdown]
-    F --> G[Convert to HTML via Goldmark GFM]
-    G --> H[Inject into Template from templates/]
-    H --> I[Write History log to logs/]
-    I --> J[Send Secure Email via SMTP SSL/TLS or STARTTLS]
-    J --> K[Delivery Completed]
-```
-
-#### 🛠️ How to Run
-
-All interactions with the application have been simplified using a [Makefile](file:///home/stanley/projects/solomon/apps/daily-bread/Makefile):
-
-- **Setup Dependencies:**
-  ```bash
-  make setup
-  ```
-- **List Available Prompts and Templates:**
-  ```bash
-  make list
-  ```
-- **Execute Default Daily Flow:**
-  ```bash
-  make run
-  ```
-- **Force Re-run and Overwrite Today's History Log:**
-  ```bash
-  make force
-  ```
-- **Execute Specific Character Study:**
-  ```bash
-  make run PROMPT=personagem TEMPLATE=personagem
-  ```
-
----
-
-## 🚀 Automation & Process Roadmap
-
-Solomon is continuously evolving. Here are the planned implementation phases for local and integrated process automations:
-
-### 🌟 Phase 1: AI Engine & Prompts Expansion
-
-- [ ] Centralize an internal repository of **Structured Prompts** categorized by objective (Code Generation, Refactoring, Log Analysis, Creative Writing).
-- [ ] Build an automated test suite for prompts, validating that LLM outputs adhere to specific JSON schemas.
-- [ ] Integrate with multiple API providers (OpenAI, Anthropic Claude, Gemini) with smart fallback systems.
-
-### ⚙️ Phase 2: Automations under `apps/` and `cron/`
-
-- [ ] **Automated Project Backups:** Script to package, encrypt, and sync critical local backups to Google Drive or AWS S3.
-- [ ] **Observability Log Checker:** A scheduled script via `cron` to parse production logs from Luizalabs (Datadog/Grafana) and send smart summaries of critical errors via Slack/Telegram/Email.
-- [ ] **Daily Task Optimizer:** Script integrated with productivity APIs to compile the day's tasks and generate a morning focus dashboard.
-
-### 🧠 Phase 3: Local AI Agents (Skills & Agents)
-
-- [ ] Deploy autonomous **Custom AI Agents** that monitor files in the workspace and propose on-demand refactoring aligned with SOLID and Clean Architecture.
-- [ ] Export and validate reusable "Skills" for AI agents.
+> [!TIP]
+> **Complete Documentation:** All technical details, system workflow diagram, environment setup instructions, and custom execution options can be found in the dedicated [apps/daily-bread/README.md](file:///home/stanley/projects/solomon/apps/daily-bread/README.md).
 
 ---
 
@@ -123,8 +60,18 @@ Solomon is continuously evolving. Here are the planned implementation phases for
 >
 > Remember: the owner of this repository is an highly experienced Senior Developer. Do not submit lazy code, empty placeholders, or sloppy formatting.
 
----
+## 🤝 Como Contribuir
 
-<p align="center">
-  Created by <strong>Stanley Gomes</strong> • 2026 🏛️
-</p>
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 🔗 Links Úteis
+
+- [Turborepo Docs](https://turborepo.dev/docs)
+- [Next.js Docs](https://nextjs.org/docs)
+- [Vercel](https://vercel.com)
+
+Made with 🔥 by Lumen HQ

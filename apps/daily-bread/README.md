@@ -61,7 +61,7 @@ make list
 ```
 
 ### 🚀 3. Run Standard Flow
-Runs the newsletter generation and delivery with the default `devocional` prompt and template:
+Runs the newsletter generation and delivery with the default `devocional` template (which automatically resolves `prompts/devocional.md` and `templates/devocional.html`):
 ```bash
 make run
 ```
@@ -73,9 +73,9 @@ make force
 ```
 
 ### 🎯 5. Custom Devotionals
-Runs the flow with custom prompt and template names:
+Runs the flow with a custom template (which automatically resolves the prompt of the same name):
 ```bash
-make run PROMPT=personagem TEMPLATE=personagem
+make run TEMPLATE=personagem
 ```
 
 ---

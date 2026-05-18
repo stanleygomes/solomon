@@ -251,11 +251,8 @@ func main() {
 	_ = godotenv.Load()
 
 	// Flags de linha de comando
-	pFlag := flag.String("p", "", "Nome do arquivo de prompt na pasta prompts/ (sem extensão)")
-	promptFlag := flag.String("prompt", "devocional", "Nome do arquivo de prompt na pasta prompts/ (sem extensão)")
-	
-	tFlag := flag.String("t", "", "Nome do arquivo de template na pasta templates/ (sem extensão)")
-	templateFlag := flag.String("template", "devocional", "Nome do arquivo de template na pasta templates/ (sem extensão)")
+	tFlag := flag.String("t", "", "Nome do template/prompt na pasta templates/ e prompts/ (sem extensão)")
+	templateFlag := flag.String("template", "devocional", "Nome do template/prompt na pasta templates/ e prompts/ (sem extensão)")
 	
 	fFlag := flag.Bool("f", false, "Força a execução mesmo se a edição de hoje já tiver sido gerada")
 	forceFlag := flag.Bool("force", false, "Força a execução mesmo se a edição de hoje já tiver sido gerada")
@@ -263,16 +260,12 @@ func main() {
 	flag.Parse()
 
 	// Consolida flags de forma correta (respeitando shorthands)
-	promptVal := *promptFlag
-	if *pFlag != "" {
-		promptVal = *pFlag
-	}
-
 	templateVal := *templateFlag
 	if *tFlag != "" {
 		templateVal = *tFlag
 	}
 
+	promptVal := templateVal
 	forceVal := *forceFlag || *fFlag
 
 	todayISO := time.Now().Format("2006-01-02")

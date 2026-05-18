@@ -1,12 +1,11 @@
-# Daily Bread - Makefile de Automação (Versão Go)
+# Daily Bread - Automation Makefile (Go Version)
 
-# Parâmetros padrão (podem ser sobrescritos na chamada do comando)
-PROMPT ?= devocional
+# Default parameters (can be overridden on command call)
 TEMPLATE ?= devocional
 FORCE ?= 0
 
-# Configura as flags para passar ao executável Go
-FLAGS = -prompt $(PROMPT) -template $(TEMPLATE)
+# Configure flags to pass to the Go executable
+FLAGS = -template $(TEMPLATE)
 
 ifeq ($(FORCE), 1)
 FLAGS += -force
@@ -14,55 +13,53 @@ endif
 
 .PHONY: run force build list setup help
 
-# Comando padrão para compilar e rodar a newsletter do dia
+# Default command to compile and run today's newsletter
 run:
 	@go run main.go $(FLAGS)
 
-# Comando curto para forçar a execução se já tiver sido gerada hoje
+# Short command to force execution if today's newsletter has already been generated
 force:
 	@go run main.go $(FLAGS) -force
 
-# Compila o executável binário otimizado
+# Compiles the optimized binary executable
 build:
-	@echo "Compilando o binário Go..."
+	@echo "Compiling Go binary..."
 	@go build -o daily-bread main.go
-	@echo "Pronto! Binário 'daily-bread' gerado com sucesso."
+	@echo "Done! Binary 'daily-bread' successfully generated."
 
-# Instala/baixa as dependências do módulo Go
+# Installs/downloads Go module dependencies
 setup:
-	@echo "Obtendo dependências do Go..."
+	@echo "Fetching Go dependencies..."
 	@go mod download
 	@go mod tidy
-	@echo "Pronto! Dependências Go configuradas com sucesso."
+	@echo "Done! Go dependencies successfully configured."
 
-# Lista de forma dinâmica os prompts e templates disponíveis
+# Dynamically lists available prompts and templates
 list:
 	@echo "=================================================="
-	@echo "  PROMPTS DISPONÍVEIS (pasta prompts/)"
+	@echo "  AVAILABLE PROMPTS (prompts/ directory)"
 	@echo "=================================================="
 	@ls -1 prompts/ | sed 's/\.md//' | sed 's/^/ - /'
 	@echo ""
 	@echo "=================================================="
-	@echo "  TEMPLATES DISPONÍVEIS (pasta templates/)"
+	@echo "  AVAILABLE TEMPLATES (templates/ directory)"
 	@echo "=================================================="
 	@ls -1 templates/ | sed 's/\.html//' | sed 's/^/ - /'
 	@echo "=================================================="
-	@echo "Para executar um par específico, use:"
-	@echo "make run PROMPT=<nome> TEMPLATE=<nome>"
+	@echo "To run a specific template, use:"
+	@echo "make run TEMPLATE=<name>"
 
-# Exibe ajuda sobre o uso do Makefile
+# Displays help information about Makefile usage
 help:
 	@echo "=========================================================================="
-	@echo "                 DAILY BREAD - NEWSLETTER SISTEMA LOCAL (GO)"
+	@echo "                 DAILY BREAD - LOCAL NEWSLETTER SYSTEM (GO)"
 	@echo "=========================================================================="
-	@echo "Comandos úteis:"
-	@echo "  make setup                       - Baixa e limpa as dependências Go."
-	@echo "  make build                       - Compila o projeto em um binário local."
-	@echo "  make list                        - Exibe todos os prompts e templates atuais."
-	@echo "  make run                         - Executa a newsletter padrão do dia (devocional)."
-	@echo "  make force                       - Executa a newsletter padrão forçando a sobrescrita."
-	@echo "  make run PROMPT=personagem TEMPLATE=personagem"
-	@echo "                                   - Roda estudo de personagem específico."
-	@echo "  make force PROMPT=versiculo TEMPLATE=versiculo"
-	@echo "                                   - Roda estudo de versículo forçando re-envio."
+	@echo "Useful commands:"
+	@echo "  make setup                       - Downloads and tidies Go dependencies."
+	@echo "  make build                       - Compiles the project into a local binary."
+	@echo "  make list                        - Shows all current prompts and templates."
+	@echo "  make run                         - Runs the default newsletter for today (devocional)."
+	@echo "  make force                       - Runs the default newsletter forcing overwrite."
+	@echo "  make run TEMPLATE=personagem     - Runs study for a specific character."
+	@echo "  make force TEMPLATE=versiculo    - Runs study for a specific verse forcing resend."
 	@echo "=========================================================================="

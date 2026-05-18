@@ -1,4 +1,4 @@
-# Solomon 🏛️ — Artificial Intelligence & Process Automation Hub
+# 👑 Solomon - My AI & Automation Hub
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-In_Development-blue?style=for-the-badge&logo=github" alt="Status" />

@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "id": "hello-test",
-      "name": "Cron Scheduler Test Task",
-      "command": "echo",
-      "args": ["Hello from Solomon! The cron is alive and well."],
-      "dir": "",
-      "schedule": "hourly"
-    },
-    {
       "id": "daily-bread",
       "name": "Daily Bread Devotional Newsletter",
       "command": "internal:daily-bread",

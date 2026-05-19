@@ -30,12 +30,6 @@ reset-state:
 	rm -f state.json
 	@echo "State reset. All tasks will run on next execution."
 
-list:
-	@echo "--- Available Prompts ---"
-	@ls assets/prompts/*.md
-	@echo "\n--- Available Templates ---"
-	@ls assets/templates/*.html
-
 clean:
 	rm -rf __pycache__ .pytest_cache .venv
 	find . -type d -name "__pycache__" -exec rm -rf {} +

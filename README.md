@@ -68,9 +68,9 @@ Tasks are configured in the `config.json` file.
     {
       "id": "daily-bread",
       "name": "Daily Bread Devotional Newsletter",
-      "command": "./daily-bread",
-      "args": ["-template", "devocional"],
-      "dir": "../apps/daily-bread",
+      "command": "internal:daily-bread",
+      "args": ["-template", "daily_bread"],
+      "dir": "",
       "schedule": "daily"
     }
   ]
@@ -192,20 +192,12 @@ Lists all configurable studies and templates currently residing inside your Go-r
 make list
 ```
 
-#### 2. Run Standard Devotional Flow
+#### 2. Run Daily Bread
 
-Runs the newsletter generation and delivery with the default `devocional` template (resolving `assets/prompts/devocional.md` and `assets/templates/devocional.html`):
+Runs the newsletter generation and delivery:
 
 ```bash
 make run-daily-bread
-```
-
-#### 3. Run Custom Devotionals
-
-Runs the flow with a custom template (e.g. `personagem` or `versiculo`):
-
-```bash
-make run-daily-bread TEMPLATE=personagem
 ```
 
 ## 🤝 Como Contribuir
@@ -223,3 +215,4 @@ make run-daily-bread TEMPLATE=personagem
 - [Vercel](https://vercel.com)
 
 Made with 🔥 by Lumen HQ
+ Lumen HQ

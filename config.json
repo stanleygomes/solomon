@@ -4,7 +4,7 @@
       "id": "daily-bread",
       "name": "Daily Bread Devotional Newsletter",
       "command": "internal:daily-bread",
-      "args": ["-template", "devocional"],
+      "args": [],
       "dir": "",
       "schedule": "daily"
     }

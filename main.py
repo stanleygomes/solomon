@@ -22,7 +22,7 @@ def main():
     parser.add_argument("--state", type=str, help="Path to the execution state file (state.json)")
     parser.add_argument("--logs", type=str, help="Path to the logs directory")
     parser.add_argument("--run-task", type=str, help="Force-run a specific task by ID immediately")
-    parser.add_argument("--template", "-t", type=str, default="devocional", help="Override template for daily-bread")
+    parser.add_argument("--template", "-t", type=str, default="daily_bread", help="Override template for daily-bread")
     
     args = parser.parse_args()
     
@@ -64,7 +64,7 @@ def main():
     
     if args.run_task:
         try:
-            scheduler.force_run_task(args.run_task, args.template)
+            scheduler.force_run_task(args.run_task)
             sys.exit(0)
         except Exception as e:
             # Error already logged by scheduler

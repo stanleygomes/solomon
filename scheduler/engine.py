@@ -127,7 +127,7 @@ class Scheduler:
         service_name = task.command.replace("internal:", "")
         
         if service_name == "daily-bread":
-            template_name = template_override or "devocional"
+            template_name = template_override or "daily_bread"
             
             # Check task args if no override provided
             if not template_override:
@@ -140,6 +140,6 @@ class Scheduler:
             db_service = DailyBreadService(self.logger, str(assets_dir))
             ai_provider = get_ai_provider()
             
-            db_service.run(ai_provider, template_name)
+            db_service.run(ai_provider)
         else:
             raise ValueError(f"Unknown internal service: {service_name}")

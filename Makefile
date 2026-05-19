@@ -24,7 +24,7 @@ run:
 	$(VENV)/bin/$(PYTHON) main.py
 
 run-daily-bread:
-	$(VENV)/bin/$(PYTHON) main.py --run-task daily-bread --template $(or $(TEMPLATE),devocional)
+	$(VENV)/bin/$(PYTHON) main.py --run-task daily-bread
 
 reset-state:
 	rm -f state.json

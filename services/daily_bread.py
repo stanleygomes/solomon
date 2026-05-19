@@ -15,14 +15,14 @@ class DailyBreadService:
         self.logger = logger
         self.assets_dir = Path(assets_dir)
 
-    def run(self, ai_provider: AIProvider, template_name: str) -> None:
+    def run(self, ai_provider: AIProvider) -> None:
         load_dotenv()
         self.logger.log("[daily-bread] Starting devotional newsletter generation...")
 
         date_display = self._get_formatted_date()
         today_iso = datetime.now().strftime("%Y-%m-%d")
 
-        prompt_file = self.assets_dir / "prompts" / f"{template_name}.md"
+        prompt_file = self.assets_dir / "prompts" / "daily-bread.md"
         layout_file = self.assets_dir / "templates" / "daily-bread.html"
 
         # 1. Generate Content
@@ -35,7 +35,7 @@ class DailyBreadService:
         history_file = self._save_history_log(html_content, today_iso)
 
         # 4. Send Email
-        self._send_email(html_content, template_name)
+        self._send_email(html_content)
 
         self.logger.log("[daily-bread] Devotional newsletter successfully sent to recipient!")
 
@@ -54,15 +54,6 @@ class DailyBreadService:
 
         self.logger.log("[daily-bread] Reading prompt from: %s", str(prompt_path))
         prompt_content = prompt_path.read_text(encoding="utf-8").strip()
-
-        # Merge with base prompt if exists
-        if prompt_path.name != "_base.md":
-            base_prompt_path = prompt_path.parent / "_base.md"
-            if base_prompt_path.exists():
-                self.logger.log("[daily-bread] Merging with base prompt from: %s", str(base_prompt_path))
-                base_content = base_prompt_path.read_text(encoding="utf-8").strip()
-                if base_content:
-                    prompt_content = f"{base_content}\n\n{prompt_content}"
 
         self.logger.log("[daily-bread] Dispatching prompt content to AI provider...")
         return p.generate(prompt_content)
@@ -103,7 +94,8 @@ class DailyBreadService:
             
         email_subject = os.getenv("EMAIL_SUBJECT")
         if not email_subject:
-            email_subject = f"Pão Diário - {template_name.capitalize()}"
+            display_name = template_name.replace("_", " ").capitalize()
+            email_subject = f"Pão Diário - {display_name}"
 
         msg = MailMessage(
             sender=email_from,

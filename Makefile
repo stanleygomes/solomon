@@ -1,73 +1,41 @@
-# Solomon Cron Scheduler - Automation Makefile
+# Solomon Python Makefile
 
-BINARY_NAME=solomon-cron
-TEMPLATE ?= devocional
+PYTHON := python3
+PIP := pip3
+VENV := .venv
 
-.PHONY: run build setup clean help reset-state run-daily-bread list
+.PHONY: help install run reset-state list run-daily-bread clean
 
-# Default command to run the scheduler in-place
-run:
-	@go run ./cmd/solomon-cron
-
-# Compiles the optimized binary executable
-build:
-	@echo "Compiling Go binary..."
-	@go build -o $(BINARY_NAME) ./cmd/solomon-cron
-	@echo "Done! Binary '$(BINARY_NAME)' successfully generated."
-
-# Runs the daily-bread devotional newsletter force-executing the internal service
-run-daily-bread:
-	@go run ./cmd/solomon-cron -run-task daily-bread -template $(TEMPLATE)
-
-# Dynamically lists available prompts and templates for daily-bread
-list:
-	@echo "=================================================="
-	@echo "  AVAILABLE PROMPTS (assets/prompts/ directory)"
-	@echo "=================================================="
-	@ls -1 assets/prompts/ | grep -v '^_' | sed 's/\.md//' | sed 's/^/ - /'
-	@echo ""
-	@echo "=================================================="
-	@echo "  AVAILABLE TEMPLATES (assets/templates/ directory)"
-	@echo "=================================================="
-	@ls -1 assets/templates/ | sed 's/\.html//' | sed 's/^/ - /'
-	@echo "=================================================="
-	@echo "To run a specific template, use:"
-	@echo "make run-daily-bread TEMPLATE=<name>"
-	@echo "=================================================="
-
-# Installs/downloads Go module dependencies and sets up directories
-setup:
-	@echo "Configuring Go dependencies..."
-	@go mod tidy
-	@mkdir -p logs
-	@echo "Done! Setup completed."
-
-# Removes the compiled binary and local state for a fresh test run
-clean:
-	@echo "Cleaning compiled artifacts..."
-	@rm -f $(BINARY_NAME)
-	@echo "Done!"
-
-# Helper task to reset the scheduler execution state (for debugging and manual force-runs)
-reset-state:
-	@echo "Resetting execution state file (state.json)..."
-	@rm -f state.json
-	@echo "State successfully reset."
-
-# Displays help information about Makefile usage
 help:
-	@echo "=========================================================================="
-	@echo "                 SOLOMON CRON SCHEDULER & SERVICES (GO)"
-	@echo "=========================================================================="
-	@echo "Useful commands:"
-	@echo "  make setup                       - Prepares module dependencies and creates log folder."
-	@echo "  make build                       - Compiles the project into a local binary."
-	@echo "  make run                         - Runs the scheduler immediately."
-	@echo "  make reset-state                 - Resets state.json to force-run all tasks."
-	@echo "  make clean                       - Removes compiled binary files."
-	@echo "=========================================================================="
-	@echo "Services (Daily Bread Devotional Newsletter):"
-	@echo "  make list                        - Shows all templates/prompts in assets/."
-	@echo "  make run-daily-bread             - Dispatches the daily devotional (devocional)."
-	@echo "  make run-daily-bread TEMPLATE=x  - Dispatches study using template 'x'."
-	@echo "=========================================================================="
+	@echo "Solomon Cron - Python Version"
+	@echo "Usage:"
+	@echo "  make install           - Setup virtual environment and install dependencies"
+	@echo "  make run               - Run the scheduler"
+	@echo "  make run-daily-bread   - Force run the daily-bread task"
+	@echo "  make reset-state       - Clear the execution state (state.json)"
+	@echo "  make list              - List available prompts and templates"
+	@echo "  make clean             - Remove cache and temporary files"
+
+install:
+	$(PYTHON) -m venv $(VENV)
+	$(VENV)/bin/$(PIP) install -r requirements.txt
+
+run:
+	$(VENV)/bin/$(PYTHON) main.py
+
+run-daily-bread:
+	$(VENV)/bin/$(PYTHON) main.py --run-task daily-bread --template $(or $(TEMPLATE),devocional)
+
+reset-state:
+	rm -f state.json
+	@echo "State reset. All tasks will run on next execution."
+
+list:
+	@echo "--- Available Prompts ---"
+	@ls assets/prompts/*.md
+	@echo "\n--- Available Templates ---"
+	@ls assets/templates/*.html
+
+clean:
+	rm -rf __pycache__ .pytest_cache .venv
+	find . -type d -name "__pycache__" -exec rm -rf {} +

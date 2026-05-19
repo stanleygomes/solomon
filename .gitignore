@@ -1,10 +1,20 @@
-# Solomon Cron gitignore
-/solomon-cron
-state.json
-logs/
-
+# Solomon - Python Environment
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
 .env
 
-#ignoreIDE files
+# Project specific
+state.json
+logs/
+assets/logs/
+
+# IDEs and Tools
 .idea/
 .vscode/
+.pytest_cache/
+.mypy_cache/
+.DS_Store

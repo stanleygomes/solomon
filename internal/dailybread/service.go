@@ -15,6 +15,8 @@ import (
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"solomon-cron/internal/logger"
 )
@@ -62,7 +64,7 @@ func (s *Service) Run(templateName string) error {
 	}
 
 	// 4. Send SMTP Email
-	err = s.sendEmail(htmlContent)
+	err = s.sendEmail(htmlContent, templateName)
 	if err != nil {
 		return fmt.Errorf("email dispatch failed: %w", err)
 	}
@@ -193,7 +195,7 @@ func (s *Service) saveHistoryLog(htmlContent, dateStr string) (string, error) {
 	return logFile, nil
 }
 
-func (s *Service) sendEmail(htmlContent string) error {
+func (s *Service) sendEmail(htmlContent, templateName string) error {
 	s.logger.Log("[daily-bread] Connecting to SMTP server to dispatch newsletter...")
 	
 	host := os.Getenv("SMTP_HOST")
@@ -209,7 +211,7 @@ func (s *Service) sendEmail(htmlContent string) error {
 	emailTo := os.Getenv("EMAIL_TO")
 	emailSubject := os.Getenv("EMAIL_SUBJECT")
 	if emailSubject == "" {
-		emailSubject = "Pão Diário - Edição de Hoje"
+		emailSubject = fmt.Sprintf("Pão Diário - %s", cases.Title(language.Und).String(templateName))
 	}
 
 	if host == "" || portStr == "" || user == "" || pass == "" || emailTo == "" {

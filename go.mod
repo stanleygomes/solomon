@@ -6,3 +6,5 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/yuin/goldmark v1.8.2
 )
+
+require golang.org/x/text v0.37.0 // indirect

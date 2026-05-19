@@ -23,7 +23,7 @@ class DailyBreadService:
         today_iso = datetime.now().strftime("%Y-%m-%d")
 
         prompt_file = self.assets_dir / "prompts" / f"{template_name}.md"
-        layout_file = self.assets_dir / "templates" / "template.html"
+        layout_file = self.assets_dir / "templates" / "daily-bread.html"
 
         # 1. Generate Content
         markdown_content = self._execute_ai(ai_provider, prompt_file)

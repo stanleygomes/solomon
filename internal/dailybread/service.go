@@ -2,9 +2,7 @@ package dailybread
 
 import (
 	"bytes"
-	"crypto/tls"
 	"fmt"
-	"net/smtp"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,6 +17,7 @@ import (
 	"golang.org/x/text/language"
 
 	"solomon-cron/internal/logger"
+	"solomon-cron/internal/mailer"
 )
 
 type Service struct {
@@ -196,107 +195,31 @@ func (s *Service) saveHistoryLog(htmlContent, dateStr string) (string, error) {
 }
 
 func (s *Service) sendEmail(htmlContent, templateName string) error {
-	s.logger.Log("[daily-bread] Connecting to SMTP server to dispatch newsletter...")
-	
-	host := os.Getenv("SMTP_HOST")
-	portStr := os.Getenv("SMTP_PORT")
-	user := os.Getenv("SMTP_USER")
-	pass := os.Getenv("SMTP_PASSWORD")
-	useTLS := strings.ToLower(os.Getenv("SMTP_USE_TLS")) != "false"
+	s.logger.Log("[daily-bread] Preparing to dispatch newsletter via generic mailer...")
+
+	m := mailer.New(mailer.ConfigFromEnv())
 
 	emailFrom := os.Getenv("EMAIL_FROM")
 	if emailFrom == "" {
-		emailFrom = fmt.Sprintf("Pão Diário <%s>", user)
+		emailFrom = fmt.Sprintf("Pão Diário <%s>", os.Getenv("SMTP_USER"))
 	}
-	emailTo := os.Getenv("EMAIL_TO")
+
 	emailSubject := os.Getenv("EMAIL_SUBJECT")
 	if emailSubject == "" {
 		emailSubject = fmt.Sprintf("Pão Diário - %s", cases.Title(language.Und).String(templateName))
 	}
 
-	if host == "" || portStr == "" || user == "" || pass == "" || emailTo == "" {
-		return fmt.Errorf("SMTP configuration fields or EMAIL_TO are empty in environment")
+	err := m.Send(mailer.Message{
+		From:    emailFrom,
+		To:      os.Getenv("EMAIL_TO"),
+		Subject: emailSubject,
+		Body:    htmlContent,
+	})
+
+	if err != nil {
+		return fmt.Errorf("mailer error: %w", err)
 	}
 
-	// Build MIME message
-	header := make(map[string]string)
-	header["From"] = emailFrom
-	header["To"] = emailTo
-	header["Subject"] = emailSubject
-	header["MIME-Version"] = "1.0"
-	header["Content-Type"] = `text/html; charset="utf-8"`
-
-	var msg bytes.Buffer
-	for k, v := range header {
-		msg.WriteString(fmt.Sprintf("%s: %s\r\n", k, v))
-	}
-	msg.WriteString("\r\n")
-	msg.WriteString(htmlContent)
-
-	addr := host + ":" + portStr
-	auth := smtp.PlainAuth("", user, pass, host)
-
-	s.logger.Log("[daily-bread] Connecting to: %s", addr)
-	
-	if portStr == "465" {
-		// SSL/TLS Direct Connection
-		tlsconfig := &tls.Config{
-			InsecureSkipVerify: false,
-			ServerName:         host,
-		}
-		
-		conn, err := tls.Dial("tcp", addr, tlsconfig)
-		if err != nil {
-			return fmt.Errorf("failed SSL/TLS connection dial: %w", err)
-		}
-		defer conn.Close()
-
-		client, err := smtp.NewClient(conn, host)
-		if err != nil {
-			return fmt.Errorf("failed SMTP client instantiation: %w", err)
-		}
-		defer client.Close()
-
-		if err = client.Auth(auth); err != nil {
-			return fmt.Errorf("failed SMTP authentication: %w", err)
-		}
-
-		if err = client.Mail(user); err != nil {
-			return fmt.Errorf("failed SMTP MAIL FROM envelope: %w", err)
-		}
-
-		if err = client.Rcpt(emailTo); err != nil {
-			return fmt.Errorf("failed SMTP RCPT TO envelope: %w", err)
-		}
-
-		w, err := client.Data()
-		if err != nil {
-			return fmt.Errorf("failed SMTP DATA stream start: %w", err)
-		}
-
-		_, err = w.Write(msg.Bytes())
-		if err != nil {
-			return fmt.Errorf("failed to write SMTP payload: %w", err)
-		}
-
-		err = w.Close()
-		if err != nil {
-			return fmt.Errorf("failed to close SMTP stream: %w", err)
-		}
-
-		s.logger.Log("[daily-bread] Securing and completing transaction with SMTP server...")
-		return client.Quit()
-	} else {
-		// STARTTLS Standard Connection (Port 587)
-		if useTLS {
-			s.logger.Log("[daily-bread] Securing connection with STARTTLS handshake...")
-		}
-		s.logger.Log("[daily-bread] Delivering payload via standard SendMail...")
-		
-		err := smtp.SendMail(addr, auth, user, []string{emailTo}, msg.Bytes())
-		if err != nil {
-			return fmt.Errorf("failed SendMail call: %w", err)
-		}
-		return nil
-	}
+	s.logger.Log("[daily-bread] Email successfully delivered by the generic mailer!")
+	return nil
 }

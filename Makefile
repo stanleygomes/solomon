@@ -27,7 +27,7 @@ run-daily-bread:
 	$(VENV)/bin/$(PYTHON) main.py --run-task daily-bread
 
 reset-state:
-	rm -f state.json
+	rm -f temp/state.json
 	@echo "State reset. All tasks will run on next execution."
 
 clean:

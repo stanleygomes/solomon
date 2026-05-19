@@ -74,7 +74,7 @@ class DailyBreadService:
         return template.render(date=date_str, content=content_html)
 
     def _save_history_log(self, html_content: str, date_iso: str) -> Path:
-        history_dir = self.assets_dir / "logs" / "html"
+        history_dir = self.assets_dir.parent / "temp" / "history"
         history_dir.mkdir(parents=True, exist_ok=True)
         
         log_file = history_dir / f"{date_iso}.html"

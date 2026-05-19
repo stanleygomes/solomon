@@ -22,15 +22,14 @@ def main():
     parser.add_argument("--state", type=str, help="Path to the execution state file (state.json)")
     parser.add_argument("--logs", type=str, help="Path to the logs directory")
     parser.add_argument("--run-task", type=str, help="Force-run a specific task by ID immediately")
-    parser.add_argument("--template", "-t", type=str, default="daily_bread", help="Override template for daily-bread")
     
     args = parser.parse_args()
     
     base_dir = get_base_dir()
     
     config_path = args.config or str(base_dir / "config.json")
-    state_path = args.state or str(base_dir / "state.json")
-    logs_dir = args.logs or str(base_dir / "logs")
+    state_path = args.state or os.getenv("STATE_PATH") or str(base_dir / "temp" / "state.json")
+    logs_dir = args.logs or os.getenv("LOGS_DIR") or str(base_dir / "temp" / "logs")
     
     # 1. Initialize Logger
     try:
@@ -77,4 +76,12 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
+    main()
+ion as e:
+        logger.log("FATAL: Scheduler execution failed: %s", str(e))
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
+:
     main()

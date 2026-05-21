@@ -15,15 +15,15 @@ class DailyBreadService:
     self.logger = logger
     self.assets_dir = Path(assets_dir)
 
-  def run(self, ai_provider: AIProvider) -> None:
+  def run(self, ai_provider: AIProvider, template_name: str = "daily-bread") -> None:
     load_dotenv()
     self.logger.log("[daily-bread] Starting devotional newsletter generation...")
 
     date_display = self._get_formatted_date()
     today_iso = datetime.now().strftime("%Y-%m-%d")
 
-    prompt_file = self.assets_dir / "prompts" / "daily-bread.md"
-    layout_file = self.assets_dir / "templates" / "daily-bread.html"
+    prompt_file = self.assets_dir / "prompts" / f"{template_name}.md"
+    layout_file = self.assets_dir / "templates" / f"{template_name}.html"
 
     # 1. Generate Content
     markdown_content = self._execute_ai(ai_provider, prompt_file)
@@ -35,7 +35,7 @@ class DailyBreadService:
     self._save_history_log(html_content, today_iso)
 
     # 4. Send Email
-    self._send_email(html_content)
+    self._send_email(html_content, template_name)
 
     self.logger.log(
       "[daily-bread] Devotional newsletter successfully sent to recipient!"

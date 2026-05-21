@@ -11,13 +11,15 @@ from services.daily_bread import DailyBreadService
 
 
 class Scheduler:
-  def __init__(self, config: Config, state: State, state_path: str, logger: Logger):
+  def __init__(
+    self, config: Config, state: State, state_path: str, logger: Logger
+  ) -> None:
     self.config = config
     self.state = state
     self.state_path = state_path
     self.logger = logger
 
-  def run(self):
+  def run(self) -> None:
     self.logger.log("=== Scheduler Execution Started ===")
     now = datetime.now()
     state_changed = False
@@ -48,7 +50,9 @@ class Scheduler:
 
     self.logger.log("=== Scheduler Execution Finished ===")
 
-  def force_run_task(self, task_id: str, template_override: Optional[str] = None):
+  def force_run_task(
+    self, task_id: str, template_override: Optional[str] = None
+  ) -> None:
     self.logger.log("=== Force-Running Task %s ===", task_id)
 
     target_task = next((t for t in self.config.tasks if t.id == task_id), None)
@@ -109,7 +113,9 @@ class Scheduler:
     else:
       raise ValueError(f"Unknown duration unit: {unit}")
 
-  def _run_task(self, task: TaskConfig, template_override: Optional[str] = None):
+  def _run_task(
+    self, task: TaskConfig, template_override: Optional[str] = None
+  ) -> None:
     if task.command.startswith("internal:"):
       self._run_internal_service(task, template_override)
       return
@@ -130,7 +136,7 @@ class Scheduler:
 
   def _run_internal_service(
     self, task: TaskConfig, template_override: Optional[str] = None
-  ):
+  ) -> None:
     service_name = task.command.replace("internal:", "")
 
     if service_name == "daily-bread":
@@ -138,13 +144,16 @@ class Scheduler:
       if not template_override:
         for i, arg in enumerate(task.args):
           if arg in ["-template", "-t"] and i + 1 < len(task.args):
-            task.args[i + 1]
+            template_override = task.args[i + 1]
             break
 
       assets_dir = Path("assets").absolute()
       db_service = DailyBreadService(self.logger, str(assets_dir))
       ai_provider = get_ai_provider()
 
-      db_service.run(ai_provider)
+      if template_override:
+        db_service.run(ai_provider, template_name=template_override)
+      else:
+        db_service.run(ai_provider)
     else:
       raise ValueError(f"Unknown internal service: {service_name}")

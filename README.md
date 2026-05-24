@@ -1,4 +1,4 @@
-# 👑 Solomon - AI & Automation Hub
+# 👑 solomon
 
 **Solomon** is a lightweight, reliable task coordinator and automation hub written in **Python**. It's designed to run on personal machines (like laptops) that aren't online 24/7.
 

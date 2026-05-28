@@ -1,7 +1,7 @@
 [project]
-name = "v2"
+name = "solomon"
 version = "0.1.0"
-description = "Add your description here"
+description = "Solomon - Personal assistant"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []

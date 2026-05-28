@@ -6,9 +6,9 @@ from solomon.core.dto.logger_config import LoggerConfig
 
 load_dotenv()
 
+
 @dataclass(frozen=True)
 class Config:
-
   logger: LoggerConfig
 
   @classmethod

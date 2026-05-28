@@ -1,3 +1,4 @@
+import sys
 from textual.app import App
 from textual.widgets import Button
 from solomon.ui.screens.main_screen import MainScreen
@@ -27,6 +28,13 @@ class Solomon(App[None]):
       self.notify("Action button pressed!")
 
 
+def get_task() -> str | None:
+  """
+  Retrieve task argument from command line.
+  """
+  return sys.argv[1] if len(sys.argv) > 1 else None
+
+
 def main() -> None:
   config = Config.load()
 
@@ -37,6 +45,10 @@ def main() -> None:
     level=config.logger.level,
     format="{time} {level} {message}",
   )
+
+  task = get_task()
+
+  logger.info("📋 Task: {}", task)
 
   logger.info("🚀 Application started")
   app = Solomon()

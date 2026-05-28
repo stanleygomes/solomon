@@ -27,7 +27,7 @@ format:
 	$(UV) run ruff format .
 
 run:
-	$(UV) run src/solomon/main.py
+	$(UV) run src/solomon/main.py $(task)
 
 clean:
 	rm -rf __pycache__ .pytest_cache .venv .uv

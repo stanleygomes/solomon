@@ -2,6 +2,7 @@ from textual.app import App
 from textual.widgets import Button
 from solomon.ui.screens.main_screen import MainScreen
 from loguru import logger
+from solomon.core.config import Config
 
 
 class Solomon(App[None]):
@@ -27,6 +28,16 @@ class Solomon(App[None]):
 
 
 def main() -> None:
+  config = Config.load()
+
+  logger.add(
+    config.logger.path,
+    rotation=config.logger.rotation,
+    retention=config.logger.retention,
+    level=config.logger.level,
+    format="{time} {level} {message}",
+  )
+
   logger.info("🚀 Application started")
   app = Solomon()
   app.run()

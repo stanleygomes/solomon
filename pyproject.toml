@@ -1,8 +1,7 @@
-[tool.ruff]
-# Indent with spaces
-indent-width = 2
-line-length = 88
-
-[tool.ruff.format]
-indent-style = "space"
-quote-style = "double"
+[project]
+name = "v2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []

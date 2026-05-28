@@ -1,21 +1,10 @@
-# Solomon - Python Environment
+# Python-generated files
 __pycache__/
-*.py[cod]
-*$py.class
-.venv/
-venv/
-ENV/
-.env
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
 
-# Project specific
-state.json
-logs/
-assets/logs/
-
-# IDEs and Tools
-.idea/
-.vscode/
-.pytest_cache/
-.mypy_cache/
-.DS_Store
-/temp/
+# Virtual environments
+.venv

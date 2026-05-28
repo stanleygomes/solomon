@@ -16,13 +16,18 @@ class CopilotProvider(AIProvider):
     copilot_path: str | None = os.getenv("COPILOT_PATH")
     if copilot_path:
       from pathlib import Path
+
       if not Path(copilot_path).exists():
-        raise RuntimeError(f"Copilot binary not found at configured COPILOT_PATH: {copilot_path}")
+        raise RuntimeError(
+          f"Copilot binary not found at configured COPILOT_PATH: {copilot_path}"
+        )
     else:
       copilot_path = shutil.which("copilot")
 
     if not copilot_path:
-      raise RuntimeError("GitHub Copilot CLI ('copilot') not found in PATH and COPILOT_PATH is not set")
+      raise RuntimeError(
+        "GitHub Copilot CLI ('copilot') not found in PATH and COPILOT_PATH is not set"
+      )
 
     process = subprocess.Popen(
       [copilot_path, "-s", "-p", prompt, "--no-ask-user", "--yolo"],

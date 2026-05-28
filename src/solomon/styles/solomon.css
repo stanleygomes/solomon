@@ -1,0 +1,21 @@
+Screen {
+    align: center middle;
+    background: $background;
+}
+
+#main_content {
+    content-align: center middle;
+    text-style: bold;
+    color: $accent;
+    margin-bottom: 2;
+    background: $boost;
+    border: tall $primary;
+    padding: 1 2;
+    width: 40;
+    height: auto;
+}
+
+#action_button {
+    width: 20;
+    margin: 1;
+}

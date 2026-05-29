@@ -75,7 +75,7 @@ class Mailer:
         self._send_ssl(message, context)
       else:
         self._send_starttls(message, context)
-      logger.info(
+      logger.debug(
         "📧 Email sent successfully to {} (Subject: {})", msg.to, msg.subject
       )
     except Exception as e:

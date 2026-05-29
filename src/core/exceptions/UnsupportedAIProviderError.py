@@ -1,3 +1,3 @@
 class UnsupportedAIProviderError(Exception):
-  """Lançada quando um provedor de IA desconhecido ou não suportado é configurado."""
+  """Raised when an unknown or unsupported AI provider is configured."""
   pass

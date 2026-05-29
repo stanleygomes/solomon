@@ -13,7 +13,7 @@ from core.exceptions.MailerSendError import MailerSendError
 
 class Mailer:
   """
-  Gerencia o envio de e-mails.
+  Manages sending emails.
   """
 
   def __init__(self, config: MailConfig):
@@ -35,7 +35,7 @@ class Mailer:
 
   def _create_message(self, msg: MailMessage) -> MIMEMultipart:
     """
-    Cria uma mensagem MIME estruturada a partir do DTO MailMessage.
+    Creates a structured MIME message from the MailMessage DTO.
     """
 
     message = MIMEMultipart()
@@ -50,14 +50,14 @@ class Mailer:
     self, server: smtplib.SMTP, message: MIMEMultipart
   ) -> None:
     """
-    Autentica no servidor SMTP e envia a mensagem de email.
+    Authenticates with the SMTP server and sends the email message.
     """
     server.login(self.config.username, self.config.password)
     server.send_message(message)
 
   def _send_ssl(self, message: MIMEMultipart, context: ssl.SSLContext) -> None:
     """
-    Envia o e-mail usando uma conexão direta SSL/TLS (porta 465).
+    Sends the email using a direct SSL/TLS connection (port 465).
     """
     with smtplib.SMTP_SSL(
       self.config.host, self.config.port, context=context
@@ -68,7 +68,7 @@ class Mailer:
     self, message: MIMEMultipart, context: ssl.SSLContext
   ) -> None:
     """
-    Envia o e-mail usando uma conexão STARTTLS (porta 587).
+    Sends the email using a STARTTLS connection (port 587).
     """
     with smtplib.SMTP(self.config.host, self.config.port) as server:
       if os.getenv("SMTP_USE_TLS", "true").lower() != "false":
@@ -87,11 +87,11 @@ class Mailer:
       else:
         self._send_starttls(message, context)
       logger.info(
-        "Email enviado com sucesso para {} (Assunto: {})", msg.to, msg.subject
+        "Email sent successfully to {} (Subject: {})", msg.to, msg.subject
       )
     except Exception as e:
       logger.error(
-        "Falha ao enviar email para {}. Host: {}:{}, Error: {}",
+        "Failed to send email to {}. Host: {}:{}, Error: {}",
         msg.to,
         self.config.host,
         self.config.port,

@@ -1,3 +1,3 @@
 class MailerConfigurationError(Exception):
-  """Lançada quando as configurações do SMTP estão ausentes ou inválidas."""
+  """Raised when SMTP configurations are missing or invalid."""
   pass

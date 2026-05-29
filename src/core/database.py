@@ -8,7 +8,7 @@ from core.exceptions.DatabaseError import DatabaseError
 
 class DatabaseManager:
   """
-  Gerencia conexões e transações com o banco de dados SQLite.
+  Manages connections and transactions with the SQLite database.
   """
 
   def __init__(self, db_path: Path):
@@ -18,8 +18,8 @@ class DatabaseManager:
   @contextmanager
   def connection(self) -> Generator[sqlite3.Connection, None, None]:
     """
-    Context manager para transações seguras no SQLite.
-    Realiza commit automático em caso de sucesso ou rollback se ocorrer uma exceção.
+    Context manager for safe SQLite transactions.
+    Automatically commits on success or rolls back if an exception occurs.
     """
     conn = sqlite3.connect(self.db_path)
     conn.execute("PRAGMA foreign_keys = ON;")

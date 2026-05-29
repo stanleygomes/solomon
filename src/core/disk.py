@@ -3,12 +3,12 @@ from pathlib import Path
 
 class DiskManager:
   """
-  Gerenciador de operações no disco (arquivos e pastas).
+  Manager for disk operations (files and directories).
   """
 
   @staticmethod
   def ensure_directory(path: Path) -> None:
     """
-    Garante que o diretório especificado exista, criando-o se necessário.
+    Ensures that the specified directory exists, creating it if necessary.
     """
     path.mkdir(parents=True, exist_ok=True)

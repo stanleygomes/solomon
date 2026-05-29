@@ -1,3 +1,3 @@
 class MailerSendError(Exception):
-  """Lançada quando ocorre uma falha ao enviar o e-mail via SMTP."""
+  """Raised when an error occurs while sending the email via SMTP."""
   pass

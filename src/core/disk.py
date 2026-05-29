@@ -20,3 +20,9 @@ class DiskManager:
     """
     return Path(path).exists()
 
+  @staticmethod
+  def read_text(path: str | Path) -> str:
+    """
+    Reads and returns the text content of a file.
+    """
+    return Path(path).read_text(encoding="utf-8")

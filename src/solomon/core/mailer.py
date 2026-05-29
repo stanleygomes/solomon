@@ -3,10 +3,12 @@ import ssl
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from loguru import logger
 from solomon.core.dto.mail_config import MailConfig
 from solomon.core.dto.mail_message import MailMessage
 from solomon.core.config import Config
 from solomon.core.exceptions.MailerConfigurationError import MailerConfigurationError
+from solomon.core.exceptions.MailerSendError import MailerSendError
 
 
 class Mailer:
@@ -79,7 +81,20 @@ class Mailer:
     message = self._create_message(msg)
     context = ssl.create_default_context()
 
-    if self.config.port == 465:
-      self._send_ssl(message, context)
-    else:
-      self._send_starttls(message, context)
+    try:
+      if self.config.port == 465:
+        self._send_ssl(message, context)
+      else:
+        self._send_starttls(message, context)
+      logger.info(
+        "Email enviado com sucesso para {} (Assunto: {})", msg.to, msg.subject
+      )
+    except Exception as e:
+      logger.error(
+        "Falha ao enviar email para {}. Host: {}:{}, Error: {}",
+        msg.to,
+        self.config.host,
+        self.config.port,
+        e,
+      )
+      raise MailerSendError(f"Failed to send email to {msg.to}") from e

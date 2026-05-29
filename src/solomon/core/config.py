@@ -4,6 +4,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from solomon.core.dto.logger_config import LoggerConfig
 from solomon.core.dto.mail_config import MailConfig
+from solomon.core.dto.ai_config import AiConfig
+
 
 load_dotenv()
 
@@ -12,6 +14,7 @@ load_dotenv()
 class Config:
   logger: LoggerConfig
   mail: MailConfig
+  ai: AiConfig
 
   @classmethod
   def load(cls) -> "Config":
@@ -28,4 +31,5 @@ class Config:
         username=os.getenv("SMTP_USER", ""),
         password=os.getenv("SMTP_PASSWORD", ""),
       ),
+      ai=AiConfig(provider=os.getenv("AI_PROVIDER", "copilot")),
     )

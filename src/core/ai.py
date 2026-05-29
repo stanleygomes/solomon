@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from solomon.core.config import Config
-from solomon.core.exceptions.UnsupportedAIProviderError import UnsupportedAIProviderError
-from solomon.core.providers.copilot import CopilotProvider
+from core.config import Config
+from core.exceptions.UnsupportedAIProviderError import UnsupportedAIProviderError
+from core.providers.copilot import CopilotProvider
 
 
 class AIProvider(ABC):

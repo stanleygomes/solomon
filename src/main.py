@@ -1,7 +1,7 @@
 import sys
 from loguru import logger
-from solomon.core.config import Config
-from solomon.core.render import Solomon
+from core.config import Config
+from core.render import Solomon
 
 
 def get_task() -> str | None:

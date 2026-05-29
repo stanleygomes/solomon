@@ -2,8 +2,8 @@ import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator
-from solomon.core.disk import DiskManager
-from solomon.core.exceptions.DatabaseError import DatabaseError
+from core.disk import DiskManager
+from core.exceptions.DatabaseError import DatabaseError
 
 
 class DatabaseManager:

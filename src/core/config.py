@@ -2,10 +2,10 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 from dotenv import load_dotenv
-from solomon.core.dto.logger_config import LoggerConfig
-from solomon.core.dto.mail_config import MailConfig
-from solomon.core.dto.ai_config import AiConfig
-from solomon.core.dto.db_config import DbConfig
+from core.dto.logger_config import LoggerConfig
+from core.dto.mail_config import MailConfig
+from core.dto.ai_config import AiConfig
+from core.dto.db_config import DbConfig
 
 
 load_dotenv()

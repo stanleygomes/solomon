@@ -4,11 +4,11 @@ import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from loguru import logger
-from solomon.core.dto.mail_config import MailConfig
-from solomon.core.dto.mail_message import MailMessage
-from solomon.core.config import Config
-from solomon.core.exceptions.MailerConfigurationError import MailerConfigurationError
-from solomon.core.exceptions.MailerSendError import MailerSendError
+from core.dto.mail_config import MailConfig
+from core.dto.mail_message import MailMessage
+from core.config import Config
+from core.exceptions.MailerConfigurationError import MailerConfigurationError
+from core.exceptions.MailerSendError import MailerSendError
 
 
 class Mailer:

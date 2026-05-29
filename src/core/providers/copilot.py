@@ -1,7 +1,7 @@
 import os
 import subprocess
 import shutil
-from solomon.core.ai import AIProvider
+from core.ai import AIProvider
 
 
 class CopilotProvider(AIProvider):

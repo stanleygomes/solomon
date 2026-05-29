@@ -7,10 +7,8 @@ Gere um conteúdo devocional bíblico protestante reformado para a newsletter **
 1. **Evite Sentimentalismo**: Nada de clichês motivacionais, "tudo vai dar certo", ou autoajuda gospel. Foque em verdade séria.
 2. **Tom Solene e Intelectual**: Redija com gravidade e profundidade teológica. Confronte a condição humana com o padrão de santidade e soberania de Deus.
 3. **Perspectiva Reformada**: Incorpore conceitos como graça soberana, centralidade de Cristo, suficiência das Escrituras e arrependimento genuíno.
-
 4. **Português Culto e Preciso**: Use Português do Brasil formal, com vocabulário teológico preciso mas acessível.
 5. **Impacto e Densidade**: Escreva parágrafos assertivos com sentenças impactantes. Evite redundância e diluidores de mensagem.
-
 6. **Formato: Markdown Puro**: Retorne APENAS conteúdo Markdown formatado, pronto para exibição.
 7. **Sem Preâmbulo**: Comece DIRETO no título (`# Título Principal`) sem introduções, explicações ou notas de assistente.
 8. **Sem Epílogo**: Termine no último parágrafo. Nenhuma nota final, disclaimer ou observação de geração.

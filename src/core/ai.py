@@ -9,13 +9,14 @@ class AIProvider(ABC):
   def generate(self, prompt: str) -> str:
     pass
 
+class AIProviderFactory:
+  @staticmethod
+  def generate() -> AIProvider:
+    config = Config.load()
+    provider_type = config.ai.provider
 
-def get_ai_provider() -> AIProvider:
-  config = Config.load()
-  provider_type = config.ai.provider
-
-  match provider_type:
-    case "copilot":
-      return CopilotProvider()
-    case _:
-      raise UnsupportedAIProviderError(f"Unsupported AI provider: {provider_type}")
+    match provider_type:
+      case "copilot":
+        return CopilotProvider()
+      case _:
+        raise UnsupportedAIProviderError(f"Unsupported AI provider: {provider_type}")

@@ -87,11 +87,11 @@ class Mailer:
       else:
         self._send_starttls(message, context)
       logger.info(
-        "Email sent successfully to {} (Subject: {})", msg.to, msg.subject
+        "📧 Email sent successfully to {} (Subject: {})", msg.to, msg.subject
       )
     except Exception as e:
       logger.error(
-        "Failed to send email to {}. Host: {}:{}, Error: {}",
+        "❌ Failed to send email to {}. Host: {}:{}, Error: {}",
         msg.to,
         self.config.host,
         self.config.port,

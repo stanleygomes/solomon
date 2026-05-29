@@ -2,6 +2,7 @@ import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator
+from loguru import logger
 from core.disk import DiskManager
 from core.exceptions.DatabaseError import DatabaseError
 
@@ -24,6 +25,7 @@ class DatabaseManager:
     conn = sqlite3.connect(self.db_path)
     conn.execute("PRAGMA foreign_keys = ON;")
     conn.row_factory = sqlite3.Row
+    logger.info("🔌 Database connection established successfully at {}", self.db_path)
 
     try:
       yield conn

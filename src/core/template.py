@@ -15,7 +15,7 @@ class TemplateRenderer:
     """
     Renders a template from disk using the provided DTO (dataclass) context.
     """
-    logger.info("Rendering template from path: {}", template_path)
+    logger.info("🎬 Rendering template from path: {}", template_path)
 
     if not DiskManager.exists(template_path):
       logger.error("Template file not found: {}", template_path)
@@ -28,11 +28,11 @@ class TemplateRenderer:
     elif isinstance(context, dict):
       ctx_dict = context
     else:
-      logger.error("Invalid context type provided: {}", type(context))
+      logger.error("❌ Invalid context type provided: {}", type(context))
       raise TypeError("Context must be a dataclass instance or a dictionary")
 
     template = Template(template_content)
     rendered_content = template.render(**ctx_dict)
 
-    logger.info("Template rendered successfully")
+    logger.info("✨ Template rendered successfully")
     return rendered_content

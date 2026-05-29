@@ -19,3 +19,6 @@ wheels/
 
 # logs
 *.log
+
+# environment variables
+.env

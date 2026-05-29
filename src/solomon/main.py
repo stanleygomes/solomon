@@ -12,6 +12,10 @@ def get_task() -> str | None:
 
 
 def main() -> None:
+  """
+  Main application entry point.
+  """
+
   config = Config.load()
 
   logger.add(

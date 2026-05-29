@@ -26,4 +26,3 @@ name: Solomon Agent Instructions
 - Explicit imports; use `Path` from `pathlib` for all file operations.
 - Use `f-strings` for formatting.
 - Log execution milestones (entry/exit/errors).
-- Test locally with `python main.py --run-task <id>`.

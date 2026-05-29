@@ -12,3 +12,11 @@ class DiskManager:
     Ensures that the specified directory exists, creating it if necessary.
     """
     path.mkdir(parents=True, exist_ok=True)
+
+  @staticmethod
+  def exists(path: str | Path) -> bool:
+    """
+    Checks if the specified path exists on disk.
+    """
+    return Path(path).exists()
+

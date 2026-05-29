@@ -2,6 +2,7 @@ import sys
 from loguru import logger
 from core.config import Config
 from core.render import Solomon
+from core.logger import setup_logger
 
 
 def get_task() -> str | None:
@@ -18,13 +19,7 @@ def main() -> None:
 
   config = Config.load()
 
-  logger.add(
-    config.logger.path,
-    rotation=config.logger.rotation,
-    retention=config.logger.retention,
-    level=config.logger.level,
-    format="{time} {level} {message}",
-  )
+  setup_logger(config.logger)
 
   task = get_task()
 

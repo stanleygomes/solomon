@@ -6,7 +6,6 @@ from email.mime.multipart import MIMEMultipart
 from loguru import logger
 from core.dto.mail_config import MailConfig
 from core.dto.mail_message import MailMessage
-from core.config import Config
 from core.exceptions.MailerConfigurationError import MailerConfigurationError
 from core.exceptions.MailerSendError import MailerSendError
 
@@ -18,16 +17,6 @@ class Mailer:
 
   def __init__(self, config: MailConfig):
     self.config = config
-
-  @staticmethod
-  def from_env() -> "Mailer":
-    """
-    Create a new Mailer instance from environment variables.
-    """
-
-    config = Config.load()
-
-    return Mailer(config.mail)
 
   def validateConfig(self) -> None:
     if not self.config.host or not self.config.username or not self.config.password:

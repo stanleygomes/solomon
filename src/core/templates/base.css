@@ -1,0 +1,191 @@
+/* Email client resets and global styles */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: {{ background }};
+  font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+  color: {{ text_primary }};
+  -webkit-font-smoothing: antialiased;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+img {
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+a {
+  color: {{ secondary }};
+  text-decoration: none;
+  border-bottom: 1px dashed {{ primary }};
+}
+a:hover {
+  color: {{ primary }};
+  border-bottom: 1px solid {{ primary }};
+}
+
+/* Typography & layout overrides */
+.content {
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: left;
+}
+.content h1 {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 22px;
+  color: {{ text_primary }};
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.content h1::before {
+  content: "$ ";
+  color: {{ primary }};
+}
+.content h2 {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 18px;
+  color: {{ secondary }};
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+.content h2::before {
+  content: "> ";
+  color: {{ primary }};
+}
+.content h3 {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 16px;
+  color: {{ text_primary }};
+  margin-top: 25px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.content h3::before {
+  content: "* ";
+  color: {{ primary }};
+}
+.content p {
+  margin-bottom: 18px;
+}
+.content blockquote {
+  border-left: 2px solid {{ primary }};
+  background-color: {{ surface_variant }};
+  margin: 25px 0;
+  padding: 15px 20px;
+  font-style: italic;
+  color: {{ text_on_variant }};
+}
+.content blockquote::before {
+  content: "/* ";
+  color: {{ text_secondary }};
+  display: block;
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: normal;
+  font-style: normal;
+}
+.content blockquote::after {
+  content: " */";
+  color: {{ text_secondary }};
+  display: block;
+  font-size: 12px;
+  margin-top: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: normal;
+  font-style: normal;
+}
+.content blockquote p {
+  margin: 0;
+}
+/* Custom list style */
+.content ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+.content ul li {
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 20px;
+}
+.content ul li::before {
+  content: "*";
+  color: {{ primary }};
+  font-size: 14px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.content hr {
+  border: 0;
+  height: 1px;
+  border-top: 1px dashed {{ border }};
+  margin: 30px 0;
+}
+
+/* Layout & structural classes */
+.outer-wrapper {
+  background-color: {{ background }};
+  padding: 40px 0;
+}
+.container-wrapper {
+  width: 100%;
+  max-width: 680px;
+  background-color: {{ surface }};
+  border: 1px solid {{ border }};
+}
+.gold-top-line {
+  background-color: {{ primary }};
+  font-size: 0;
+  line-height: 0;
+}
+.header-cell {
+  padding: 40px 20px;
+}
+.header-subtitle {
+  font-size: 11px;
+  color: {{ text_secondary }};
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}
+.header-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: {{ text_primary }};
+  letter-spacing: -1px;
+}
+.header-meta {
+  font-size: 12px;
+  color: {{ secondary }};
+}
+.divider-cell {
+  padding: 0 20px;
+}
+.divider-table {
+  border-top: 1px dashed {{ primary }};
+}
+.content-cell {
+  padding: 30px 20px 40px 20px;
+  background-color: {{ surface }};
+}
+.footer-cell {
+  padding: 35px 20px;
+  border-top: 1px dashed {{ border }};
+  background-color: {{ surface }};
+}
+.footer-title {
+  font-size: 14px;
+  color: {{ primary }};
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.footer-text {
+  font-size: 11px;
+  color: {{ text_secondary }};
+}

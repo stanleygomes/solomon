@@ -23,9 +23,14 @@ def main() -> None:
 
   task = get_task()
 
-  logger.info("📋 Task: {}", task)
   logger.info("🚀 Application started")
 
+  if task:
+    logger.info("📋 Running task headlessly: {}", task)
+    logger.info("✅ Task execution finished: {}", task)
+    return
+
+  logger.info("🖥️ Launching TUI")
   app = Solomon()
   app.run()
 

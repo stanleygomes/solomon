@@ -456,6 +456,7 @@ name = "solomon"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "jinja2" },
     { name = "loguru" },
     { name = "python-dotenv" },
     { name = "textual" },
@@ -469,6 +470,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "jinja2", specifier = ">=3.1.6" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "textual", specifier = ">=8.2.7" },

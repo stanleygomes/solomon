@@ -22,3 +22,6 @@ wheels/
 
 # environment variables
 .env
+
+# storage
+storage/

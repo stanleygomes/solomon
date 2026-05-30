@@ -5,6 +5,9 @@ from core.usecases.base import UseCase
 from core.usecases.context import UseCaseContext
 from core.constants.use_cases import USE_CASES
 from core.exceptions.UnknownTaskError import UnknownTaskError
+from core.repositories.task_execution import TaskExecutionRepository
+from core.date import DateManager
+from core.constants.execution_status import ExecutionStatus
 
 
 class UseCaseOrchestrator:
@@ -26,6 +29,9 @@ class UseCaseOrchestrator:
     if not use_case_cls:
       raise UnknownTaskError(f"Unknown task: {task_name}")
 
+    # Initialize Repository
+    repo = TaskExecutionRepository(self.db_manager)
+
     # Resolve dependencies once inside a single context container DTO
     from core.ai_factory import AIProviderFactory
     from core.mailer import Mailer
@@ -35,12 +41,33 @@ class UseCaseOrchestrator:
       db_manager=self.db_manager,
       ai_provider=AIProviderFactory.generate(),
       mailer=Mailer(self.config.mail),
+      task_execution_repo=repo,
     )
 
     logger.debug("🎬 Instantiating Use Case: {}", use_case_cls.__name__)
     use_case: UseCase = use_case_cls(context)
 
-    logger.debug("🚀 Executing Use Case: {}", use_case_cls.__name__)
-    use_case.execute()
+    # Validate execution conditional prerequisites
+    if not use_case.should_execute():
+      logger.warning(
+        "🚫 Task '{}' execution pre-requisites not met. Skipping execution.", task_name
+      )
+      return
 
-    logger.debug("✨ Use Case executed successfully: {}", use_case_cls.__name__)
+    logger.debug("🚀 Executing Use Case: {}", use_case_cls.__name__)
+    try:
+      use_case.execute()
+      repo.save(
+        task_name=task_name,
+        status=ExecutionStatus.SUCCESS,
+        executed_at=DateManager.now_iso(),
+      )
+      logger.debug("✨ Use Case executed successfully: {}", use_case_cls.__name__)
+    except Exception as e:
+      repo.save(
+        task_name=task_name,
+        status=ExecutionStatus.FAILED,
+        executed_at=DateManager.now_iso(),
+      )
+      logger.error("❌ Use Case execution failed: {}", str(e))
+      raise e

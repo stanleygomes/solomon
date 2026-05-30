@@ -16,3 +16,10 @@ class UseCase(ABC):
     Executes the use case logic.
     """
     pass
+
+  def should_execute(self) -> bool:
+    """
+    Determines whether the use case should execute based on the context.
+    By default, returns True. Override in subclasses for conditional execution.
+    """
+    return True

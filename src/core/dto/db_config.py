@@ -7,4 +7,5 @@ class DbConfig:
   """
   DTO for database configuration.
   """
+
   path: Path

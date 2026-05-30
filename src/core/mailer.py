@@ -53,9 +53,7 @@ class Mailer:
     ) as server:
       self._authenticate_and_send(server, message)
 
-  def _send_starttls(
-    self, message: MIMEMultipart, context: ssl.SSLContext
-  ) -> None:
+  def _send_starttls(self, message: MIMEMultipart, context: ssl.SSLContext) -> None:
     """
     Sends the email using a STARTTLS connection (port 587).
     """

@@ -13,5 +13,3 @@ class Theme:
   text_primary: str
   text_secondary: str
   text_on_variant: str
-
-

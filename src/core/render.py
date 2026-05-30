@@ -2,6 +2,7 @@ from textual.app import App
 from textual.widgets import Button
 from ui.screens.main_screen import MainScreen
 
+
 class Solomon(App[None]):
   """
   Solomon Automation Hub main application.
@@ -22,4 +23,3 @@ class Solomon(App[None]):
     """
     if event.button.id == "action_button":
       self.notify("Action button pressed!")
-

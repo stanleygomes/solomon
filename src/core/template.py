@@ -1,7 +1,7 @@
 from dataclasses import asdict, is_dataclass
 from jinja2 import Template
 from loguru import logger
-from core.utils.html_compiler import HTMLCompiler
+from core.html import HTMLCompiler
 from core.dto.theme import Theme
 
 

@@ -3,6 +3,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator
 from loguru import logger
+from peewee import SqliteDatabase
 from core.disk import DiskManager
 from core.exceptions.DatabaseError import DatabaseError
 
@@ -12,9 +13,10 @@ class DatabaseManager:
   Manages connections and transactions with the SQLite database.
   """
 
-  def __init__(self, db_path: Path):
+  def __init__(self, db_path: Path) -> None:
     self.db_path = db_path
     DiskManager.ensure_directory(self.db_path.parent)
+    self.db = SqliteDatabase(str(self.db_path), pragmas={"foreign_keys": 1})
 
   @contextmanager
   def connection(self) -> Generator[sqlite3.Connection, None, None]:

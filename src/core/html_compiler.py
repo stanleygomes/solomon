@@ -1,4 +1,3 @@
-from pathlib import Path
 from dataclasses import asdict
 from jinja2 import Template
 from loguru import logger
@@ -18,9 +17,8 @@ class HTMLCompiler:
     """
     logger.debug("🛠️ Starting template compilation for theme: {}", theme.name)
 
-    base_dir = Path(__file__).parent
-    html_path = base_dir / "templates" / "base.html"
-    css_path = base_dir / "templates" / "base.css"
+    html_path = DiskManager.resolve_path(__file__, "templates", "base.html")
+    css_path = DiskManager.resolve_path(__file__, "templates", "base.css")
 
     if not DiskManager.exists(html_path):
       raise FileNotFoundError(f"Base HTML template not found at {html_path}")
@@ -43,5 +41,7 @@ class HTMLCompiler:
     html_template = Template(html_template_content)
     compiled_html = html_template.render(css_content=rendered_css)
 
-    logger.info("✨ Template compilation completed successfully for theme: {}", theme.name)
+    logger.info(
+      "✨ Template compilation completed successfully for theme: {}", theme.name
+    )
     return compiled_html

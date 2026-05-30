@@ -1,7 +1,7 @@
 import sys
 from loguru import logger
 from core.config import Config
-from core.render import Solomon
+from ui.render import Solomon
 from core.logger import setup_logger
 from core.database import DatabaseManager
 from core.database_migrator import DatabaseMigrator

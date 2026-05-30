@@ -2,8 +2,8 @@ import os
 import shutil
 import subprocess
 from abc import abstractmethod
-from core.ai import AIProvider
-from core.disk import DiskManager
+from core.ai.abstract import AIProvider
+from core.utils.disk import DiskManager
 from core.exceptions.AIProviderError import AIProviderError
 
 

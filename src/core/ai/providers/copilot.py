@@ -1,4 +1,4 @@
-from core.cli import CLIProvider
+from core.ai.cli import CLIProvider
 
 
 class CopilotProvider(CLIProvider):

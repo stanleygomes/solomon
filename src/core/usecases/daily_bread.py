@@ -15,7 +15,7 @@ class DailyBreadUseCase(UseCase):
     """
     Checks if the Daily Bread devotional has already been successfully sent today.
     """
-    from core.date import DateManager
+    from core.utils.date import DateManager
 
     today = DateManager.today_str()
     if self.context.task_execution_repo.has_run_on_date("daily-bread", today):

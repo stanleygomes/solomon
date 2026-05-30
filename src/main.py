@@ -1,11 +1,11 @@
 import sys
 from loguru import logger
-from core.config import Config
+from core.config.environment import Config
 from ui.render import Solomon
-from core.logger import setup_logger
-from core.database import DatabaseManager
-from core.database_migrator import DatabaseMigrator
-from core.disk import DiskManager
+from core.config.logger import setup_logger
+from core.database.setup import DatabaseSetup
+from core.database.migrations import DatabaseMigratons
+from core.utils.disk import DiskManager
 from core.usecases.orchestrator import UseCaseOrchestrator
 
 
@@ -27,10 +27,10 @@ def main() -> None:
 
   task = get_task()
 
-  db_manager = DatabaseManager(config.db.path)
+  db_manager = DatabaseSetup(config.db.path)
 
   migrations_dir = DiskManager.resolve_path(__file__, "core", "migrations")
-  migrator = DatabaseMigrator(db_manager, migrations_dir)
+  migrator = DatabaseMigratons(db_manager, migrations_dir)
   migrator.migrate()
 
   if task:

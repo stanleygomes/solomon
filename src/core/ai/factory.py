@@ -1,8 +1,8 @@
-from core.ai import AIProvider
-from core.config import Config
+from core.ai.abstract import AIProvider
+from core.config.environment import Config
 from core.exceptions.UnsupportedAIProviderError import UnsupportedAIProviderError
-from core.providers.copilot import CopilotProvider
-from core.providers.antigravity import AntigravityProvider
+from core.ai.providers.copilot import CopilotProvider
+from core.ai.providers.antigravity import AntigravityProvider
 
 
 class AIProviderFactory:

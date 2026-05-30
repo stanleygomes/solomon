@@ -1,5 +1,5 @@
 from peewee import fn
-from core.database import DatabaseManager
+from core.database.setup import DatabaseSetup
 from core.models.task_execution import TaskExecutionModel
 from core.constants.execution_status import ExecutionStatus
 
@@ -9,7 +9,7 @@ class TaskExecutionRepository:
   Repository for managing TaskExecution records in the SQLite database using Peewee.
   """
 
-  def __init__(self, db_manager: DatabaseManager) -> None:
+  def __init__(self, db_manager: DatabaseSetup) -> None:
     self.db_manager = db_manager
     self.db_manager.db.bind([TaskExecutionModel])
 

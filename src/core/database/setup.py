@@ -4,11 +4,11 @@ from pathlib import Path
 from typing import Generator
 from loguru import logger
 from peewee import SqliteDatabase
-from core.disk import DiskManager
+from core.utils.disk import DiskManager
 from core.exceptions.DatabaseError import DatabaseError
 
 
-class DatabaseManager:
+class DatabaseSetup:
   """
   Manages connections and transactions with the SQLite database.
   """

@@ -1,12 +1,12 @@
 from loguru import logger
-from core.config import Config
-from core.database import DatabaseManager
+from core.config.environment import Config
+from core.database.setup import DatabaseSetup
 from core.usecases.base import UseCase
 from core.usecases.context import UseCaseContext
 from core.constants.use_cases import USE_CASES
 from core.exceptions.UnknownTaskError import UnknownTaskError
 from core.repositories.task_execution import TaskExecutionRepository
-from core.date import DateManager
+from core.utils.date import DateManager
 from core.constants.execution_status import ExecutionStatus
 
 
@@ -15,7 +15,7 @@ class UseCaseOrchestrator:
   Orchestrator that instantiates and executes use cases based on task names.
   """
 
-  def __init__(self, config: Config, db_manager: DatabaseManager) -> None:
+  def __init__(self, config: Config, db_manager: DatabaseSetup) -> None:
     self.config = config
     self.db_manager = db_manager
 
@@ -33,7 +33,7 @@ class UseCaseOrchestrator:
     repo = TaskExecutionRepository(self.db_manager)
 
     # Resolve dependencies once inside a single context container DTO
-    from core.ai_factory import AIProviderFactory
+    from core.ai.factory import AIProviderFactory
     from core.mailer import Mailer
 
     context = UseCaseContext(

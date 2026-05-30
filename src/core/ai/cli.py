@@ -58,12 +58,21 @@ class CLIProvider(AIProvider):
 
     process = subprocess.Popen(
       args,
+      stdin=subprocess.DEVNULL,
       stdout=subprocess.PIPE,
       stderr=subprocess.PIPE,
       text=True,
     )
 
-    stdout, stderr = process.communicate()
+    try:
+      stdout, stderr = process.communicate(timeout=30)
+    except subprocess.TimeoutExpired as e:
+      process.kill()
+      # Read any remaining output after killing
+      stdout, stderr = process.communicate()
+      raise AIProviderError(
+        f"{self.__class__.__name__} CLI execution timed out: {stderr}"
+      ) from e
 
     if process.returncode != 0:
       raise AIProviderError(

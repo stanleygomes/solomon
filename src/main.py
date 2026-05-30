@@ -4,6 +4,8 @@ from core.config import Config
 from core.render import Solomon
 from core.logger import setup_logger
 from core.database import DatabaseManager
+from core.database_migrator import DatabaseMigrator
+from core.disk import DiskManager
 from core.usecases.orchestrator import UseCaseOrchestrator
 
 
@@ -25,11 +27,14 @@ def main() -> None:
 
   task = get_task()
 
-  logger.info("🚀 Application started")
-
   db_manager = DatabaseManager(config.db.path)
 
+  migrations_dir = DiskManager.resolve_path(__file__, "core", "migrations")
+  migrator = DatabaseMigrator(db_manager, migrations_dir)
+  migrator.migrate()
+
   if task:
+    logger.info("🚀 Executing...")
     orchestrator = UseCaseOrchestrator(config, db_manager)
     orchestrator.execute(task)
     return

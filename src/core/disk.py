@@ -26,3 +26,10 @@ class DiskManager:
     Reads and returns the text content of a file.
     """
     return Path(path).read_text(encoding="utf-8")
+
+  @staticmethod
+  def resolve_path(base_file: str | Path, *parts: str) -> Path:
+    """
+    Resolves an absolute path relative to the directory of the specified base file.
+    """
+    return Path(base_file).parent.joinpath(*parts).resolve()

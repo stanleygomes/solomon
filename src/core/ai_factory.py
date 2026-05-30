@@ -2,6 +2,7 @@ from core.ai import AIProvider
 from core.config import Config
 from core.exceptions.UnsupportedAIProviderError import UnsupportedAIProviderError
 from core.providers.copilot import CopilotProvider
+from core.providers.antigravity import AntigravityProvider
 
 
 class AIProviderFactory:
@@ -17,5 +18,7 @@ class AIProviderFactory:
     match provider_type:
       case "copilot":
         return CopilotProvider()
+      case "antigravity":
+        return AntigravityProvider()
       case _:
         raise UnsupportedAIProviderError(f"Unsupported AI provider: {provider_type}")

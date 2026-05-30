@@ -3,6 +3,8 @@ from loguru import logger
 from core.config import Config
 from core.render import Solomon
 from core.logger import setup_logger
+from core.database import DatabaseManager
+from core.usecases.orchestrator import UseCaseOrchestrator
 
 
 def get_task() -> str | None:
@@ -25,9 +27,11 @@ def main() -> None:
 
   logger.info("🚀 Application started")
 
+  db_manager = DatabaseManager(config.db.path)
+
   if task:
-    logger.info("📋 Running task headlessly: {}", task)
-    logger.info("✅ Task execution finished: {}", task)
+    orchestrator = UseCaseOrchestrator(config, db_manager)
+    orchestrator.execute(task)
     return
 
   logger.info("🖥️ Launching TUI")

@@ -1,6 +1,7 @@
 from core.usecases.base import UseCase
 from core.usecases.context import UseCaseContext
 from loguru import logger
+from core.prompt import Prompt
 
 
 class DailyBreadUseCase(UseCase):
@@ -28,3 +29,42 @@ class DailyBreadUseCase(UseCase):
     Executes the Daily Bread email generation and delivery workflow.
     """
     logger.info("🚀 Executing Daily Bread UseCase workflow")
+
+    # 1. Execute the prompt
+    logger.debug("📝 Running AI prompt: daily-bread.md")
+    prompt_output = Prompt.execute("daily-bread.md")
+
+    # 2. Compile HTML email template with generated text and current date
+    from core.utils.date import DateManager
+    from core.constants.themes import PREDEFINED_THEMES
+    from core.template import TemplateRenderer
+
+    today = DateManager.today_str()
+    render_context = {
+      "date": today,
+      "content": prompt_output,
+    }
+
+    logger.debug("🎨 Rendering HTML template with theme: noemi")
+    theme = PREDEFINED_THEMES["noemi"]
+    html_body = TemplateRenderer.render(theme, render_context)
+
+    # 3. Use Mailer to send email
+    from core.dto.mail_message import MailMessage
+    from core.exceptions.MailerConfigurationError import MailerConfigurationError
+
+    sender = self.context.config.mail.email_from
+    to = self.context.config.mail.email_to
+    if not to:
+      raise MailerConfigurationError("EMAIL_TO is not configured in MailConfig")
+
+    logger.debug("✉️ Preparing email to: {}", to)
+    message = MailMessage(
+      sender=sender,
+      to=to,
+      subject=f"The Daily Bread for {today}",
+      body=html_body,
+    )
+
+    self.context.mailer.send(message)
+    logger.info("✨ Daily Bread email sent successfully")

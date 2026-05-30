@@ -11,3 +11,5 @@ class MailConfig:
   port: int
   username: str
   password: str
+  email_from: str
+  email_to: str

@@ -32,6 +32,8 @@ class Config:
         port=int(os.getenv("SMTP_PORT")),
         username=os.getenv("SMTP_USER"),
         password=os.getenv("SMTP_PASSWORD"),
+        email_from=os.getenv("EMAIL_FROM", os.getenv("SMTP_USER", "")),
+        email_to=os.getenv("EMAIL_TO", ""),
       ),
       ai=AiConfig(provider=os.getenv("AI_PROVIDER")),
       db=DbConfig(path=Path(os.getenv("DB_FILE"))),

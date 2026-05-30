@@ -38,11 +38,14 @@ class DailyBreadUseCase(UseCase):
     from core.utils.date import DateManager
     from core.constants.themes import PREDEFINED_THEMES
     from core.template import TemplateRenderer
+    from core.utils.markdown import Markdown
 
     today = DateManager.today_str()
+    html_content = Markdown.to_html(prompt_output)
+
     render_context = {
       "date": today,
-      "content": prompt_output,
+      "content": html_content,
     }
 
     logger.debug("🎨 Rendering HTML template with theme: noemi")

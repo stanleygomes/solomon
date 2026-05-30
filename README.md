@@ -6,7 +6,18 @@ A personal automation assistant designed to streamline routine tasks and execute
 
 ### Daily Bread
 
+Generates and sends a daily spiritual devotional. It operates through the following workflow:
+1. Executes the AI prompt template (`daily-bread.md`) using the active AI provider (e.g., Copilot or Antigravity).
+2. Renders the generated devotional into a styled HTML email template (using Jinja2 templates and predefined color themes).
+3. Delivers the compiled email to the configured recipient via SMTP.
 
+> [!IMPORTANT]
+> **Once-per-day Execution Lock**: To avoid API quota waste and email spam, this task is restricted to run successfully **only once per calendar day**. Repeat executions on the same day are automatically skipped by checking past database logs.
+
+#### How to run:
+```bash
+make run task=daily-bread
+```
 
 ## 🚀 Execution & Automation
 

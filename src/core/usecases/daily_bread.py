@@ -44,8 +44,10 @@ class DailyBreadUseCase(UseCase):
     html_content = Markdown.to_html(prompt_output)
 
     render_context = {
+      "title": f"The Daily Bread for {today}",
       "date": today,
       "content": html_content,
+      "use_case": "daily-bread",
     }
 
     logger.debug("🎨 Rendering HTML template with theme: noemi")

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from core.usecases.context import UseCaseContext
+from core.context import UseCaseContext
 
 
 class UseCase(ABC):

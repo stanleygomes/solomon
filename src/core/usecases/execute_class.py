@@ -1,6 +1,6 @@
 from typing import cast
 from loguru import logger
-from core.usecases.base import UseCase
+from core.usecases._base import UseCase
 from core.prompt import Prompt
 from core.repositories.study_class import StudyClassRepository
 

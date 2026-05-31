@@ -6,7 +6,7 @@ from core.config.logger import setup_logger
 from core.database.setup import DatabaseSetup
 from core.database.migrations import DatabaseMigratons
 from core.utils.disk import DiskManager
-from core.usecases.orchestrator import UseCaseOrchestrator
+from core.orchestrator import UseCaseOrchestrator
 
 
 def get_task() -> str | None:

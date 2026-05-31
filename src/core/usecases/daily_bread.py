@@ -1,5 +1,5 @@
-from core.usecases.base import UseCase
-from core.usecases.context import UseCaseContext
+from core.usecases._base import UseCase
+from core.context import UseCaseContext
 from loguru import logger
 from core.prompt import Prompt
 

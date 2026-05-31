@@ -34,7 +34,7 @@ Generates the structured study syllabus for any course in `PLANNING` status.
 
 ##### How to run (with new class registration):
 ```bash
-SUBJECT="Física Quântica" DURATION_DAYS=3 make run task=plan-classes
+SUBJECT="Programar em python" DURATION_DAYS=30 make run task=plan-classes
 ```
 
 ##### How to run (planning existing pending classes):

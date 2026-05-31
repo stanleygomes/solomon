@@ -1,4 +1,3 @@
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from dotenv import load_dotenv
@@ -6,6 +5,7 @@ from core.dto.logger_config import LoggerConfig
 from core.dto.mail_config import MailConfig
 from core.dto.ai_config import AiConfig
 from core.dto.db_config import DbConfig
+from core.utils.env import EnvManager
 
 
 load_dotenv()
@@ -22,19 +22,19 @@ class Config:
   def load(cls) -> "Config":
     return cls(
       logger=LoggerConfig(
-        path=Path(os.getenv("LOG_FILE")),
-        level=os.getenv("LOG_LEVEL"),
-        rotation=os.getenv("LOG_ROTATION"),
-        retention=os.getenv("LOG_RETENTION"),
+        path=Path(EnvManager.get("LOG_FILE")),
+        level=EnvManager.get("LOG_LEVEL"),
+        rotation=EnvManager.get("LOG_ROTATION"),
+        retention=EnvManager.get("LOG_RETENTION"),
       ),
       mail=MailConfig(
-        host=os.getenv("SMTP_HOST"),
-        port=int(os.getenv("SMTP_PORT")),
-        username=os.getenv("SMTP_USER"),
-        password=os.getenv("SMTP_PASSWORD"),
-        email_from=os.getenv("EMAIL_FROM", os.getenv("SMTP_USER", "")),
-        email_to=os.getenv("EMAIL_TO", ""),
+        host=EnvManager.get("SMTP_HOST"),
+        port=int(EnvManager.get("SMTP_PORT")),
+        username=EnvManager.get("SMTP_USER"),
+        password=EnvManager.get("SMTP_PASSWORD"),
+        email_from=EnvManager.get("EMAIL_FROM"),
+        email_to=EnvManager.get("EMAIL_TO"),
       ),
-      ai=AiConfig(provider=os.getenv("AI_PROVIDER")),
-      db=DbConfig(path=Path(os.getenv("DB_FILE"))),
+      ai=AiConfig(provider=EnvManager.get("AI_PROVIDER")),
+      db=DbConfig(path=Path(EnvManager.get("DB_FILE"))),
     )

@@ -21,11 +21,39 @@ Generates and sends a daily bible study. It operates through the following workf
 make run task=daily-bread
 ```
 
-### @classes
+### @classes (Study Planner & Delivery)
 
-Automated daily study routines tailored to any topic. Simply define your subject and duration, and receive structured, digestible daily learning segments.
+Automated daily study routines tailored to any topic. Simply define your subject and duration, and the system manages the cycle through two separate commands:
 
-> WIP
+#### 1. Planning (`plan-classes`)
+Generates the structured study syllabus for any course in `PLANNING` status.
+- **Auto-registration**: If you pass the `SUBJECT` and `DURATION_DAYS` environment variables, the task will automatically register the new class in the database before planning.
+- Executes the AI planning prompt (`class-planning.md`) to divide the subject into daily lesson topics.
+- Parses the AI response as JSON and persists the generated lessons in the database.
+- Sets the plan status to `ACTIVE`.
+
+##### How to run (with new class registration):
+```bash
+SUBJECT="Física Quântica" DURATION_DAYS=3 make run task=plan-classes
+```
+
+##### How to run (planning existing pending classes):
+```bash
+make run task=plan-classes
+```
+
+#### 2. Execution (`execute-class`)
+Delivers the daily class and advances your progress.
+- Retrieves the active study plan and the corresponding lesson for the current day.
+- Executes the AI content generator prompt (`class-segment.md`) to generate a complete learning module for the topic.
+- Compiles the content into a styled HTML email template (using Jinja2 and predefined themes like `noemi`).
+- Sends the daily class email via SMTP.
+- Marks the lesson as completed and advances the plan's current day (marking the plan as `COMPLETED` when finished).
+
+##### How to run:
+```bash
+make run task=execute-class
+```
 
 ### @tasks
 

@@ -21,6 +21,21 @@ class PlanClassesUseCase(UseCase):
     logger.info("🚀 Executing Plan Classes workflow")
 
     repo = StudyClassRepository(self.context.db_manager)
+
+    from core.utils.env import EnvManager
+
+    env_subject = EnvManager.get("SUBJECT", default=None)
+    env_duration = EnvManager.get("DURATION_DAYS", default=None)
+
+    if env_subject and env_duration:
+      duration_days = int(env_duration)
+      logger.debug(
+        "📥 CLI Environment variables detected. Creating new study class: '{}' ({} days)",
+        env_subject,
+        duration_days,
+      )
+      repo.create_class(env_subject, duration_days)
+
     planning_classes = repo.get_planning_classes()
     if not planning_classes:
       logger.warning("💤 No study classes currently in PLANNING status.")

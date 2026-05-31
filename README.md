@@ -63,13 +63,6 @@ make run task=execute-class
 
 > WIP
 
-### @feed
-
-Automated scraping and intelligent summarization of new articles from your followed blogs.
-
-> WIP
-
-
 ## 🚀 Execution & Automation
 
 All shortcuts are centralized in the [Makefile](./Makefile):

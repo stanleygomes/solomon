@@ -1,5 +1,7 @@
+from typing import Any
 from core.ai.factory import AIProviderFactory
 from core.utils.disk import DiskManager
+from core.template import TemplateRenderer
 
 
 class Prompt:
@@ -8,14 +10,18 @@ class Prompt:
   """
 
   @staticmethod
-  def execute(filename: str) -> str:
+  def execute(filename: str, context: dict[str, Any] | None = None) -> str:
     """
-    Reads the prompt from the prompts folder and executes it using the configured AI provider.
+    Reads the prompt from the prompts folder, interpolates it with context if provided,
+    and executes it using the configured AI provider.
     """
     prompts_dir = DiskManager.resolve_path(__file__, "prompts")
     prompt_path = prompts_dir / filename
 
     prompt_content = DiskManager.read_text(prompt_path)
-    ai_provider = AIProviderFactory.generate()
 
+    if context:
+      prompt_content = TemplateRenderer.render_text(prompt_content, context)
+
+    ai_provider = AIProviderFactory.generate()
     return ai_provider.generate(prompt_content)

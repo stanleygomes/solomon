@@ -50,7 +50,7 @@ class DailyBreadUseCase(UseCase):
 
     logger.debug("🎨 Rendering HTML template with theme: noemi")
     theme = PREDEFINED_THEMES["noemi"]
-    html_body = TemplateRenderer.render(theme, render_context)
+    html_body = TemplateRenderer.render_html(theme, render_context)
 
     # 3. Use Mailer to send email
     from core.dto.mail_message import MailMessage

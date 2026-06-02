@@ -1,6 +1,6 @@
 from core.ai.abstract import AIProvider
 from core.config.environment import Config
-from core.exceptions.UnsupportedAIProviderError import UnsupportedAIProviderError
+from core.exceptions.PreconditionFailedError import PreconditionFailedError
 from core.ai.providers.copilot import CopilotProvider
 from core.ai.providers.antigravity import AntigravityProvider
 
@@ -21,4 +21,4 @@ class AIProviderFactory:
       case "antigravity":
         return AntigravityProvider()
       case _:
-        raise UnsupportedAIProviderError(f"Unsupported AI provider: {provider_type}")
+        raise PreconditionFailedError(f"Unsupported AI provider: {provider_type}")

@@ -1,7 +1,7 @@
 import os
 from typing import Any
-from core.exceptions.EnvironmentVariableNotFoundError import (
-  EnvironmentVariableNotFoundError,
+from core.exceptions.PreconditionFailedError import (
+  PreconditionFailedError,
 )
 
 _UNDEFINED = object()
@@ -16,13 +16,11 @@ class EnvManager:
   def get(key: str, default: Any = _UNDEFINED) -> Any:
     """
     Gets the value of an environment variable. If not found and no default is provided,
-    raises EnvironmentVariableNotFoundError.
+    raises PreconditionFailedError.
     """
     val = os.environ.get(key)
     if val is not None:
       return val
     if default is not _UNDEFINED:
       return default
-    raise EnvironmentVariableNotFoundError(
-      f"Required environment variable '{key}' is missing."
-    )
+    raise PreconditionFailedError(f"Required environment variable '{key}' is missing.")

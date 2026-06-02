@@ -56,12 +56,12 @@ class DailyBreadUseCase(UseCase):
 
     # 3. Use Mailer to send email
     from core.dto.mail_message import MailMessage
-    from core.exceptions.MailerConfigurationError import MailerConfigurationError
+    from core.exceptions.PreconditionFailedError import PreconditionFailedError
 
     sender = self.context.config.mail.email_from
     to = self.context.config.mail.email_to
     if not to:
-      raise MailerConfigurationError("EMAIL_TO is not configured in MailConfig")
+      raise PreconditionFailedError("EMAIL_TO is not configured in MailConfig")
 
     logger.debug("✉️ Preparing email to: {}", to)
     message = MailMessage(

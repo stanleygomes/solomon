@@ -6,8 +6,8 @@ from email.mime.multipart import MIMEMultipart
 from loguru import logger
 from core.dto.mail_config import MailConfig
 from core.dto.mail_message import MailMessage
-from core.exceptions.MailerConfigurationError import MailerConfigurationError
-from core.exceptions.MailerSendError import MailerSendError
+from core.exceptions.PreconditionFailedError import PreconditionFailedError
+from core.exceptions.ExternalServiceError import ExternalServiceError
 
 
 class Mailer:
@@ -20,7 +20,7 @@ class Mailer:
 
   def validateConfig(self) -> None:
     if not self.config.host or not self.config.username or not self.config.password:
-      raise MailerConfigurationError("Mailer: Missing SMTP configuration")
+      raise PreconditionFailedError("Mailer: Missing SMTP configuration")
 
   def _create_message(self, msg: MailMessage) -> MIMEMultipart:
     """
@@ -84,4 +84,4 @@ class Mailer:
         self.config.port,
         e,
       )
-      raise MailerSendError(f"Failed to send email to {msg.to}") from e
+      raise ExternalServiceError(f"Failed to send email to {msg.to}") from e

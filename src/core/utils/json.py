@@ -1,7 +1,7 @@
 import json
 from typing import Any
 from loguru import logger
-from core.exceptions.InvalidJSONError import InvalidJSONError
+from core.exceptions.ValidationError import ValidationError
 
 
 class JsonUtils:
@@ -28,4 +28,4 @@ class JsonUtils:
       logger.error(
         "❌ Failed to parse JSON. Content length: {}. Error: {}", len(cleaned_output), e
       )
-      raise InvalidJSONError(f"Failed to parse cleaned JSON content: {e}") from e
+      raise ValidationError(f"Failed to parse cleaned JSON content: {e}") from e

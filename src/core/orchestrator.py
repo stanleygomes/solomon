@@ -4,7 +4,7 @@ from core.database.setup import DatabaseSetup
 from core.usecases._base import UseCase
 from core.context import UseCaseContext
 from core.constants.use_cases import USE_CASES
-from core.exceptions.UnknownTaskError import UnknownTaskError
+from core.exceptions.NotFoundError import NotFoundError
 from core.repositories.task_execution import TaskExecutionRepository
 from core.utils.date import DateManager
 from core.constants.execution_status import ExecutionStatus
@@ -27,7 +27,7 @@ class UseCaseOrchestrator:
 
     use_case_cls = USE_CASES.get(task_name)
     if not use_case_cls:
-      raise UnknownTaskError(f"Unknown task: {task_name}")
+      raise NotFoundError(f"Unknown task: {task_name}")
 
     # Initialize Repository
     repo = TaskExecutionRepository(self.db_manager)

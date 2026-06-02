@@ -4,8 +4,8 @@ from core.usecases._base import UseCase
 from core.prompt import Prompt
 from core.repositories.study_class import StudyClassRepository
 from core.utils.json import JsonUtils
-from core.exceptions.InvalidPromptResponseFormatError import (
-  InvalidPromptResponseFormatError,
+from core.exceptions.ValidationError import (
+  ValidationError,
 )
 
 
@@ -57,9 +57,9 @@ class PlanClassesUseCase(UseCase):
       try:
         lessons_data = JsonUtils.parse(prompt_output)
         if not isinstance(lessons_data, list):
-          raise InvalidPromptResponseFormatError("Syllabus output is not a JSON list")
+          raise ValidationError("Syllabus output is not a JSON list")
       except Exception as e:
-        raise InvalidPromptResponseFormatError(
+        raise ValidationError(
           f"AI generated syllabus for '{plan.subject}' was not valid: {e}"
         ) from e
 

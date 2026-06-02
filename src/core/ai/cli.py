@@ -4,7 +4,7 @@ import subprocess
 from abc import abstractmethod
 from core.ai.abstract import AIProvider
 from core.utils.disk import DiskManager
-from core.exceptions.AIProviderError import AIProviderError
+from core.exceptions.ExternalServiceError import ExternalServiceError
 
 
 class CLIProvider(AIProvider):
@@ -42,7 +42,7 @@ class CLIProvider(AIProvider):
     custom_path = os.getenv(self.env_path_var)
     if custom_path:
       if not DiskManager.exists(custom_path):
-        raise AIProviderError(
+        raise ExternalServiceError(
           f"{self.__class__.__name__} binary not found at configured {self.env_path_var}: {custom_path}"
         )
       binary_path = custom_path
@@ -50,7 +50,7 @@ class CLIProvider(AIProvider):
       binary_path = shutil.which(self.binary_name)
 
     if not binary_path:
-      raise AIProviderError(
+      raise ExternalServiceError(
         f"{self.__class__.__name__} CLI ('{self.binary_name}') not found in PATH and {self.env_path_var} is not set"
       )
 
@@ -70,17 +70,19 @@ class CLIProvider(AIProvider):
       process.kill()
       # Read any remaining output after killing
       stdout, stderr = process.communicate()
-      raise AIProviderError(
+      raise ExternalServiceError(
         f"{self.__class__.__name__} CLI execution timed out: {stderr}"
       ) from e
 
     if process.returncode != 0:
-      raise AIProviderError(
+      raise ExternalServiceError(
         f"{self.__class__.__name__} CLI error (Exit Code {process.returncode}): {stderr}"
       )
 
     output = stdout.strip()
     if not output:
-      raise AIProviderError(f"{self.__class__.__name__} CLI returned an empty response")
+      raise ExternalServiceError(
+        f"{self.__class__.__name__} CLI returned an empty response"
+      )
 
     return output

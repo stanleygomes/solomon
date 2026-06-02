@@ -27,13 +27,13 @@ class ExecuteClassUseCase(UseCase):
     from core.template import TemplateRenderer
     from core.utils.markdown import Markdown
     from core.dto.mail_message import MailMessage
-    from core.exceptions.MailerConfigurationError import MailerConfigurationError
+    from core.exceptions.PreconditionFailedError import PreconditionFailedError
 
     today = DateManager.today_str()
     sender = self.context.config.mail.email_from
     to = self.context.config.mail.email_to
     if not to:
-      raise MailerConfigurationError("EMAIL_TO is not configured in MailConfig")
+      raise PreconditionFailedError("EMAIL_TO is not configured in MailConfig")
 
     for active_class in active_classes:
       lesson = repo.get_lesson_for_day(

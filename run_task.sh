@@ -9,9 +9,13 @@ set -e
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PROJECT_DIR"
 
+if [ "$1" = "run" ]; then
+  shift
+fi
+
 if [ -z "$1" ]; then
   echo "❌ Error: No task name provided." >&2
-  echo "Usage: $0 <task_name>" >&2
+  echo "Usage: $0 [run] <task_name>" >&2
   exit 1
 fi
 

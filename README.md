@@ -14,6 +14,20 @@ curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/mast
 
 This command will clone this repository into `~/.solomon`, configure the environment, and install all dependencies automatically.
 
+## Running Tasks (CLI)
+
+The bootstrap script installs a global shell alias `solomon` (in both `~/.bashrc` and `~/.zshrc`).
+
+You can run any configured task from anywhere in your system:
+
+```bash
+solomon run <task_name>
+# or simply
+solomon <task_name>
+```
+
+Under the hood, this command executes [run_task.sh](./run_task.sh), which resolves the repository path, ensures the correct Python virtual environment is loaded using `uv`, and triggers the execution script.
+
 ## Use cases
 
 ### @daily-bread

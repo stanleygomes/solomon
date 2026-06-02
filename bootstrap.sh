@@ -86,7 +86,38 @@ log_info "Running uv sync..."
 "$UV_BIN" sync
 log_success "Dependencies installed successfully."
 
+# Step 5: Install Shell Alias
+log_step "5" "Installing shell alias"
+ALIAS_CMD="alias solomon=\"$TARGET_DIR/run_task.sh\""
+
+add_alias_to_file() {
+    local shell_rc="$1"
+    if [ -f "$shell_rc" ]; then
+        if ! grep -q "alias solomon=" "$shell_rc"; then
+            echo -e "\n# Solomon Task Runner Alias\n$ALIAS_CMD" >> "$shell_rc"
+            log_success "Alias added to $shell_rc"
+        else
+            log_info "Alias already exists in $shell_rc"
+        fi
+    fi
+}
+
+add_alias_to_file "$HOME/.bashrc"
+add_alias_to_file "$HOME/.zshrc"
+
+# Try to source to make it available in current script context
+if [ -f "$HOME/.bashrc" ]; then
+    source "$HOME/.bashrc" || true
+fi
+if [ -f "$HOME/.zshrc" ]; then
+    source "$HOME/.zshrc" || true
+fi
+
 # Summary
-echo -e "\n${BOLD}${GREEN}🎉 Solomon installation completed successfully!${NC}"
-echo -e "You can configure your environment variables by editing ${BOLD}$TARGET_DIR/.env${NC}"
-echo -e "To run tasks, use: ${BOLD}cd $TARGET_DIR && ./run_task.sh <task_name>${NC}"
+echo -e "\n${BOLD}${GREEN}🎉 Solomon installation completed successfully!${NC}\n"
+echo -e "  ⚙️  ${BOLD}Configure environment variables:${NC}"
+echo -e "     edit: ${BOLD}$TARGET_DIR/.env${NC}\n"
+echo -e "  🔄 ${BOLD}Activate the 'solomon' command in this terminal session:${NC}"
+echo -e "     run:  ${BOLD}source ~/.bashrc${NC}  (or ${BOLD}source ~/.zshrc${NC})\n"
+echo -e "  🚀 ${BOLD}Run tasks from anywhere:${NC}"
+echo -e "     run:  ${BOLD}solomon run <task_name>${NC}\n"

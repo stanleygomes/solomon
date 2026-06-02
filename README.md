@@ -4,6 +4,16 @@
 
 A personal automation assistant designed to streamline routine tasks and execute recurring processes using Python scripts.
 
+## Quick Start (One-Liner)
+
+To set up a fresh machine, just run:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/bootstrap.sh | bash
+```
+
+This command will clone this repository into `~/.solomon`, configure the environment, and install all dependencies automatically.
+
 ## Use cases
 
 ### @daily-bread

@@ -105,14 +105,6 @@ add_alias_to_file() {
 add_alias_to_file "$HOME/.bashrc"
 add_alias_to_file "$HOME/.zshrc"
 
-# Try to source to make it available in current script context
-if [ -f "$HOME/.bashrc" ]; then
-    source "$HOME/.bashrc" || true
-fi
-if [ -f "$HOME/.zshrc" ]; then
-    source "$HOME/.zshrc" || true
-fi
-
 # Summary
 echo -e "\n${BOLD}${GREEN}🎉 Solomon installation completed successfully!${NC}\n"
 echo -e "  ⚙️  ${BOLD}Configure environment variables:${NC}"

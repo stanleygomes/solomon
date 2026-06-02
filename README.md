@@ -4,7 +4,7 @@
 
 A personal automation assistant designed to streamline routine tasks and execute recurring processes using Python scripts.
 
-## Quick Start (One-Liner)
+## ⚡ Quick Start (One-Liner)
 
 To set up a fresh machine, just run:
 
@@ -14,7 +14,7 @@ curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/mast
 
 This command will clone this repository into `~/.solomon`, configure the environment, and install all dependencies automatically.
 
-## Running Tasks (CLI)
+## 💻 Running Tasks (CLI)
 
 The bootstrap script installs a global shell alias `solomon` (in both `~/.bashrc` and `~/.zshrc`).
 
@@ -28,7 +28,7 @@ solomon <task_name>
 
 Under the hood, this command executes [run_task.sh](./run_task.sh), which resolves the repository path, ensures the correct Python virtual environment is loaded using `uv`, and triggers the execution script.
 
-## Use cases
+## 💡 Use cases
 
 ### @daily-bread
 
@@ -87,7 +87,7 @@ make run task=execute-class
 
 > WIP
 
-## 🚀 Execution & Automation
+## 🚀 Development
 
 All shortcuts are centralized in the [Makefile](./Makefile):
 

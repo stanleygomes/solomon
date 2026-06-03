@@ -11,7 +11,7 @@ class Solomon(App[None]):
 
   TITLE = f"{APP_NAME} v{APP_VERSION}"
   CSS_PATH = "../ui/styles/solomon.css"
-  BINDINGS = [("q", "quit", "Quit")]
+  BINDINGS = [("ctrl+q", "quit", "Quit")]
 
   def __init__(self) -> None:
     """

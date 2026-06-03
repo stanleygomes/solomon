@@ -3,6 +3,7 @@
 Screen {
     background: $background;
     layout: vertical;
+    overflow: hidden;
     color: $text;
 }
 
@@ -10,13 +11,11 @@ Header {
     background: $boost;
     color: $primary;
     text-style: bold;
-    border-bottom: solid $primary;
 }
 
 Footer {
     background: $boost;
     color: $primary;
-    border-top: solid $primary;
 }
 
 #chat_history {
@@ -56,9 +55,7 @@ Footer {
 
 #input_container {
     height: auto;
-    padding: 1;
     background: $boost;
-    border-top: tall $primary;
 }
 
 #chat_input {

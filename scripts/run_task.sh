@@ -22,7 +22,7 @@ fi
 TASK_NAME="$1"
 
 # Locate uv binary
-UV_BIN="/home/stanley/.local/bin/uv"
+UV_BIN="$HOME/.local/bin/uv"
 if [ ! -f "$UV_BIN" ]; then
   # Fallback to path lookup
   UV_BIN=$(which uv 2>/dev/null || echo "uv")

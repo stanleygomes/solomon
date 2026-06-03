@@ -9,7 +9,7 @@ A personal automation assistant designed to streamline routine tasks and execute
 To set up a fresh machine, just run:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/bootstrap.sh | bash
+curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/scripts/bootstrap.sh | bash
 ```
 
 This command will clone this repository into `~/.solomon`, configure the environment, and install all dependencies automatically.

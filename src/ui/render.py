@@ -1,25 +1,28 @@
 from textual.app import App
-from textual.widgets import Button
-from ui.screens.main_screen import MainScreen
+from ui.screens.chat_screen import ChatScreen
+from core.constants.app import APP_VERSION, APP_NAME
+from ui.constants.theme import RETRO_THEME
 
 
 class Solomon(App[None]):
   """
-  Solomon Automation Hub main application.
+  Solomon CLI
   """
 
+  TITLE = f"{APP_NAME} v{APP_VERSION}"
   CSS_PATH = "../ui/styles/solomon.css"
   BINDINGS = [("q", "quit", "Quit")]
 
+  def __init__(self) -> None:
+    """
+    Initialize the application and register/set the retro theme.
+    """
+    super().__init__()
+    self.register_theme(RETRO_THEME)
+    self.theme = "retro"
+
   def on_mount(self) -> None:
     """
-    Handle app mount event by pushing the main screen.
+    Handle app mount event by pushing the chat screen.
     """
-    self.push_screen(MainScreen())
-
-  def on_button_pressed(self, event: Button.Pressed) -> None:
-    """
-    Handle button press events.
-    """
-    if event.button.id == "action_button":
-      self.notify("Action button pressed!")
+    self.push_screen(ChatScreen())

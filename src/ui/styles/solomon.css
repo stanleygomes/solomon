@@ -1,21 +1,74 @@
+/* Stylesheet for Solomon CLI - Theme variables are registered in Python */
+
 Screen {
-    align: center middle;
+    background: $background;
+    layout: vertical;
+    color: $text;
+}
+
+Header {
+    background: $boost;
+    color: $primary;
+    text-style: bold;
+    border-bottom: solid $primary;
+}
+
+Footer {
+    background: $boost;
+    color: $primary;
+    border-top: solid $primary;
+}
+
+#chat_history {
+    height: 1fr;
+    overflow-y: scroll;
+    padding: 1 2;
+    border: double $primary;
+    background: $background;
+    margin-bottom: 1;
+}
+
+.message {
+    margin: 1 0;
+    padding: 1 2;
+    width: 100%;
+}
+
+.user-message {
+    color: $accent;
+    background: $boost;
+    border-left: tall $accent;
+    padding-left: 2;
+}
+
+.ai-message {
+    color: $text;
+    background: $boost;
+    border-left: tall $secondary;
+    padding-left: 2;
+}
+
+.thinking {
+    color: $text-muted;
+    text-style: italic;
+    border-left: tall $primary-darken-3;
+}
+
+#input_container {
+    height: auto;
+    padding: 1;
+    background: $boost;
+    border-top: tall $primary;
+}
+
+#chat_input {
+    width: 100%;
+    border: tall $primary;
+    color: $primary;
     background: $background;
 }
 
-#main_content {
-    content-align: center middle;
-    text-style: bold;
-    color: $accent;
-    margin-bottom: 2;
-    background: $boost;
-    border: tall $primary;
-    padding: 1 2;
-    width: 40;
-    height: auto;
-}
-
-#action_button {
-    width: 20;
-    margin: 1;
+/* Focus state for input to keep retro look */
+#chat_input:focus {
+    border: double $accent;
 }

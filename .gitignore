@@ -15,6 +15,7 @@ wheels/
 .mypy_cache/
 .DS_Store
 /temp/
+cache/
 
 # logs
 *.log

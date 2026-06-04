@@ -53,6 +53,19 @@ Footer {
     border-left: tall $primary-darken-3;
 }
 
+#command_suggestions {
+    background: $surface;
+    border: tall $primary;
+    display: none; /* hidden by default */
+    max-height: 8;
+    color: $primary;
+}
+
+#command_suggestions > .option-list--option-highlighted {
+    background: $accent;
+    color: $background;
+}
+
 #input_container {
     height: auto;
     background: $boost;

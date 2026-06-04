@@ -1,10 +1,11 @@
 from loguru import logger
+from textual import on, work
 from textual.app import ComposeResult
 from textual.widgets import Input, Static
-from textual.containers import VerticalScroll, Horizontal
-from textual import work
 from core.ai.factory import AIProviderFactory
 from ui.screens.base_screen import BaseScreen
+from ui.widgets.chat_history import ChatHistory
+from ui.widgets.chat_input import ChatInput
 
 
 class ChatScreen(BaseScreen):
@@ -14,25 +15,21 @@ class ChatScreen(BaseScreen):
 
   def compose_content(self) -> ComposeResult:
     """
-    Compose the specific content layout of this screen.
+    Compose the specific content layout of this screen using custom widgets.
     """
-    with VerticalScroll(id="chat_history"):
-      yield Static(
-        "🤖 Welcome to Solomon! Type a message below to chat.",
-        classes="message ai-message",
-      )
-    with Horizontal(id="input_container"):
-      yield Input(placeholder="Type your message here...", id="chat_input")
+    yield ChatHistory(id="chat_history")
+    yield ChatInput(id="input_container")
 
   def on_mount(self) -> None:
     """
-    Set focus to the input widget when screen mounts.
+    Focus the input widget on mount.
     """
-    self.query_one("#chat_input").focus()
+    self.query_one("#input_container", ChatInput).focus_input()
 
-  def on_input_submitted(self, event: Input.Submitted) -> None:
+  @on(Input.Submitted, "#chat_input")
+  def handle_chat_submitted(self, event: Input.Submitted) -> None:
     """
-    Handle the input submit event to send messages.
+    Orchestrate flow when user submits a message.
     """
     message_text = event.value.strip()
     if not message_text:
@@ -41,22 +38,11 @@ class ChatScreen(BaseScreen):
     # Clear input
     event.input.value = ""
 
-    # Mount user message
-    chat_history = self.query_one("#chat_history")
-    chat_history.mount(
-      Static(f"👤 User: {message_text}", classes="message user-message")
-    )
+    chat_history = self.query_one("#chat_history", ChatHistory)
+    chat_history.add_user_message(message_text)
+    placeholder = chat_history.add_thinking_placeholder()
 
-    # Mount thinking placeholder
-    placeholder = Static(
-      "⏳ Solomon is thinking...", classes="message ai-message thinking"
-    )
-    chat_history.mount(placeholder)
-
-    # Scroll to the placeholder
-    chat_history.scroll_to_widget(placeholder)
-
-    # Trigger AI processing in background
+    # Trigger background processor
     self.process_chat(message_text, placeholder)
 
   @work(thread=True)
@@ -72,7 +58,7 @@ class ChatScreen(BaseScreen):
       def update_ui() -> None:
         placeholder.update(f"🤖 Solomon: {response}")
         placeholder.remove_class("thinking")
-        chat_history = self.query_one("#chat_history")
+        chat_history = self.query_one("#chat_history", ChatHistory)
         chat_history.scroll_to_widget(placeholder)
 
       self.app.call_from_thread(update_ui)

@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 from loguru import logger
-from core.database.setup import DatabaseSetup
+from infra.database.setup import DatabaseSetup
 from core.utils.disk import DiskUtils
 from core.utils.date import DateUtils
 
@@ -11,12 +11,8 @@ class DatabaseMigrator:
   Manages and runs database migrations using plain SQL files.
   """
 
-  def __init__(
-    self, db_manager: DatabaseSetup, migrations_dir: Path | None = None
-  ) -> None:
+  def __init__(self, db_manager: DatabaseSetup, migrations_dir: Path) -> None:
     self.db_manager = db_manager
-    if migrations_dir is None:
-      migrations_dir = DiskUtils.resolve_path(__file__, "..", "..", "migrations")
     self.migrations_dir = migrations_dir
 
   def migrate(self) -> None:

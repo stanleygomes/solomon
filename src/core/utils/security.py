@@ -1,7 +1,7 @@
 import secrets
 
 
-class SecurityManager:
+class SecurityUtils:
   """
   Utility manager for security and cryptographic operations.
   """

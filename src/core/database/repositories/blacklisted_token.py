@@ -1,6 +1,6 @@
 from core.database.setup import DatabaseSetup
 from core.database.models.blacklisted_token import BlacklistedTokenModel
-from core.utils.date import DateManager
+from core.utils.date import DateUtils
 
 
 class BlacklistedTokenRepository:
@@ -16,7 +16,7 @@ class BlacklistedTokenRepository:
     """
     Saves a token to the blacklist.
     """
-    now = DateManager.now_iso()
+    now = DateUtils.now_iso()
     return BlacklistedTokenModel.create(
       token=token,
       blacklisted_at=now,
@@ -33,7 +33,7 @@ class BlacklistedTokenRepository:
     """
     Deletes all expired blacklisted tokens.
     """
-    now = DateManager.now_iso()
+    now = DateUtils.now_iso()
     BlacklistedTokenModel.delete().where(
       BlacklistedTokenModel.expires_at < now
     ).execute()

@@ -1,7 +1,7 @@
 from markdown_it import MarkdownIt
 
 
-class Markdown:
+class MarkdownUtils:
   """
   Utility class for parsing and converting Markdown text to HTML.
   """

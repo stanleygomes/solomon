@@ -1,7 +1,7 @@
 from core.database.setup import DatabaseSetup
 from core.database.models.user import UserModel
-from core.utils.date import DateManager
-from core.utils.string import StringManager
+from core.utils.date import DateUtils
+from core.utils.string import StringUtils
 
 
 class UserRepository:
@@ -17,9 +17,9 @@ class UserRepository:
     """
     Creates a new user.
     """
-    now = DateManager.now_iso()
+    now = DateUtils.now_iso()
     return UserModel.create(
-      email=StringManager.clean_email(email),
+      email=StringUtils.clean_email(email),
       created_at=now,
       updated_at=now,
     )
@@ -29,7 +29,7 @@ class UserRepository:
     Finds a user by email address.
     """
     return UserModel.filter(
-      UserModel.email == StringManager.clean_email(email)
+      UserModel.email == StringUtils.clean_email(email)
     ).first()
 
   def find_by_id(self, user_id: str) -> UserModel | None:

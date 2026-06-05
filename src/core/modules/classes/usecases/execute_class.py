@@ -22,14 +22,14 @@ class ExecuteClassUseCase(Workflow):
       logger.warning("🚫 No active study classes found to process.")
       return
 
-    from core.utils.date import DateManager
+    from core.utils.date import DateUtils
     from core.constants.themes import PREDEFINED_THEMES
     from core.services.render.renderer import TemplateRenderer
-    from core.utils.markdown import Markdown
+    from core.utils.markdown import MarkdownUtils
     from core.services.mail.message import MailMessage
     from core.exceptions.PreconditionFailedError import PreconditionFailedError
 
-    today = DateManager.today_str()
+    today = DateUtils.today_str()
     sender = self.context.config.mail.email_from
     to = self.context.config.mail.email_to
     if not to:
@@ -65,7 +65,7 @@ class ExecuteClassUseCase(Workflow):
       }
       prompt_output = Prompt.execute("class-segment.md", context=prompt_context)
 
-      html_content = Markdown.to_html(prompt_output)
+      html_content = MarkdownUtils.to_html(prompt_output)
       render_context = {
         "date": today,
         "content": html_content,

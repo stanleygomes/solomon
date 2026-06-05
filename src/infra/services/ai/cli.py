@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 from abc import abstractmethod
-from core.services.ai.abstract import AIProvider
+from infra.services.ai.abstract import AIProvider
 from core.utils.disk import DiskUtils
 from core.exceptions.ExternalServiceError import ExternalServiceError
 

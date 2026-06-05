@@ -6,7 +6,7 @@ from core.context import WorkflowContext
 from core.constants.use_cases import USE_CASES
 from core.exceptions.NotFoundError import NotFoundError
 from core.database.repositories.task_execution import TaskExecutionRepository
-from core.utils.date import DateManager
+from core.utils.date import DateUtils
 from core.constants.execution_status import ExecutionStatus
 
 
@@ -60,14 +60,14 @@ class UseCaseOrchestrator:
       repo.save(
         task_name=task_name,
         status=ExecutionStatus.SUCCESS,
-        executed_at=DateManager.now_iso(),
+        executed_at=DateUtils.now_iso(),
       )
       logger.debug("✨ Use Case executed successfully: {}", use_case_cls.__name__)
     except Exception as e:
       repo.save(
         task_name=task_name,
         status=ExecutionStatus.FAILED,
-        executed_at=DateManager.now_iso(),
+        executed_at=DateUtils.now_iso(),
       )
       logger.error("❌ Use Case execution failed: {}", str(e))
       raise e

@@ -22,10 +22,10 @@ class PlanClassesUseCase(Workflow):
 
     repo = StudyClassRepository(self.context.db_manager)
 
-    from core.utils.env import EnvManager
+    from core.utils.env import EnvUtils
 
-    env_subject = EnvManager.get("SUBJECT", default=None)
-    env_duration = EnvManager.get("DURATION_DAYS", default=None)
+    env_subject = EnvUtils.get("SUBJECT", default=None)
+    env_duration = EnvUtils.get("DURATION_DAYS", default=None)
 
     if env_subject and env_duration:
       duration_days = int(env_duration)

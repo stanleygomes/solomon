@@ -1,6 +1,6 @@
-from core.database.setup import DatabaseSetup
-from core.database.models.message import MessageModel
-from core.database.models.conversation import ConversationModel
+from infra.database.setup import DatabaseSetup
+from infra.database.models.message import MessageModel
+from infra.database.models.conversation import ConversationModel
 from core.constants.message_role import MessageRole
 from core.utils.date import DateUtils
 

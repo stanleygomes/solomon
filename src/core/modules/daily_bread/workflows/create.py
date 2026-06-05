@@ -16,9 +16,9 @@ class DailyBreadWorkflow(Workflow):
     """
     Checks if the Daily Bread devotional has already been successfully sent today.
     """
-    from core.utils.date import DateManager
+    from core.utils.date import DateUtils
 
-    today = DateManager.today_str()
+    today = DateUtils.today_str()
     if self.context.task_execution_repo.has_run_on_date("daily-bread", today):
       return False
 
@@ -35,13 +35,13 @@ class DailyBreadWorkflow(Workflow):
     prompt_output = Prompt.execute("daily-bread.md")
 
     # 2. Compile HTML email template with generated text and current date
-    from core.utils.date import DateManager
+    from core.utils.date import DateUtils
     from core.constants.themes import PREDEFINED_THEMES
     from core.services.render.renderer import TemplateRenderer
-    from core.utils.markdown import Markdown
+    from core.utils.markdown import MarkdownUtils
 
-    today = DateManager.today_str()
-    html_content = Markdown.to_html(prompt_output)
+    today = DateUtils.today_str()
+    html_content = MarkdownUtils.to_html(prompt_output)
 
     render_context = {
       "title": f"The Daily Bread for {today}",

@@ -11,11 +11,11 @@ from core.services.auth.jwt_manager import JwtManager
 from core.services.mail.mailer import Mailer
 from core.services.mail.message import MailMessage
 from core.services.auth.dto import TokenPair
-from core.utils.date import DateManager
-from core.utils.security import SecurityManager
-from core.utils.string import StringManager
-from core.utils.disk import DiskManager
-from core.utils.markdown import Markdown
+from core.utils.date import DateUtils
+from core.utils.security import SecurityUtils
+from core.utils.string import StringUtils
+from core.utils.disk import DiskUtils
+from core.utils.markdown import MarkdownUtils
 from core.constants.themes import PREDEFINED_THEMES
 from core.services.render.renderer import TemplateRenderer
 from core.exceptions.PreconditionFailedError import PreconditionFailedError
@@ -54,7 +54,7 @@ class AuthService:
     """
     Generates a 6-digit magic code, stores it in the database, and emails it.
     """
-    email = StringManager.clean_email(email)
+    email = StringUtils.clean_email(email)
     if not email:
       raise PreconditionFailedError("Email not provided")
 
@@ -63,24 +63,24 @@ class AuthService:
     if not user:
       raise AuthenticationError("User not found")
 
-    code = SecurityManager.generate_numeric_code(6)
+    code = SecurityUtils.generate_numeric_code(6)
     expires_in_seconds = self.magic_code_expiration
 
     # Save magic code to database
-    expires_at = DateManager.now_plus_seconds(expires_in_seconds)
+    expires_at = DateUtils.now_plus_seconds(expires_in_seconds)
     self.magic_code_repo.create(email, code, expires_at)
 
     # Render HTML email using Markdown template and theme
-    template_path = DiskManager.resolve_path(__file__, "templates", "magic_code.md")
-    template_content = DiskManager.read_text(template_path)
+    template_path = DiskUtils.resolve_path(__file__, "templates", "magic_code.md")
+    template_content = DiskUtils.read_text(template_path)
     expires_in_minutes = expires_in_seconds // 60
 
     rendered_markdown = TemplateRenderer.render_text(
       template_content, {"code": code, "expires_in_minutes": expires_in_minutes}
     )
-    html_content = Markdown.to_html(rendered_markdown)
+    html_content = MarkdownUtils.to_html(rendered_markdown)
 
-    today = DateManager.today_str()
+    today = DateUtils.today_str()
     render_context = {
       "title": "Your Solomon Access Code",
       "date": today,
@@ -103,11 +103,11 @@ class AuthService:
     """
     Verifies a magic code from the database and handles rate limiting.
     """
-    email = StringManager.clean_email(email)
+    email = StringUtils.clean_email(email)
     code = code.strip()
 
     record = self.magic_code_repo.find_latest(email)
-    if not record or DateManager.is_expired(record.expires_at):
+    if not record or DateUtils.is_expired(record.expires_at):
       raise AuthenticationError("Expired or invalid code")
 
     if record.attempts >= 5:
@@ -188,7 +188,7 @@ class AuthService:
 
       expires_in = int(exp - time.time())
       if expires_in > 0:
-        expires_at_iso = DateManager.now_plus_seconds(expires_in)
+        expires_at_iso = DateUtils.now_plus_seconds(expires_in)
         self.blacklist_repo.blacklist(token, expires_at_iso)
     except Exception as e:
       logger.warning("Failed to parse and blacklist token: {}", e)

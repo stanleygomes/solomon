@@ -2,7 +2,7 @@ from dataclasses import asdict
 from jinja2 import Template
 from loguru import logger
 from core.services.render.theme import Theme
-from core.utils.disk import DiskManager
+from core.utils.disk import DiskUtils
 
 
 class HTMLCompiler:
@@ -17,18 +17,18 @@ class HTMLCompiler:
     """
     logger.debug("🛠️ Starting template compilation for theme: {}", theme.name)
 
-    html_path = DiskManager.resolve_path(__file__, "templates", "base.html")
-    css_path = DiskManager.resolve_path(__file__, "templates", "base.css")
+    html_path = DiskUtils.resolve_path(__file__, "templates", "base.html")
+    css_path = DiskUtils.resolve_path(__file__, "templates", "base.css")
 
-    if not DiskManager.exists(html_path):
+    if not DiskUtils.exists(html_path):
       raise FileNotFoundError(f"Base HTML template not found at {html_path}")
 
-    if not DiskManager.exists(css_path):
+    if not DiskUtils.exists(css_path):
       raise FileNotFoundError(f"Base CSS template not found at {css_path}")
 
     logger.debug("📖 Reading base templates from disk")
-    css_template_content = DiskManager.read_text(css_path)
-    html_template_content = DiskManager.read_text(html_path)
+    css_template_content = DiskUtils.read_text(css_path)
+    html_template_content = DiskUtils.read_text(html_path)
 
     # 1. Compile CSS with Theme
     logger.debug("🎨 Rendering CSS with theme colors")

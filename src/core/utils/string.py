@@ -1,4 +1,4 @@
-class StringManager:
+class StringUtils:
   """
   Utility manager for string operations and sanitization.
   """

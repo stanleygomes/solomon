@@ -1,5 +1,5 @@
-from core.database.setup import DatabaseSetup
-from core.database.models.conversation import ConversationModel
+from infra.database.setup import DatabaseSetup
+from infra.database.models.conversation import ConversationModel
 from core.utils.date import DateUtils
 
 

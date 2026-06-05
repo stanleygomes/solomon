@@ -1,6 +1,6 @@
-from core.database.setup import DatabaseSetup
-from core.database.models.study_class import StudyClassModel
-from core.database.models.lesson import LessonModel
+from infra.database.setup import DatabaseSetup
+from infra.database.models.study_class import StudyClassModel
+from infra.database.models.lesson import LessonModel
 from core.utils.date import DateUtils
 
 

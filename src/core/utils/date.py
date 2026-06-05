@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-class DateManager:
+class DateUtils:
   """
   Utility manager for date and time helper operations.
   """

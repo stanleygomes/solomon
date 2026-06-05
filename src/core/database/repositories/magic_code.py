@@ -1,6 +1,6 @@
 from core.database.setup import DatabaseSetup
 from core.database.models.magic_code import MagicCodeModel
-from core.utils.date import DateManager
+from core.utils.date import DateUtils
 
 
 class MagicCodeRepository:
@@ -16,7 +16,7 @@ class MagicCodeRepository:
     """
     Saves a newly generated magic code.
     """
-    now = DateManager.now_iso()
+    now = DateUtils.now_iso()
     return MagicCodeModel.create(
       email=email,
       code=code,

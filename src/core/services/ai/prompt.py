@@ -1,6 +1,6 @@
 from typing import Any
 from core.services.ai.factory import AIProviderFactory
-from core.utils.disk import DiskManager
+from core.utils.disk import DiskUtils
 from core.services.render.renderer import TemplateRenderer
 
 
@@ -15,10 +15,10 @@ class Prompt:
     Reads the prompt from the prompts folder, interpolates it with context if provided,
     and executes it using the configured AI provider.
     """
-    prompts_dir = DiskManager.resolve_path(__file__, "prompts")
+    prompts_dir = DiskUtils.resolve_path(__file__, "prompts")
     prompt_path = prompts_dir / filename
 
-    prompt_content = DiskManager.read_text(prompt_path)
+    prompt_content = DiskUtils.read_text(prompt_path)
 
     if context:
       prompt_content = TemplateRenderer.render_text(prompt_content, context)

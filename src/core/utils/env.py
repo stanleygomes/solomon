@@ -7,7 +7,7 @@ from core.exceptions.PreconditionFailedError import (
 _UNDEFINED = object()
 
 
-class EnvManager:
+class EnvUtils:
   """
   Utility class for managing environment variables.
   """

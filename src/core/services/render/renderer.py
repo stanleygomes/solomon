@@ -2,7 +2,7 @@ from jinja2 import Template
 from loguru import logger
 from core.services.render.compiler import HTMLCompiler
 from core.services.render.theme import Theme
-from core.utils.dict import DictManager
+from core.utils.dict import DictUtils
 
 
 class TemplateRenderer:
@@ -18,7 +18,7 @@ class TemplateRenderer:
     logger.debug("🎬 Rendering template for theme: {}", theme.name)
 
     compiled_template = HTMLCompiler.compile(theme)
-    ctx_dict = DictManager.to_dict(context)
+    ctx_dict = DictUtils.to_dict(context)
 
     template = Template(compiled_template)
     rendered_content = template.render(**ctx_dict)
@@ -32,7 +32,7 @@ class TemplateRenderer:
     Renders a raw template text using the provided context.
     """
     logger.debug("🎬 Rendering text template")
-    ctx_dict = DictManager.to_dict(context)
+    ctx_dict = DictUtils.to_dict(context)
 
     template = Template(template_content)
     rendered_content = template.render(**ctx_dict)

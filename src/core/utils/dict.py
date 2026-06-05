@@ -2,7 +2,7 @@ from dataclasses import asdict, is_dataclass
 from typing import Any
 
 
-class DictManager:
+class DictUtils:
   """
   Utility class for handling dictionary conversions and operations.
   """

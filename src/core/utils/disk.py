@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-class DiskManager:
+class DiskUtils:
   """
   Manager for disk operations (files and directories).
   """

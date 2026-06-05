@@ -1,5 +1,14 @@
 from loguru import logger
-from core.dto.logger_config import LoggerConfig
+from pathlib import Path
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class LoggerConfig:
+  path: Path
+  level: str
+  rotation: str
+  retention: str
 
 
 def setup_logger(config: LoggerConfig) -> None:

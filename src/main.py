@@ -4,7 +4,7 @@ from core.config.environment import Config
 from ui.render import Solomon
 from core.config.logger import setup_logger
 from core.database.setup import DatabaseSetup
-from core.database.migrations import DatabaseMigratons
+from core.database.migrator import DatabaseMigrator
 from core.utils.disk import DiskManager
 from core.orchestrator import UseCaseOrchestrator
 
@@ -30,7 +30,7 @@ def main() -> None:
   db_manager = DatabaseSetup(config.db.path)
 
   migrations_dir = DiskManager.resolve_path(__file__, "core", "migrations")
-  migrator = DatabaseMigratons(db_manager, migrations_dir)
+  migrator = DatabaseMigrator(db_manager, migrations_dir)
   migrator.migrate()
 
   if task:

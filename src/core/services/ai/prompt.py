@@ -1,7 +1,7 @@
 from typing import Any
-from core.ai.factory import AIProviderFactory
+from core.services.ai.factory import AIProviderFactory
 from core.utils.disk import DiskManager
-from core.template import TemplateRenderer
+from core.services.render.renderer import TemplateRenderer
 
 
 class Prompt:

@@ -1,7 +1,7 @@
 from core.workflow import Workflow
 from core.context import WorkflowContext
 from loguru import logger
-from core.prompt import Prompt
+from core.services.ai.prompt import Prompt
 
 
 class DailyBreadWorkflow(Workflow):
@@ -37,7 +37,7 @@ class DailyBreadWorkflow(Workflow):
     # 2. Compile HTML email template with generated text and current date
     from core.utils.date import DateManager
     from core.constants.themes import PREDEFINED_THEMES
-    from core.template import TemplateRenderer
+    from core.services.render.renderer import TemplateRenderer
     from core.utils.markdown import Markdown
 
     today = DateManager.today_str()
@@ -55,7 +55,7 @@ class DailyBreadWorkflow(Workflow):
     html_body = TemplateRenderer.render_html(theme, render_context)
 
     # 3. Use Mailer to send email
-    from core.dto.mail_message import MailMessage
+    from core.services.mail.message import MailMessage
     from core.exceptions.PreconditionFailedError import PreconditionFailedError
 
     sender = self.context.config.mail.email_from

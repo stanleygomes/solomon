@@ -1,8 +1,8 @@
 from typing import cast
 from loguru import logger
 from core.workflow import Workflow
-from core.prompt import Prompt
-from core.repositories.study_class import StudyClassRepository
+from core.services.ai.prompt import Prompt
+from core.database.repositories.study_class import StudyClassRepository
 from core.utils.json import JsonUtils
 from core.exceptions.ValidationError import (
   ValidationError,

@@ -1,4 +1,4 @@
-from core.dto.theme import Theme
+from core.services.render.theme import Theme
 
 PREDEFINED_THEMES = {
   "noemi": Theme(

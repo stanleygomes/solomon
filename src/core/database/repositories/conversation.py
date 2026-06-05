@@ -1,5 +1,5 @@
 from core.database.setup import DatabaseSetup
-from core.models.conversation import ConversationModel
+from core.database.models.conversation import ConversationModel
 from core.utils.date import DateManager
 
 

@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from jinja2 import Template
 from loguru import logger
-from core.dto.theme import Theme
+from core.services.render.theme import Theme
 from core.utils.disk import DiskManager
 
 

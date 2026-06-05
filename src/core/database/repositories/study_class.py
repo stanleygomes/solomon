@@ -1,6 +1,6 @@
 from core.database.setup import DatabaseSetup
-from core.models.study_class import StudyClassModel
-from core.models.lesson import LessonModel
+from core.database.models.study_class import StudyClassModel
+from core.database.models.lesson import LessonModel
 from core.utils.date import DateManager
 
 

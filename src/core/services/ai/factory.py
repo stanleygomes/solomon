@@ -1,8 +1,8 @@
-from core.ai.abstract import AIProvider
+from core.services.ai.abstract import AIProvider
 from core.config.environment import Config
 from core.exceptions.PreconditionFailedError import PreconditionFailedError
-from core.ai.providers.copilot import CopilotProvider
-from core.ai.providers.antigravity import AntigravityProvider
+from core.services.ai.providers.copilot import CopilotProvider
+from core.services.ai.providers.antigravity import AntigravityProvider
 
 
 class AIProviderFactory:

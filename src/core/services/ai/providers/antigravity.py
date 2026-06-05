@@ -1,4 +1,4 @@
-from core.ai.cli import CLIProvider
+from core.services.ai.cli import CLIProvider
 
 
 class AntigravityProvider(CLIProvider):

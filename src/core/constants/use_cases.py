@@ -1,6 +1,6 @@
-from core.module.daily_bread.worfkflows.create import DailyBreadWorkflow
-from core.module.classes.usecases.execute_class import ExecuteClassUseCase
-from core.module.classes.usecases.plan_classes import PlanClassesUseCase
+from core.modules.daily_bread.worfkflows.create import DailyBreadWorkflow
+from core.modules.classes.usecases.execute_class import ExecuteClassUseCase
+from core.modules.classes.usecases.plan_classes import PlanClassesUseCase
 
 USE_CASES = {
   "daily-bread": DailyBreadWorkflow,

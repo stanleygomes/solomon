@@ -1,6 +1,6 @@
 import uuid
 from peewee import CharField, ForeignKeyField, Model, TextField, UUIDField
-from core.models.conversation import ConversationModel
+from core.database.models.conversation import ConversationModel
 
 
 class MessageModel(Model):

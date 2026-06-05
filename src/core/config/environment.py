@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from pathlib import Path
 from dotenv import load_dotenv
-from core.dto.logger_config import LoggerConfig
-from core.dto.mail_config import MailConfig
-from core.dto.ai_config import AiConfig
-from core.dto.db_config import DbConfig
+from core.config.logger import LoggerConfig
+from core.services.mail.config import MailConfig
+from core.services.ai.config import AiConfig
+from core.database.dto.db_config import DbConfig
 from core.utils.env import EnvManager
 
 

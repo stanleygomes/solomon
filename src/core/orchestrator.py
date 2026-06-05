@@ -5,7 +5,7 @@ from core.workflow import Workflow
 from core.context import WorkflowContext
 from core.constants.use_cases import USE_CASES
 from core.exceptions.NotFoundError import NotFoundError
-from core.repositories.task_execution import TaskExecutionRepository
+from core.database.repositories.task_execution import TaskExecutionRepository
 from core.utils.date import DateManager
 from core.constants.execution_status import ExecutionStatus
 
@@ -33,8 +33,8 @@ class UseCaseOrchestrator:
     repo = TaskExecutionRepository(self.db_manager)
 
     # Resolve dependencies once inside a single context container DTO
-    from core.ai.factory import AIProviderFactory
-    from core.mailer import Mailer
+    from core.services.ai.factory import AIProviderFactory
+    from core.services.mail.mailer import Mailer
 
     context = WorkflowContext(
       config=self.config,

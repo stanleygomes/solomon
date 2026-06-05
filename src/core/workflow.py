@@ -11,12 +11,13 @@ class Workflow(ABC):
     self.context = context
 
   @abstractmethod
-  def execute(self) -> None:
+  def execute(self, input: str | None) -> str:
     """
     Executes the workflow logic.
     """
     pass
 
+  @abstractmethod
   def should_execute(self) -> bool:
     """
     Determines whether the workflow should execute based on the context.

@@ -2,7 +2,7 @@ from loguru import logger
 from textual import on, work
 from textual.app import ComposeResult
 from textual.widgets import Input, Static
-from core.ai.factory import AIProviderFactory
+from core.services.ai.factory import AIProviderFactory
 from ui.screens.base_screen import BaseScreen
 from ui.widgets.chat_history import ChatHistory
 from ui.widgets.chat_input import ChatInput

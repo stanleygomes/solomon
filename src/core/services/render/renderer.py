@@ -1,7 +1,7 @@
 from jinja2 import Template
 from loguru import logger
-from core.html import HTMLCompiler
-from core.dto.theme import Theme
+from core.services.render.compiler import HTMLCompiler
+from core.services.render.theme import Theme
 from core.utils.dict import DictManager
 
 

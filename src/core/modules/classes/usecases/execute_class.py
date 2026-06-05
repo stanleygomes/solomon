@@ -1,8 +1,8 @@
 from typing import cast
 from loguru import logger
 from core.workflow import Workflow
-from core.prompt import Prompt
-from core.repositories.study_class import StudyClassRepository
+from core.services.ai.prompt import Prompt
+from core.database.repositories.study_class import StudyClassRepository
 
 
 class ExecuteClassUseCase(Workflow):
@@ -24,9 +24,9 @@ class ExecuteClassUseCase(Workflow):
 
     from core.utils.date import DateManager
     from core.constants.themes import PREDEFINED_THEMES
-    from core.template import TemplateRenderer
+    from core.services.render.renderer import TemplateRenderer
     from core.utils.markdown import Markdown
-    from core.dto.mail_message import MailMessage
+    from core.services.mail.message import MailMessage
     from core.exceptions.PreconditionFailedError import PreconditionFailedError
 
     today = DateManager.today_str()

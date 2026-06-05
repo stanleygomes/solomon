@@ -6,7 +6,7 @@ from core.utils.disk import DiskManager
 from core.utils.date import DateManager
 
 
-class DatabaseMigratons:
+class DatabaseMigrator:
   """
   Manages and runs database migrations using plain SQL files.
   """

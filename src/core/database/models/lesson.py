@@ -1,6 +1,6 @@
 import uuid
 from peewee import CharField, ForeignKeyField, IntegerField, Model, TextField, UUIDField
-from core.models.study_class import StudyClassModel
+from core.database.models.study_class import StudyClassModel
 
 
 class LessonModel(Model):

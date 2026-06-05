@@ -4,8 +4,8 @@ import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from loguru import logger
-from core.dto.mail_config import MailConfig
-from core.dto.mail_message import MailMessage
+from core.services.mail.config import MailConfig
+from core.services.mail.message import MailMessage
 from core.exceptions.PreconditionFailedError import PreconditionFailedError
 from core.exceptions.ExternalServiceError import ExternalServiceError
 

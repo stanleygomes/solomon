@@ -11,8 +11,12 @@ class DatabaseMigrator:
   Manages and runs database migrations using plain SQL files.
   """
 
-  def __init__(self, db_manager: DatabaseSetup, migrations_dir: Path) -> None:
+  def __init__(
+    self, db_manager: DatabaseSetup, migrations_dir: Path | None = None
+  ) -> None:
     self.db_manager = db_manager
+    if migrations_dir is None:
+      migrations_dir = DiskManager.resolve_path(__file__, "..", "..", "migrations")
     self.migrations_dir = migrations_dir
 
   def migrate(self) -> None:

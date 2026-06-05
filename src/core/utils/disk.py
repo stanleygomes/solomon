@@ -33,3 +33,10 @@ class DiskManager:
     Resolves an absolute path relative to the directory of the specified base file.
     """
     return Path(base_file).parent.joinpath(*parts).resolve()
+
+  @staticmethod
+  def write_bytes(path: str | Path, data: bytes) -> None:
+    """
+    Writes binary data to a file.
+    """
+    Path(path).write_bytes(data)

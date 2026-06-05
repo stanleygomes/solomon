@@ -6,6 +6,7 @@ from core.config.logger import setup_logger
 from core.database.setup import DatabaseSetup
 from core.database.migrator import DatabaseMigrator
 from core.utils.disk import DiskManager
+from api.routes.status import router as status_router
 
 
 @asynccontextmanager
@@ -22,15 +23,4 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title=APP_NAME, version=APP_VERSION, lifespan=lifespan)
-
-
-@app.get("/status")
-def get_status() -> dict[str, str]:
-  """
-  Retrieve the current operational status of the API.
-  """
-  return {
-    "status": "ok",
-    "app": APP_NAME,
-    "version": APP_VERSION,
-  }
+app.include_router(status_router)

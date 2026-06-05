@@ -1,7 +1,7 @@
 from textual.app import App
-from ui.screens.chat_screen import ChatScreen
+from cli.screens.chat_screen import ChatScreen
 from core.constants.app import APP_VERSION, APP_NAME
-from ui.constants.theme import RETRO_THEME
+from cli.constants.theme import RETRO_THEME
 
 
 class Solomon(App[None]):
@@ -10,7 +10,7 @@ class Solomon(App[None]):
   """
 
   TITLE = f"{APP_NAME} v{APP_VERSION}"
-  CSS_PATH = "../ui/styles/solomon.css"
+  CSS_PATH = "styles/solomon.css"
   BINDINGS = [("ctrl+q", "quit", "Quit")]
 
   def __init__(self) -> None:

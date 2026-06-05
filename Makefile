@@ -2,7 +2,7 @@
 
 UV := uv
 
-.PHONY: help install run api lint format clean
+.PHONY: help install cli api lint format clean
 
 help:
 	@echo "👑 Solomon - Automation Hub"
@@ -10,7 +10,7 @@ help:
 	@echo "│ Command             │ Description                            │"
 	@echo "├─────────────────────┼────────────────────────────────────────┤"
 	@echo "│ make install        │ Setup project and install dependencies │"
-	@echo "│ make run            │ Run the scheduler                      │"
+	@echo "│ make cli            │ Start the Terminal User Interface (TUI)│"
 	@echo "│ make api            │ Start the FastAPI server               │"
 	@echo "│ make lint           │ Run linter (ruff) to check for issues  │"
 	@echo "│ make format         │ Run formatter (ruff) to fix style      │"
@@ -27,8 +27,8 @@ format:
 	$(UV) run ruff check . --fix
 	$(UV) run ruff format .
 
-run:
-	$(UV) run src/main.py $(task)
+cli:
+	$(UV) run src/cli/main.py
 
 api:
 	@echo "🚀 Starting Solomon API..."

@@ -7,9 +7,9 @@ from core.repositories.task_execution import TaskExecutionRepository
 
 
 @dataclass(frozen=True)
-class UseCaseContext:
+class WorkflowContext:
   """
-  Execution context containing shared dependencies for UseCases.
+  Execution context containing shared dependencies for Workflows.
   """
 
   config: Config

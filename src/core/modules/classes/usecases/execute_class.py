@@ -1,11 +1,11 @@
 from typing import cast
 from loguru import logger
-from core.usecases._base import UseCase
+from core.workflow import Workflow
 from core.prompt import Prompt
 from core.repositories.study_class import StudyClassRepository
 
 
-class ExecuteClassUseCase(UseCase):
+class ExecuteClassUseCase(Workflow):
   """
   UseCase for generating, emailing, and advancing daily study classes.
   """

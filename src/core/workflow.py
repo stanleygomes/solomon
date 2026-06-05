@@ -1,25 +1,25 @@
 from abc import ABC, abstractmethod
-from core.context import UseCaseContext
+from core.context import WorkflowContext
 
 
-class UseCase(ABC):
+class Workflow(ABC):
   """
-  Abstract base class for all Solomon use cases.
+  Abstract base class for all Solomon workflows.
   """
 
-  def __init__(self, context: UseCaseContext) -> None:
+  def __init__(self, context: WorkflowContext) -> None:
     self.context = context
 
   @abstractmethod
   def execute(self) -> None:
     """
-    Executes the use case logic.
+    Executes the workflow logic.
     """
     pass
 
   def should_execute(self) -> bool:
     """
-    Determines whether the use case should execute based on the context.
+    Determines whether the workflow should execute based on the context.
     By default, returns True. Override in subclasses for conditional execution.
     """
     return True

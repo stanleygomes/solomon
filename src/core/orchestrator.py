@@ -1,8 +1,8 @@
 from loguru import logger
 from core.config.environment import Config
 from core.database.setup import DatabaseSetup
-from core.usecases._base import UseCase
-from core.context import UseCaseContext
+from core.workflow import Workflow
+from core.context import WorkflowContext
 from core.constants.use_cases import USE_CASES
 from core.exceptions.NotFoundError import NotFoundError
 from core.repositories.task_execution import TaskExecutionRepository
@@ -36,7 +36,7 @@ class UseCaseOrchestrator:
     from core.ai.factory import AIProviderFactory
     from core.mailer import Mailer
 
-    context = UseCaseContext(
+    context = WorkflowContext(
       config=self.config,
       db_manager=self.db_manager,
       ai_provider=AIProviderFactory.generate(),
@@ -45,7 +45,7 @@ class UseCaseOrchestrator:
     )
 
     logger.debug("🎬 Instantiating Use Case: {}", use_case_cls.__name__)
-    use_case: UseCase = use_case_cls(context)
+    use_case: Workflow = use_case_cls(context)
 
     # Validate execution conditional prerequisites
     if not use_case.should_execute():

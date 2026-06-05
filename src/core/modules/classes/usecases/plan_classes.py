@@ -1,6 +1,6 @@
 from typing import cast
 from loguru import logger
-from core.usecases._base import UseCase
+from core.workflow import Workflow
 from core.prompt import Prompt
 from core.repositories.study_class import StudyClassRepository
 from core.utils.json import JsonUtils
@@ -9,7 +9,7 @@ from core.exceptions.ValidationError import (
 )
 
 
-class PlanClassesUseCase(UseCase):
+class PlanClassesUseCase(Workflow):
   """
   UseCase for generating and persisting the study syllabus/lessons for plans in PLANNING status.
   """

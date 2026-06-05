@@ -1,15 +1,15 @@
-from core.usecases._base import UseCase
-from core.context import UseCaseContext
+from core.workflow import Workflow
+from core.context import WorkflowContext
 from loguru import logger
 from core.prompt import Prompt
 
 
-class DailyBreadUseCase(UseCase):
+class DailyBreadWorkflow(Workflow):
   """
-  UseCase for generating and emailing the Daily Bread devotional.
+  Workflow for generating and emailing the Daily Bread devotional.
   """
 
-  def __init__(self, context: UseCaseContext) -> None:
+  def __init__(self, context: WorkflowContext) -> None:
     super().__init__(context)
 
   def should_execute(self) -> bool:
@@ -28,7 +28,7 @@ class DailyBreadUseCase(UseCase):
     """
     Executes the Daily Bread email generation and delivery workflow.
     """
-    logger.info("🚀 Executing Daily Bread UseCase workflow")
+    logger.info("🚀 Executing Daily Bread Workflow")
 
     # 1. Execute the prompt
     logger.debug("📝 Running AI prompt: daily-bread.md")

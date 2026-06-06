@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request, Response, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from api.schemas.auth import (
+from api.schemas.schema import (
   EmailRequestSchema,
   VerifyRequestSchema,
   TokenResponseSchema,

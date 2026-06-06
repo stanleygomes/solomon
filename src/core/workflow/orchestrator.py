@@ -1,6 +1,6 @@
 from loguru import logger
 from core.container import Container
-from core.base import Workflow
+from core.workflow.base import Workflow
 from core.constants.use_cases import USE_CASES
 from core.exceptions.NotFoundError import NotFoundError
 from core.utils.date import DateUtils

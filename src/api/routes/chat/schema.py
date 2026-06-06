@@ -1,18 +1,14 @@
 from pydantic import BaseModel
-from core.constants.message_role import MessageRole
-
-class ChatMessageSchema(BaseModel):
-  role: MessageRole
-  content: str
+from core.services.ai.dto import ChatMessage
 
 
 class ChatCompletionsRequestSchema(BaseModel):
   model: str
-  messages: list[ChatMessageSchema]
+  messages: list[ChatMessage]
 
 
 class ChoiceSchema(BaseModel):
-  message: ChatMessageSchema
+  message: ChatMessage
 
 
 class ChatCompletionsResponseSchema(BaseModel):

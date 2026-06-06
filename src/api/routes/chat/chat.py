@@ -2,7 +2,12 @@ import time
 import uuid
 from fastapi import APIRouter, status
 from core.constants.message_role import MessageRole
-from api.routes.chat.schema import ChatCompletionsRequestSchema, ChatCompletionsResponseSchema, ChoiceSchema, ChatMessageSchema
+from api.routes.chat.schema import (
+  ChatCompletionsRequestSchema,
+  ChatCompletionsResponseSchema,
+  ChoiceSchema,
+)
+from core.services.ai.dto import ChatMessage
 
 
 router = APIRouter(tags=["Chat"])
@@ -25,7 +30,7 @@ def chat_completions(
   completion_id = f"chatcmpl-{uuid.uuid4()}"
   created_time = int(time.time())
 
-  assistant_message = ChatMessageSchema(
+  assistant_message = ChatMessage(
     role=MessageRole.ASSISTANT,
     content="Olá! Como posso ajudar você hoje?",
   )

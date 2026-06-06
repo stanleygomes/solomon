@@ -14,7 +14,7 @@ class UserSeeder(BaseSeeder):
     db_manager.db.bind([UserModel])
 
     users_data = [
-      {"email": "admin@solomon.local"},
+      {"email": "solomon@admin.local"},
     ]
 
     logger.info("👥 Seeding users...")

@@ -2,7 +2,7 @@ import sys
 from loguru import logger
 from core.config.environment import Config
 from core.database.setup import DatabaseSetup
-from core.database.seeders import UserSeeder, StudyClassSeeder, ConversationSeeder
+from core.database.seeders import UserSeeder
 
 
 def run_seeders() -> None:
@@ -19,8 +19,6 @@ def run_seeders() -> None:
     # 2. Register and execute seeders in dependency order
     seeders = [
       UserSeeder(),
-      StudyClassSeeder(),
-      ConversationSeeder(),
     ]
 
     for seeder in seeders:

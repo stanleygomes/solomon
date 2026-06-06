@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Request, Response, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPAuthorizationCredentials
 from api.routes.auth.schema import (
   EmailRequestSchema,
   VerifyRequestSchema,
@@ -8,16 +8,9 @@ from api.routes.auth.schema import (
 )
 from core.services.auth.auth_service import AuthService
 from core.exceptions.UnauthorizedError import UnauthorizedError
+from api.dependencies.auth import security, get_auth_service
 
 router = APIRouter(tags=["Authentication"])
-security = HTTPBearer(auto_error=False)
-
-
-def get_auth_service(request: Request) -> AuthService:
-  """
-  Dependency injection to retrieve the AuthService instance from app state.
-  """
-  return request.app.state.container.auth_service
 
 
 @router.post(

@@ -1,6 +1,6 @@
 import time
 import uuid
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, status
 from core.constants.message_role import MessageRole
 from api.routes.chat.schema import (
   ChatCompletionsRequestSchema,
@@ -8,6 +8,7 @@ from api.routes.chat.schema import (
   ChoiceSchema,
 )
 from core.services.ai.dto import ChatMessage
+from api.dependencies.auth import verify_access_token
 
 
 router = APIRouter(tags=["Chat"])
@@ -21,6 +22,7 @@ router = APIRouter(tags=["Chat"])
 )
 def chat_completions(
   payload: ChatCompletionsRequestSchema,
+  _token_payload: dict[str, object] = Depends(verify_access_token),
 ) -> ChatCompletionsResponseSchema:
   """
   Print messages and return mockup OpenAI-compatible chat completion.

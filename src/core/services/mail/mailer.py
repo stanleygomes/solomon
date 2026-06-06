@@ -15,6 +15,8 @@ class Mailer:
   Manages sending emails.
   """
 
+  config: MailConfig
+
   def __init__(self, config: MailConfig):
     self.config = config
 

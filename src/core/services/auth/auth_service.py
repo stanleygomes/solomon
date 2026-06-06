@@ -82,10 +82,9 @@ class AuthService:
 
     today = DateUtils.today_str()
     render_context = {
-      "title": "Your Solomon Access Code",
+      "title": f"Your Solomon Access Code is {code}",
       "date": today,
       "content": html_content,
-      "use_case": "auth",
     }
     theme = PREDEFINED_THEMES["noemi"]
     html_body = TemplateRenderer.render_html(theme, render_context)
@@ -94,7 +93,7 @@ class AuthService:
     mail_message = MailMessage(
       sender=self.mailer.config.email_from,
       to=email,
-      subject="Your Solomon Access Code",
+      subject=f"Your Solomon Access Code: {code}",
       body=html_body,
     )
     self.mailer.send(mail_message)

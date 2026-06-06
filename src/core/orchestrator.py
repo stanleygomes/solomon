@@ -10,9 +10,9 @@ from core.utils.date import DateUtils
 from core.constants.execution_status import ExecutionStatus
 
 
-class UseCaseOrchestrator:
+class WorkflowOrchestrator:
   """
-  Orchestrator that instantiates and executes use cases based on task names.
+  Orchestrator that instantiates and executes workflows based on task names.
   """
 
   def __init__(self, config: Config, db_manager: DatabaseSetup) -> None:
@@ -21,12 +21,12 @@ class UseCaseOrchestrator:
 
   def execute(self, task_name: str) -> None:
     """
-    Resolves, instantiates, and executes the specified use case.
+    Resolves, instantiates, and executes the specified workflow.
     """
     logger.debug("🎯 Orchestrating execution of task: {}", task_name)
 
-    use_case_cls = USE_CASES.get(task_name)
-    if not use_case_cls:
+    workflow_cls = USE_CASES.get(task_name)
+    if not workflow_cls:
       raise NotFoundError(f"Unknown task: {task_name}")
 
     # Initialize Repository
@@ -44,25 +44,25 @@ class UseCaseOrchestrator:
       task_execution_repo=repo,
     )
 
-    logger.debug("🎬 Instantiating Use Case: {}", use_case_cls.__name__)
-    use_case: Workflow = use_case_cls(context)
+    logger.debug("🎬 Instantiating Workflow: {}", workflow_cls.__name__)
+    workflow: Workflow = workflow_cls(context)
 
     # Validate execution conditional prerequisites
-    if not use_case.should_execute():
+    if not workflow.should_execute():
       logger.warning(
         "🚫 Task '{}' execution pre-requisites not met. Skipping execution.", task_name
       )
       return
 
-    logger.debug("🚀 Executing Use Case: {}", use_case_cls.__name__)
+    logger.debug("🚀 Executing Workflow: {}", workflow_cls.__name__)
     try:
-      use_case.execute()
+      workflow.execute()
       repo.save(
         task_name=task_name,
         status=ExecutionStatus.SUCCESS,
         executed_at=DateUtils.now_iso(),
       )
-      logger.debug("✨ Use Case executed successfully: {}", use_case_cls.__name__)
+      logger.debug("✨ Workflow executed successfully: {}", workflow_cls.__name__)
     except Exception as e:
       repo.save(
         task_name=task_name,

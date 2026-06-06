@@ -1,84 +1,88 @@
 /* Stylesheet for Solomon CLI - Theme variables are registered in Python */
 
 Screen {
-    background: $background;
-    layout: vertical;
-    overflow: hidden;
-    color: $text;
+  background: $background;
+  layout: vertical;
+  overflow: hidden;
+  color: $text;
 }
 
 Header {
-    background: $boost;
-    color: $primary;
-    text-style: bold;
+  background: $boost;
+  color: $primary;
+  text-style: bold;
 }
 
 Footer {
-    background: $boost;
-    color: $primary;
+  background: $boost;
+  color: $primary;
 }
 
 #chat_history {
-    height: 1fr;
-    overflow-y: scroll;
-    padding: 1 2;
-    border: double $primary;
-    background: $background;
-    margin-bottom: 1;
+  height: 1fr;
+  overflow-y: scroll;
+  padding: 1 2;
+  margin-bottom: 1;
 }
 
 .message {
-    margin: 1 0;
-    padding: 1 2;
-    width: 100%;
+  margin: 1 0;
+  padding: 1 2;
+  width: 100%;
 }
 
 .user-message {
-    color: $accent;
-    background: $boost;
-    border-left: tall $accent;
-    padding-left: 2;
+  color: $accent;
+  background: $boost;
+  border-left: tall $accent;
+  padding-left: 2;
 }
 
 .ai-message {
-    color: $text;
-    background: $boost;
-    border-left: tall $secondary;
-    padding-left: 2;
+  color: $text;
+  background: $boost;
+  border-left: tall $secondary;
+  padding-left: 2;
 }
 
 .thinking {
-    color: $text-muted;
-    text-style: italic;
-    border-left: tall $primary-darken-3;
+  color: $text-muted;
+  text-style: italic;
+  border-left: tall $primary-darken-3;
 }
 
 #command_suggestions {
-    background: $surface;
-    border: tall $primary;
-    display: none; /* hidden by default */
-    max-height: 8;
-    color: $primary;
+  background: $surface;
+  border: none;
+  border-left: solid $text-muted;
+  display: none; /* hidden by default */
+  height: auto;
+  max-height: 8;
+  color: $primary;
 }
 
 #command_suggestions > .option-list--option-highlighted {
-    background: $accent;
-    color: $background;
+  background: $accent;
+  color: $background;
 }
 
 #input_container {
-    height: auto;
-    background: $boost;
+  height: auto;
+  background: $boost;
 }
 
 #chat_input {
-    width: 100%;
-    border: tall $primary;
-    color: $primary;
-    background: $background;
+  width: 100%;
+  border: none;
+  border-left: solid $accent;
+  color: $primary;
+  background: $surface;
+  padding-top: 1;
+  padding-left: 1;
 }
 
-/* Focus state for input to keep retro look */
+/* Focus state for input */
 #chat_input:focus {
-    border: double $accent;
+  border: none;
+  border-left: solid $accent;
 }

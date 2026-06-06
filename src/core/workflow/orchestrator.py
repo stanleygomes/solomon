@@ -35,7 +35,8 @@ class WorkflowOrchestrator:
     # Validate execution conditional prerequisites
     if not workflow.should_execute():
       logger.warning(
-        "🚫 Task '{}' execution pre-requisites not met. Skipping execution.", workflow_name
+        "🚫 Task '{}' execution pre-requisites not met. Skipping execution.",
+        workflow_name,
       )
       return
 

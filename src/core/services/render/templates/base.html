@@ -34,25 +34,7 @@
           >
             <!-- Decorative Top Line -->
             <tr>
-              <td
-                height="3"
-                class="gold-top-line"
-              ></td>
-            </tr>
-
-            <!-- Header -->
-            <tr>
-              <td align="left" class="header-cell">
-                <div class="header-subtitle">
-                  // SOLOMON AGENT
-                </div>
-                <h1 class="header-title">
-                  {{use_case}}.solomon.sh
-                </h1>
-                <div class="header-meta">
-                  [DATE: {% raw %}{{date}}{% endraw %}] [STATUS: COMPLETED]
-                </div>
-              </td>
+              <td height="3" class="gold-top-line"></td>
             </tr>
 
             <!-- Divider -->
@@ -75,20 +57,23 @@
             <!-- Body Content -->
             <tr>
               <td class="content-cell">
-                <div class="content">{% raw %}{{content | safe}}{% endraw %}</div>
+                <div class="content">
+                  {% raw %}{{content | safe}}{% endraw %}
+                </div>
               </td>
             </tr>
 
             <!-- Footer -->
             <tr>
               <td align="left" class="footer-cell">
-                <div class="footer-title">
-                  Sola Scriptura
-                </div>
+                <div class="footer-title">Sola Scriptura</div>
                 <p class="footer-text">
-                  /* Porque dele, por ele e para ele são todas as coisas;
-                  a ele seja a glória eternamente. - Romanos 11:36 */
+                  /* Porque dele, por ele e para ele são todas as coisas; a ele
+                  seja a glória eternamente. - Romanos 11:36 */
                 </p>
+                <div class="footer-meta">
+                  // SOLOMON AGENT &nbsp;|&nbsp; [DATE: {% raw %}{{date}}{% endraw %}] &nbsp;|&nbsp; [STATUS: COMPLETED]
+                </div>
               </td>
             </tr>
           </table>

@@ -1,5 +1,5 @@
 from typing import override
-from core.workflow import Workflow
+from core.base import Workflow
 from core.container import Container
 from loguru import logger
 from core.services.ai.prompt import Prompt

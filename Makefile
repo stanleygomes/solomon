@@ -32,9 +32,9 @@ cli:
 
 api:
 	@echo "🚀 Starting Solomon API..."
-	@echo "🌐 API URL:   http://127.0.0.1:8000"
-	@echo "📖 API Docs:  http://127.0.0.1:8000/docs"
-	@PYTHONPATH=src $(UV) run uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+	@echo "🌐 API URL:   http://127.0.0.1:7000"
+	@echo "📖 API Docs:  http://127.0.0.1:7000/docs"
+	@PYTHONPATH=src $(UV) run uvicorn api.main:app --host 0.0.0.0 --port 7000 --reload
 
 clean:
 	rm -rf __pycache__ .pytest_cache .venv .uv

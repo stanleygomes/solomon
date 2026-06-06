@@ -7,6 +7,7 @@ from core.services.ai.config import AiConfig
 from core.database.dto.db_config import DbConfig
 from core.services.auth.config import AuthConfig
 from core.utils.env import EnvUtils
+from api.middlewares.rate_limit import RateLimitConfig
 
 
 load_dotenv()
@@ -19,6 +20,7 @@ class Config:
   ai: AiConfig
   db: DbConfig
   auth: AuthConfig
+  rate_limit: RateLimitConfig
 
   @classmethod
   def load(cls) -> "Config":
@@ -45,5 +47,9 @@ class Config:
         refresh_token_expiration=int(EnvUtils.get("REFRESH_TOKEN_EXPIRATION_SECONDS")),
         magic_code_expiration=int(EnvUtils.get("MAGIC_CODE_EXPIRATION_SECONDS")),
         jwt_algorithm=EnvUtils.get("JWT_ALGORITHM"),
+      ),
+      rate_limit=RateLimitConfig(
+        requests_limit=int(EnvUtils.get("RATE_LIMIT_REQUESTS")),
+        window_seconds=int(EnvUtils.get("RATE_LIMIT_WINDOW_SECONDS")),
       ),
     )

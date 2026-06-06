@@ -10,11 +10,14 @@ from core.services.auth.auth_service import AuthService
 from api.routes.status import router as status_router
 from api.routes.auth import router as auth_router
 from api.exceptions import register_exception_handlers
+from api.middlewares.rate_limit import RateLimitMiddleware
+
+
+config = Config.load()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-  config = Config.load()
   setup_logger(config.logger)
 
   db_manager = DatabaseSetup(config.db.path)
@@ -42,5 +45,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title=APP_NAME, version=APP_VERSION, lifespan=lifespan)
 register_exception_handlers(app)
+app.add_middleware(
+  RateLimitMiddleware,
+  requests_limit=config.rate_limit.requests_limit,
+  window_seconds=config.rate_limit.window_seconds,
+)
 app.include_router(status_router)
 app.include_router(auth_router)

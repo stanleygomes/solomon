@@ -6,6 +6,7 @@ from core.exceptions.NotFoundError import NotFoundError
 from core.utils.date import DateUtils
 from core.constants.execution_status import ExecutionStatus
 from core.database.models.user import UserModel
+from core.services.ai.dto import ChatMessage
 
 
 class WorkflowOrchestrator:
@@ -18,7 +19,13 @@ class WorkflowOrchestrator:
   def __init__(self, container: Container) -> None:
     self.container = container
 
-  def execute(self, workflow_name: str, user: UserModel | None = None) -> None:
+  def execute(
+    self,
+    workflow_name: str,
+    user: UserModel | None = None,
+    conversation_id: str | None = None,
+    message: ChatMessage | None = None,
+  ) -> None:
     """
     Resolves, instantiates, and executes the specified workflow.
     """
@@ -33,6 +40,8 @@ class WorkflowOrchestrator:
     logger.debug("🎬 Instantiating Workflow: {}", workflow_name)
     workflow: Workflow = workflow(self.container)
     workflow.user = user
+    workflow.conversation_id = conversation_id
+    workflow.message = message
 
     # Validate execution conditional prerequisites
     if not workflow.should_execute():

@@ -9,7 +9,7 @@ from api.schemas.auth import (
 from core.services.auth.auth_service import AuthService
 from core.exceptions.UnauthorizedError import UnauthorizedError
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(tags=["Authentication"])
 security = HTTPBearer(auto_error=False)
 
 
@@ -21,7 +21,7 @@ def get_auth_service(request: Request) -> AuthService:
 
 
 @router.post(
-  "/magic-code",
+  "/v1/auth/magic-code",
   response_model=MessageResponseSchema,
   status_code=status.HTTP_200_OK,
   summary="Request a passwordless magic code",
@@ -38,7 +38,7 @@ def request_magic_code(
 
 
 @router.post(
-  "/verify",
+  "/v1/auth/verify",
   response_model=TokenResponseSchema,
   status_code=status.HTTP_200_OK,
   summary="Verify magic code and receive JWT session tokens",
@@ -65,11 +65,11 @@ def verify_magic_code(
     max_age=request.app.state.container.config.auth.refresh_token_expiration,
   )
 
-  return TokenResponseSchema(access_token=tokens.access_token)
+  return TokenResponseSchema(access_token=tokens.access_token, token_type="Bearer")
 
 
 @router.post(
-  "/refresh",
+  "/v1/auth/refresh",
   response_model=TokenResponseSchema,
   status_code=status.HTTP_200_OK,
   summary="Refresh short-lived access token using long-lived refresh token cookie",
@@ -99,11 +99,11 @@ def refresh_session(
     max_age=request.app.state.container.config.auth.refresh_token_expiration,
   )
 
-  return TokenResponseSchema(access_token=tokens.access_token)
+  return TokenResponseSchema(access_token=tokens.access_token, token_type="Bearer")
 
 
 @router.post(
-  "/logout",
+  "/v1/auth/logout",
   response_model=MessageResponseSchema,
   status_code=status.HTTP_200_OK,
   summary="Logout user session and blacklist active tokens",

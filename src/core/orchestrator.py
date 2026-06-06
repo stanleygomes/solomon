@@ -12,6 +12,8 @@ class WorkflowOrchestrator:
   Orchestrator that instantiates and executes workflows based on task names.
   """
 
+  container: Container
+
   def __init__(self, container: Container) -> None:
     self.container = container
 
@@ -39,7 +41,7 @@ class WorkflowOrchestrator:
 
     logger.debug("🚀 Executing Workflow: {}", workflow_cls.__name__)
     try:
-      workflow.execute()
+      workflow.execute("")
       repo.save(
         task_name=task_name,
         status=ExecutionStatus.SUCCESS,

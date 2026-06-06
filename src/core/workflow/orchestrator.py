@@ -5,6 +5,7 @@ from core.workflow.workflows import WORKFLOWS
 from core.exceptions.NotFoundError import NotFoundError
 from core.utils.date import DateUtils
 from core.constants.execution_status import ExecutionStatus
+from core.database.models.user import UserModel
 
 
 class WorkflowOrchestrator:
@@ -17,7 +18,7 @@ class WorkflowOrchestrator:
   def __init__(self, container: Container) -> None:
     self.container = container
 
-  def execute(self, workflow_name: str) -> None:
+  def execute(self, workflow_name: str, user: UserModel | None = None) -> None:
     """
     Resolves, instantiates, and executes the specified workflow.
     """
@@ -31,6 +32,7 @@ class WorkflowOrchestrator:
 
     logger.debug("🎬 Instantiating Workflow: {}", workflow_name)
     workflow: Workflow = workflow(self.container)
+    workflow.user = user
 
     # Validate execution conditional prerequisites
     if not workflow.should_execute():

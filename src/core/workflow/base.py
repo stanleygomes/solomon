@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from core.container import Container
+from core.database.models.user import UserModel
 
 
 class Workflow(ABC):
@@ -8,6 +9,7 @@ class Workflow(ABC):
   """
 
   container: Container
+  user: UserModel | None = None
 
   def __init__(self, container: Container) -> None:
     self.container = container

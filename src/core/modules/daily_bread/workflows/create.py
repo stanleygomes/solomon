@@ -1,6 +1,6 @@
 from typing import override
 from core.workflow import Workflow
-from core.context import WorkflowContext
+from core.container import Container
 from loguru import logger
 from core.services.ai.prompt import Prompt
 from core.utils.date import DateUtils
@@ -16,8 +16,8 @@ class DailyBreadWorkflow(Workflow):
   Workflow for generating and emailing the Daily Bread devotional.
   """
 
-  def __init__(self, context: WorkflowContext) -> None:
-    super().__init__(context)
+  def __init__(self, container: Container) -> None:
+    super().__init__(container)
 
   @override
   def should_execute(self) -> bool:
@@ -26,7 +26,7 @@ class DailyBreadWorkflow(Workflow):
     """
 
     today = DateUtils.today_str()
-    if self.context.task_execution_repo.has_run_on_date("daily-bread", today):
+    if self.container.task_execution_repo.has_run_on_date("daily-bread", today):
       return False
 
     return True
@@ -59,8 +59,8 @@ class DailyBreadWorkflow(Workflow):
     html_body = TemplateRenderer.render_html(theme, render_context)
 
     # 3. Use Mailer to send email
-    sender = self.context.config.mail.email_from
-    to = self.context.config.mail.email_to
+    sender = self.container.config.mail.email_from
+    to = self.container.config.mail.email_to
     if not to:
       raise PreconditionFailedError("EMAIL_TO is not configured in MailConfig")
 
@@ -72,7 +72,7 @@ class DailyBreadWorkflow(Workflow):
       body=html_body,
     )
 
-    self.context.mailer.send(message)
+    self.container.mailer.send(message)
     logger.info("✨ Daily Bread email sent successfully")
 
     return prompt_output

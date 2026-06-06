@@ -20,7 +20,7 @@ class PlanClassesUseCase(Workflow):
     """
     logger.info("🚀 Executing Plan Classes workflow")
 
-    repo = StudyClassRepository(self.context.db_manager)
+    repo = StudyClassRepository(self.container.db_manager)
 
     from core.utils.env import EnvUtils
 

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from core.context import WorkflowContext
+from core.container import Container
 
 
 class Workflow(ABC):
@@ -7,8 +7,10 @@ class Workflow(ABC):
   Abstract base class for all Solomon workflows.
   """
 
-  def __init__(self, context: WorkflowContext) -> None:
-    self.context = context
+  container: Container
+
+  def __init__(self, container: Container) -> None:
+    self.container = container
 
   @abstractmethod
   def execute(self, input: str | None) -> str:

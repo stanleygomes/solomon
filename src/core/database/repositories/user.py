@@ -1,7 +1,6 @@
 from core.database.setup import DatabaseSetup
 from core.database.models.user import UserModel
 from core.utils.date import DateUtils
-from core.utils.string import StringUtils
 
 
 class UserRepository:

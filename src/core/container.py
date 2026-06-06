@@ -3,6 +3,7 @@ from core.database.setup import DatabaseSetup
 from core.database.migrator import DatabaseMigrator
 from core.services.mail.mailer import Mailer
 from core.services.auth.auth_service import AuthService
+from core.database.repositories.task_execution import TaskExecutionRepository
 
 
 class Container:
@@ -15,6 +16,7 @@ class Container:
   migrator: DatabaseMigrator
   mailer: Mailer
   auth_service: AuthService
+  task_execution_repo: TaskExecutionRepository
 
   def __init__(self, config: Config) -> None:
     self.config = config
@@ -23,7 +25,10 @@ class Container:
     self.db_manager = DatabaseSetup(self.config.db.path)
     self.migrator = DatabaseMigrator(self.db_manager)
 
-    # 2. Services
+    # 2. Repositories
+    self.task_execution_repo = TaskExecutionRepository(self.db_manager)
+
+    # 3. Services
     self.mailer = Mailer(self.config.mail)
     self.auth_service = AuthService(
       db_manager=self.db_manager,

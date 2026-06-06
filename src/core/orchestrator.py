@@ -1,11 +1,8 @@
 from loguru import logger
-from core.config.environment import Config
-from core.database.setup import DatabaseSetup
+from core.container import Container
 from core.workflow import Workflow
-from core.context import WorkflowContext
 from core.constants.use_cases import USE_CASES
 from core.exceptions.NotFoundError import NotFoundError
-from core.database.repositories.task_execution import TaskExecutionRepository
 from core.utils.date import DateUtils
 from core.constants.execution_status import ExecutionStatus
 
@@ -15,9 +12,8 @@ class WorkflowOrchestrator:
   Orchestrator that instantiates and executes workflows based on task names.
   """
 
-  def __init__(self, config: Config, db_manager: DatabaseSetup) -> None:
-    self.config = config
-    self.db_manager = db_manager
+  def __init__(self, container: Container) -> None:
+    self.container = container
 
   def execute(self, task_name: str) -> None:
     """
@@ -29,23 +25,10 @@ class WorkflowOrchestrator:
     if not workflow_cls:
       raise NotFoundError(f"Unknown task: {task_name}")
 
-    # Initialize Repository
-    repo = TaskExecutionRepository(self.db_manager)
-
-    # Resolve dependencies once inside a single context container DTO
-    from core.services.ai.factory import AIProviderFactory
-    from core.services.mail.mailer import Mailer
-
-    context = WorkflowContext(
-      config=self.config,
-      db_manager=self.db_manager,
-      ai_provider=AIProviderFactory.generate(),
-      mailer=Mailer(self.config.mail),
-      task_execution_repo=repo,
-    )
+    repo = self.container.task_execution_repo
 
     logger.debug("🎬 Instantiating Workflow: {}", workflow_cls.__name__)
-    workflow: Workflow = workflow_cls(context)
+    workflow: Workflow = workflow_cls(self.container)
 
     # Validate execution conditional prerequisites
     if not workflow.should_execute():

@@ -16,7 +16,7 @@ class ExecuteClassUseCase(Workflow):
     """
     logger.info("🚀 Executing Classes/Study workflow")
 
-    repo = StudyClassRepository(self.context.db_manager)
+    repo = StudyClassRepository(self.container.db_manager)
     active_classes = repo.get_active_classes()
     if not active_classes:
       logger.warning("🚫 No active study classes found to process.")
@@ -30,8 +30,8 @@ class ExecuteClassUseCase(Workflow):
     from core.exceptions.PreconditionFailedError import PreconditionFailedError
 
     today = DateUtils.today_str()
-    sender = self.context.config.mail.email_from
-    to = self.context.config.mail.email_to
+    sender = self.container.config.mail.email_from
+    to = self.container.config.mail.email_to
     if not to:
       raise PreconditionFailedError("EMAIL_TO is not configured in MailConfig")
 
@@ -80,7 +80,7 @@ class ExecuteClassUseCase(Workflow):
         subject=f"Daily Study - {active_class.subject} (Day {active_class.current_day}/{active_class.duration_days})",
         body=html_body,
       )
-      self.context.mailer.send(message)
+      self.container.mailer.send(message)
 
       repo.update_lesson_status(cast(str, lesson.id), status="COMPLETED")
 

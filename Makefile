@@ -2,7 +2,7 @@
 
 UV := uv
 
-.PHONY: help install cli api lint format clean
+.PHONY: help install cli api lint format clean seed
 
 help:
 	@echo "👑 Solomon - Automation Hub"
@@ -12,6 +12,7 @@ help:
 	@echo "│ make install        │ Setup project and install dependencies │"
 	@echo "│ make cli            │ Start the Terminal User Interface (TUI)│"
 	@echo "│ make api            │ Start the FastAPI server               │"
+	@echo "│ make seed           │ Populate database with initial seeds   │"
 	@echo "│ make lint           │ Run linter (ruff) to check for issues  │"
 	@echo "│ make format         │ Run formatter (ruff) to fix style      │"
 	@echo "│ make clean          │ Remove cache, venv and temporary files │"
@@ -35,6 +36,10 @@ api:
 	@echo "🌐 API URL:   http://127.0.0.1:7000"
 	@echo "📖 API Docs:  http://127.0.0.1:7000/docs"
 	@PYTHONPATH=src $(UV) run uvicorn api.main:app --host 0.0.0.0 --port 7000 --reload
+
+seed:
+	@echo "🌱 Seeding the database..."
+	@PYTHONPATH=src $(UV) run src/core/database/seed.py
 
 clean:
 	rm -rf __pycache__ .pytest_cache .venv .uv

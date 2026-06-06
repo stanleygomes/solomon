@@ -3,8 +3,9 @@ from enum import StrEnum
 
 class MessageRole(StrEnum):
   """
-  Enum representing the role of the message sender (agent or human).
+  Enum representing the role of the message sender.
   """
 
-  AGENT = "agent"
-  HUMAN = "human"
+  SYSTEM = "system"
+  ASSISTANT = "assistant"
+  USER = "user"

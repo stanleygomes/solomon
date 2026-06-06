@@ -16,7 +16,7 @@ class DatabaseMigrator:
   ) -> None:
     self.db_manager = db_manager
     if migrations_dir is None:
-      migrations_dir = DiskUtils.resolve_path(__file__, "..", "..", "migrations")
+      migrations_dir = DiskUtils.resolve_path(__file__, "migrations")
     self.migrations_dir = migrations_dir
 
   def migrate(self) -> None:

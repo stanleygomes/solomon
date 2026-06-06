@@ -3,10 +3,7 @@ from fastapi import FastAPI
 from core.constants.app import APP_NAME, APP_VERSION
 from core.config.environment import Config
 from core.config.logger import setup_logger
-from core.database.setup import DatabaseSetup
-from core.database.migrator import DatabaseMigrator
-from core.services.mail.mailer import Mailer
-from core.services.auth.auth_service import AuthService
+from core.container import Container
 from api.routes.status import router as status_router
 from api.routes.auth import router as auth_router
 from api.exceptions import register_exception_handlers
@@ -20,25 +17,11 @@ config = Config.load()
 async def lifespan(app: FastAPI):
   setup_logger(config.logger)
 
-  db_manager = DatabaseSetup(config.db.path)
-  migrator = DatabaseMigrator(db_manager)
-  migrator.migrate()
-
-  mailer = Mailer(config.mail)
-  auth_service = AuthService(
-    db_manager=db_manager,
-    mailer=mailer,
-    keys_dir=config.auth.keys_dir,
-    refresh_token_expiration=config.auth.refresh_token_expiration,
-    magic_code_expiration=config.auth.magic_code_expiration,
-    jwt_algorithm=config.auth.jwt_algorithm,
-  )
+  container = Container(config)
+  container.wire()
 
   # Expose to API state
-  app.state.config = config
-  app.state.db_manager = db_manager
-  app.state.mailer = mailer
-  app.state.auth_service = auth_service
+  app.state.container = container
 
   yield
 

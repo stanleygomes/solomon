@@ -30,9 +30,7 @@ class MagicCodeRepository:
     Finds the latest code for an email address.
     """
     return (
-      MagicCodeModel.filter(
-        MagicCodeModel.email == email
-      )
+      MagicCodeModel.filter(MagicCodeModel.email == email)
       .order_by(MagicCodeModel.created_at.desc())
       .first()
     )
@@ -49,6 +47,4 @@ class MagicCodeRepository:
     """
     Invalidates (deletes) all codes for a specific email once verified.
     """
-    MagicCodeModel.delete().where(
-      MagicCodeModel.email == email
-    ).execute()
+    MagicCodeModel.delete().where(MagicCodeModel.email == email).execute()

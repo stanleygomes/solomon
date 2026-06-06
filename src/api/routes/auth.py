@@ -17,7 +17,7 @@ def get_auth_service(request: Request) -> AuthService:
   """
   Dependency injection to retrieve the AuthService instance from app state.
   """
-  return request.app.state.auth_service
+  return request.app.state.container.auth_service
 
 
 @router.post(
@@ -60,9 +60,9 @@ def verify_magic_code(
     key="refresh_token",
     value=tokens.refresh_token,
     httponly=True,
-    secure=request.app.state.config.auth.cookie_secure,
+    secure=request.app.state.container.config.auth.cookie_secure,
     samesite="lax",
-    max_age=request.app.state.config.auth.refresh_token_expiration,
+    max_age=request.app.state.container.config.auth.refresh_token_expiration,
   )
 
   return TokenResponseSchema(access_token=tokens.access_token)
@@ -94,9 +94,9 @@ def refresh_session(
     key="refresh_token",
     value=tokens.refresh_token,
     httponly=True,
-    secure=request.app.state.config.auth.cookie_secure,
+    secure=request.app.state.container.config.auth.cookie_secure,
     samesite="lax",
-    max_age=request.app.state.config.auth.refresh_token_expiration,
+    max_age=request.app.state.container.config.auth.refresh_token_expiration,
   )
 
   return TokenResponseSchema(access_token=tokens.access_token)

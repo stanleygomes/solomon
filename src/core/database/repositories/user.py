@@ -18,19 +18,13 @@ class UserRepository:
     Creates a new user.
     """
     now = DateUtils.now_iso()
-    return UserModel.create(
-      email=StringUtils.clean_email(email),
-      created_at=now,
-      updated_at=now,
-    )
+    return UserModel.create(email=email, created_at=now, updated_at=now)
 
   def find_by_email(self, email: str) -> UserModel | None:
     """
     Finds a user by email address.
     """
-    return UserModel.filter(
-      UserModel.email == StringUtils.clean_email(email)
-    ).first()
+    return UserModel.filter(UserModel.email == email).first()
 
   def find_by_id(self, user_id: str) -> UserModel | None:
     """

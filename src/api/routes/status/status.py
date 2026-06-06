@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from core.constants.app import APP_NAME, APP_VERSION
 
-router = APIRouter()
+router = APIRouter(tags=["App Status"])
 
 
 @router.get("/status")

@@ -30,3 +30,9 @@ class UserRepository:
     Finds a user by ID.
     """
     return UserModel.filter(UserModel.id == user_id).first()
+
+  def get_all(self) -> list[UserModel]:
+    """
+    Retrieves all users from the database.
+    """
+    return list(UserModel.select())

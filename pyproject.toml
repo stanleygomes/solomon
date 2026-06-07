@@ -17,6 +17,7 @@ dependencies = [
     "cryptography>=48.0.0",
     "pydantic>=2.13.4",
     "email-validator>=2.3.0",
+    "apscheduler>=3.11.2",
 ]
 
 [dependency-groups]

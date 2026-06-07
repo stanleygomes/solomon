@@ -4,13 +4,21 @@
 
 A personal automation hub and task scheduler. Orchestrates daily workflows, integrates with AI models, compiles email templates, and exposes both an HTTP API and a Terminal User Interface (TUI) for management.
 
-## ⚡ Quick Start
+### 🚀 CLI Client Setup (Desktop / Local Terminal)
+
+To install the client and set up the global `solomon` command in your terminal:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/scripts/bootstrap_cli.sh | bash
+```
+
+### 🌐 Server Setup (VPS / Backend)
+
+To deploy the backend, seeds the database, and runs the API and Cron daemon in background:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/scripts/bootstrap.sh | bash
 ```
-
-Clones the repository, configures the environment, and installs all dependencies automatically.
 
 ---
 

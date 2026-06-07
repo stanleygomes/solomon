@@ -29,6 +29,17 @@ def get_api_host() -> str:
   return "http://127.0.0.1:7000"
 
 
+def is_api_host_configured() -> bool:
+  """
+  Check if the API host has been configured in config.toml.
+  """
+  config = load_cli_config()
+  api_config = config.get("api")
+  if isinstance(api_config, dict):
+    return "host" in api_config
+  return False
+
+
 def save_api_host(host: str) -> None:
   """
   Save the API host configuration to storage/config.toml.

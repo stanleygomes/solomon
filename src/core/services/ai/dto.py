@@ -10,3 +10,13 @@ class ChatMessage:
 
   role: MessageRole
   content: str
+
+
+@dataclass(frozen=True)
+class ExtractedCommand:
+  """
+  DTO representing an extracted command and its parameters.
+  """
+
+  command: str | None
+  text: str | None

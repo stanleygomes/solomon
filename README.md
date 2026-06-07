@@ -87,6 +87,21 @@ make run task=execute-class
 
 > WIP
 
+## 🛠️ Tech Stack & Technologies
+
+Solomon is built with a modern, high-performance, and lightweight Python stack:
+
+- **Core & Runtime**: Python 3.14+ managed via **[uv](https://github.com/astral-sh/uv)** for ultra-fast dependency resolution and virtual environments.
+- **TUI (Terminal User Interface)**: **[Textual](https://github.com/Textualize/textual)** for building the terminal-based interactive dashboard and management screen.
+- **API Framework**: **FastAPI** & **Uvicorn** for powering the OpenAI-compatible local chat endpoints and authentication controllers.
+- **Persistence**: **SQLite** database managed with the lightweight **[Peewee ORM](https://github.com/coleifer/peewee)**.
+- **AI Orchestration**: Custom AI client wrapper supporting multiple backend providers (including antigravity).
+- **Template Engine**: **[Jinja2](https://github.com/pallets/jinja2)** for compiling rich, responsive, themed HTML email templates.
+- **Mail Delivery**: SMTP client supporting TLS/STARTTLS for automated devotional and syllabus email delivery.
+- **Logging**: **[Loguru](https://github.com/Delgan/loguru)** for simple, pre-configured execution milestones logging and file rotation.
+- **Security & Auth**: **PyJWT** (RS256 algorithm) for secure session token issuance and validation, coupled with passwordless Magic Code verification.
+- **Code Quality**: **[Ruff](https://github.com/astral-sh/ruff)** for blazing-fast code checking, formatting, and linting rules enforcement.
+
 ## 🚀 Development
 
 All shortcuts are centralized in the [Makefile](./Makefile):

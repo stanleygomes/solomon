@@ -1,6 +1,6 @@
-from typing import cast
+from typing import cast, override
 from loguru import logger
-from core.base import Workflow
+from core.workflow.base import Workflow
 from core.services.ai.prompt import Prompt
 from core.database.repositories.study_class import StudyClassRepository
 from core.utils.json import JsonUtils
@@ -14,7 +14,8 @@ class PlanClassesUseCase(Workflow):
   UseCase for generating and persisting the study syllabus/lessons for plans in PLANNING status.
   """
 
-  def execute(self) -> None:
+  @override
+  def execute(self, input: str | None = None) -> str | None:
     """
     Executes the planning workflow, generating lessons for pending study plans.
     """

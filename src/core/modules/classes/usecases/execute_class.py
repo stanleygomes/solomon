@@ -1,6 +1,6 @@
-from typing import cast
+from typing import cast, override
 from loguru import logger
-from core.base import Workflow
+from core.workflow.base import Workflow
 from core.services.ai.prompt import Prompt
 from core.database.repositories.study_class import StudyClassRepository
 
@@ -10,7 +10,8 @@ class ExecuteClassUseCase(Workflow):
   UseCase for generating, emailing, and advancing daily study classes.
   """
 
-  def execute(self) -> None:
+  @override
+  def execute(self, input: str | None = None) -> str | None:
     """
     Executes the daily study segment delivery and advancement workflow.
     """

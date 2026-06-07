@@ -1,5 +1,5 @@
 from typing import override
-from core.base import Workflow
+from core.workflow.base import Workflow
 from core.container import Container
 from loguru import logger
 from core.services.ai.prompt import Prompt
@@ -32,7 +32,7 @@ class DailyBreadWorkflow(Workflow):
     return True
 
   @override
-  def execute(self, input: str | None) -> str:
+  def execute(self, input: str | None = None) -> str:
     """
     Executes the Daily Bread email generation and delivery workflow.
     """

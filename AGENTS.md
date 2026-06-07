@@ -16,12 +16,38 @@ name: Solomon Agent Instructions
 Solomon is a personal automation hub and task scheduler. It orchestrates daily workflows, integrates with AI models, compiles rendering templates, sends automatic emails, and exposes a Terminal User Interface (TUI) for dashboard management.
 
 ### Directory Structure & Architecture
-- `src/core/`: Domain core housing configuration, utilities, entities, database, and repository classes.
-  - `repositories/`: Persistence layer DateManager.now_iso()wrapping database models.
-  - `usecases/`: Encapsulated single business logic workflows (e.g., `DailyBreadUseCase`).
-  - `migrations/`: Raw SQL migrations managed chronologically.
-- `src/ui/`: Textual-based dashboard and interactive Terminal User Interface (TUI).
-- `storage/`: Dynamic data storage housing the main SQLite database (`solomon.db`).
+
+```
+src/
+├── api/                  # FastAPI HTTP server
+│   ├── dependencies/     # Dependency injection (auth, db, etc.)
+│   ├── middlewares/      # Request/response middleware
+│   └── routes/           # Route handlers grouped by domain (auth/, chat/, status/)
+├── cli/                  # Textual-based Terminal User Interface (TUI)
+│   ├── constants/
+│   ├── screens/
+│   ├── styles/
+│   └── widgets/
+├── cron/                 # Background cron daemon
+│   └── jobs/             # Individual job definitions (e.g., daily_bread.py)
+└── core/                 # Shared domain core
+    ├── config/           # Environment loading (environment.py, logger.py)
+    ├── constants/        # Project-wide constants
+    ├── database/         # DB setup, models, repositories, migrations, seeders, DTOs
+    │   ├── dto/
+    │   ├── migrations/
+    │   ├── models/
+    │   ├── repositories/ # Persistence layer wrapping ORM models
+    │   └── seeders/
+    ├── exceptions/       # Custom exception classes
+    ├── modules/          # Domain feature modules (e.g., daily_bread/, classes/)
+    ├── services/         # External integrations (ai/, auth/, mail/, render/)
+    ├── utils/            # Utility managers (date.py, disk.py, env.py, etc.)
+    ├── workflow/         # Workflow orchestrator (orchestrator.py, base.py, dto.py)
+    └── container.py      # Dependency container / service locator
+
+storage/                  # SQLite database and dynamic data (solomon.db)
+```
 
 ---
 
@@ -29,24 +55,30 @@ Solomon is a personal automation hub and task scheduler. It orchestrates daily w
 
 All project dependencies are managed via `uv`.
 
-- **Install dependencies**: `make install` (runs `uv sync`)
-- **Execute task**: `./run_task.sh <task_name>` or `make run task=<task_name>`
-- **Format codebase**: `make format`
-- **Lint check**: `make lint`
+| Command        | Description                              |
+|----------------|------------------------------------------|
+| `make install` | Setup project and install dependencies   |
+| `make cli`     | Start the Terminal User Interface (TUI)  |
+| `make api`     | Start the FastAPI server (port 7000)     |
+| `make cron`    | Start the background cron daemon         |
+| `make seed`    | Populate database with initial seeds     |
+| `make lint`    | Run linter (ruff) to check for issues    |
+| `make format`  | Run formatter (ruff) to fix style        |
+| `make clean`   | Remove cache, venv and temporary files   |
 
 ---
 
 ## Testing Instructions
 
 - 🚫 **No tests exist**: Do not attempt to run or write test suites (pytest/unittest) as they are not configured in this project.
-- **Manual Verification**: Run tasks directly using `./run_task.sh <task_name>` and inspect logs for verification.
+- **Manual Verification**: Run the relevant entrypoint (`make api`, `make cron`, `make cli`) and inspect logs for verification.
 
 ---
 
 ## Code Style & Clean Code Guidelines
 
 ### Non-Negotiable Rules
-1. **Pythonic Architecture**: Strict modular division (`core/`, `ui/`, `repositories/`, `usecases/`). No spaghetti code.
+1. **Pythonic Architecture**: Strict modular division (`api/`, `cli/`, `cron/`, `core/`). No spaghetti code.
 2. **Type Hinting**: Mandatory on all functions and classes. No untyped parameters/return values.
 3. **Dataclasses**: Use `dataclasses` for domain representations (Config, State, MailMessage). No dictionary passing for complex domain concepts.
 4. **Error Handling**: Always use explicit exception classes. Log detailed context upon failure.
@@ -55,14 +87,15 @@ All project dependencies are managed via `uv`.
 
 ### Single Responsibility (Clean Code)
 - Keep classes and functions tiny and focused.
-- **No mixed concerns**: Database connection setups (`database.py`) must only handle connection lifecycle. Queries, updates, and skips belong exclusively in repository classes (e.g., `TaskExecutionRepository`). Use-cases should only orchestrate a single logical workflow.
+- **No mixed concerns**: DB setup (`database/setup.py`) handles only connection lifecycle. Queries belong exclusively in repository classes (`database/repositories/`). Workflows orchestrate a single logical flow.
 - **Avoid bloated classes**: Break down classes that handle both business logic and persistence.
+- **Layer boundaries**: `api/` and `cron/` must only call `core/` — never each other. `core/` must not import from `api/`, `cli/`, or `cron/`.
 
 ### Centralized Utility Managers
-Never call standard IO, date formatting, or raw filesystem creation utilities inside business logic or adapters. Reuse the existing managers:
+Never call standard IO, date formatting, or raw filesystem utilities inside business logic or adapters. Reuse the existing managers in `core/utils/`:
 - **Logging**: Use loguru's `logger`. Always log execution milestones (entry, exit, errors).
-- **Date/Time**: Use `DateManager` (`core/date.py`) for date strings and ISO formatted timestamps. Do not import `datetime` directly in business logic.
-- **Filesystem**: Use `DiskManager` (`core/disk.py`) for directory creations, path resolutions, and text reading/writing.
+- **Date/Time**: Use `DateManager` (`core/utils/date.py`) for date strings and ISO formatted timestamps. Do not import `datetime` directly in business logic.
+- **Filesystem**: Use `DiskManager` (`core/utils/disk.py`) for directory creation, path resolution, and text reading/writing.
 
 ---
 

@@ -8,10 +8,15 @@ class StatusCommand:
   Command to check the connection status of the remote Solomon API.
   """
 
-  def execute(self, url: str) -> None:
+  def execute(self, url: str | None) -> None:
     """
     Connect to the remote API and verify operational status.
     """
+    if not url:
+      from cli.config import get_api_host
+
+      url = f"{get_api_host().rstrip('/')}/status"
+
     typer.echo(f"Connecting to Solomon API at {url}...")
     try:
       req = urllib.request.Request(

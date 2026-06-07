@@ -56,6 +56,7 @@ make cli          # Launches the TUI Dashboard (default)
 uv run src/cli/main.py --help    # Show help and CLI usage
 uv run src/cli/main.py status    # Check status of the remote API
 uv run src/cli/main.py update    # Update the Solomon CLI to the latest version
+uv run src/cli/main.py config    # Configure local settings (API host URL, etc.)
 ```
 
 If you installed the CLI via the quick start script, you can use the global `solomon` command:
@@ -64,6 +65,7 @@ If you installed the CLI via the quick start script, you can use the global `sol
 solomon --help
 solomon status
 solomon update
+solomon config
 ```
 
 ### Database

@@ -35,8 +35,8 @@ log_step() {
 TARGET_DIR="${SOLOMON_DIR:-$HOME/.solomon}"
 REPO_URL="https://github.com/stanleygomes/solomon.git"
 
-echo -e "${BOLD}${GREEN}👑 Solomon - Initialization Script${NC}"
-echo -e "----------------------------------"
+echo -e "${BOLD}${GREEN}👑 Solomon - Server Bootstrap${NC}"
+echo -e "------------------------------"
 
 # Step 1: Clone or update the repository
 log_step "1" "Cloning Solomon repository"
@@ -66,7 +66,6 @@ else
     log_info "uv not found. Installing uv..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
     UV_BIN="$HOME/.local/bin/uv"
-    # Source local profile to populate PATH if needed, or we just rely on absolute path
     log_success "uv installed successfully at $UV_BIN."
 fi
 
@@ -86,30 +85,30 @@ log_info "Running uv sync..."
 "$UV_BIN" sync
 log_success "Dependencies installed successfully."
 
-# Step 5: Install Shell Alias
-log_step "5" "Installing shell alias"
-ALIAS_CMD="alias solomon=\"$TARGET_DIR/run_task.sh\""
+# Step 5: Seed the database
+log_step "5" "Seeding the database"
+log_info "Running database seed..."
+PYTHONPATH=src "$UV_BIN" run src/core/database/seed.py
+log_success "Database seeded."
 
-add_alias_to_file() {
-    local shell_rc="$1"
-    if [ -f "$shell_rc" ]; then
-        if ! grep -q "alias solomon=" "$shell_rc"; then
-            echo -e "\n# Solomon Task Runner Alias\n$ALIAS_CMD" >> "$shell_rc"
-            log_success "Alias added to $shell_rc"
-        else
-            log_info "Alias already exists in $shell_rc"
-        fi
-    fi
-}
+# Step 6: Start API server
+log_step "6" "Starting API server"
+mkdir -p "$TARGET_DIR/logs"
+nohup bash -c "PYTHONPATH=src $UV_BIN run uvicorn api.main:app --host 0.0.0.0 --port 7000" \
+    > "$TARGET_DIR/logs/api.log" 2>&1 &
+API_PID=$!
+log_success "API server started (PID $API_PID) → http://0.0.0.0:7000"
 
-add_alias_to_file "$HOME/.bashrc"
-add_alias_to_file "$HOME/.zshrc"
+# Step 7: Start Cron daemon
+log_step "7" "Starting Cron daemon"
+nohup bash -c "PYTHONPATH=src $UV_BIN run src/cron/main.py" \
+    > "$TARGET_DIR/logs/cron.log" 2>&1 &
+CRON_PID=$!
+log_success "Cron daemon started (PID $CRON_PID)"
 
 # Summary
-echo -e "\n${BOLD}${GREEN}🎉 Solomon installation completed successfully!${NC}\n"
-echo -e "  ⚙️  ${BOLD}Configure environment variables:${NC}"
-echo -e "     edit: ${BOLD}$TARGET_DIR/.env${NC}\n"
-echo -e "  🔄 ${BOLD}Activate the 'solomon' command in this terminal session:${NC}"
-echo -e "     run:  ${BOLD}source ~/.bashrc${NC}  (or ${BOLD}source ~/.zshrc${NC})\n"
-echo -e "  🚀 ${BOLD}Run tasks from anywhere:${NC}"
-echo -e "     run:  ${BOLD}solomon run <task_name>${NC}\n"
+echo -e "\n${BOLD}${GREEN}🎉 Solomon server is up and running!${NC}\n"
+echo -e "  🌐 ${BOLD}API:${NC}       http://0.0.0.0:7000"
+echo -e "  📖 ${BOLD}API Docs:${NC}  http://0.0.0.0:7000/docs"
+echo -e "  📋 ${BOLD}Logs:${NC}      $TARGET_DIR/logs/"
+echo -e "  ⚙️  ${BOLD}Config:${NC}    edit $TARGET_DIR/.env\n"

@@ -23,7 +23,8 @@ src/
 │   ├── dependencies/     # Dependency injection (auth, db, etc.)
 │   ├── middlewares/      # Request/response middleware
 │   └── routes/           # Route handlers grouped by domain (auth/, chat/, status/)
-├── cli/                  # Textual-based Terminal User Interface (TUI)
+├── cli/                  # Typer-based CLI & Textual Terminal User Interface (TUI)
+│   ├── commands/         # Individual command classes (e.g. tui.py, status.py)
 │   ├── constants/
 │   ├── screens/
 │   ├── styles/

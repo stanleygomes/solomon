@@ -21,7 +21,7 @@ Solomon is split into four independent entrypoints:
 | Module  | Description                                         |
 | ------- | --------------------------------------------------- |
 | `api/`  | FastAPI HTTP server — chat, auth, and status routes |
-| `cli/`  | Textual-based Terminal User Interface (TUI)         |
+| `cli/`  | Typer-based CLI & Textual Terminal User Interface (TUI) |
 | `cron/` | Background daemon running scheduled jobs            |
 | `core/` | Shared domain logic — services, database, workflows |
 
@@ -39,10 +39,14 @@ make install
 
 ### Running
 
+By default, the CLI launches the Textual TUI dashboard, but it also supports client-side subcommands (powered by `typer`):
+
 ```bash
-make api     # FastAPI server → http://127.0.0.1:7000
-make cron    # Background cron daemon
-make cli     # Terminal User Interface
+make cli          # Launches the TUI Dashboard (default)
+
+# Or run subcommands via uv:
+uv run src/cli/main.py --help
+uv run src/cli/main.py status
 ```
 
 ### Database

@@ -53,8 +53,17 @@ By default, the CLI launches the Textual TUI dashboard, but it also supports cli
 make cli          # Launches the TUI Dashboard (default)
 
 # Or run subcommands via uv:
-uv run src/cli/main.py --help
-uv run src/cli/main.py status
+uv run src/cli/main.py --help    # Show help and CLI usage
+uv run src/cli/main.py status    # Check status of the remote API
+uv run src/cli/main.py update    # Update the Solomon CLI to the latest version
+```
+
+If you installed the CLI via the quick start script, you can use the global `solomon` command:
+
+```bash
+solomon --help
+solomon status
+solomon update
 ```
 
 ### Database

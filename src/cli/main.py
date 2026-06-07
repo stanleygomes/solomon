@@ -1,6 +1,6 @@
 import typer
 from typing import Annotated
-from cli.commands import TuiCommand, StatusCommand
+from cli.commands import TuiCommand, StatusCommand, UpdateCommand
 
 app = typer.Typer(
   name="solomon",
@@ -35,6 +35,12 @@ def check_status(
 ) -> None:
   """Check the Solomon API status."""
   StatusCommand().execute(url)
+
+
+@app.command(name="update", help="Update the Solomon CLI client to the latest version.")
+def update_cli() -> None:
+  """Update the Solomon CLI client."""
+  UpdateCommand().execute()
 
 
 def main() -> None:

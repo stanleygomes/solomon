@@ -3,36 +3,17 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# ANSI Color Codes
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
-BOLD='\033[1m'
+# Load common logging and colors
+setup_dir="${SOLOMON_DIR:-$HOME/.solomon}"
+if [ -f "scripts/logger.sh" ]; then
+  source "scripts/logger.sh"
+elif [ -f "$setup_dir/scripts/logger.sh" ]; then
+  source "$setup_dir/scripts/logger.sh"
+else
+  source <(curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/scripts/logger.sh)
+fi
 
-# Helper functions for logging
-log_info() {
-  echo -e "${BLUE}ℹ️  $1${NC}"
-}
-
-log_success() {
-  echo -e "${GREEN}✅ $1${NC}"
-}
-
-log_warning() {
-  echo -e "${YELLOW}⚠️  $1${NC}"
-}
-
-log_error() {
-  echo -e "${RED}❌ $1${NC}"
-}
-
-log_step() {
-  echo -e "\n${BOLD}${BLUE}👉 Step $1: $2${NC}"
-}
-
-TARGET_DIR="${SOLOMON_DIR:-$HOME/.solomon}"
+TARGET_DIR="$setup_dir"
 REPO_URL="https://github.com/stanleygomes/solomon.git"
 
 # Step 1: Clone or update the repository

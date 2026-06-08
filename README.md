@@ -26,12 +26,12 @@ curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/mast
 
 Solomon is split into four independent entrypoints:
 
-| Module  | Description                                         |
-| ------- | --------------------------------------------------- |
-| `api/`  | FastAPI HTTP server — chat, auth, and status routes |
+| Module  | Description                                             |
+| ------- | ------------------------------------------------------- |
+| `api/`  | FastAPI HTTP server — chat, auth, and status routes     |
 | `cli/`  | Typer-based CLI & Textual Terminal User Interface (TUI) |
-| `cron/` | Background daemon running scheduled jobs            |
-| `core/` | Shared domain logic — services, database, workflows |
+| `cron/` | Background daemon running scheduled jobs                |
+| `core/` | Shared domain logic — services, database, workflows     |
 
 ---
 
@@ -94,17 +94,6 @@ Copy `.env.example` to `.env` and fill in your values:
 ```bash
 cp .env.example .env
 ```
-
-Key variables:
-
-| Variable              | Description                                 |
-| --------------------- | ------------------------------------------- |
-| `AI_PROVIDER`         | AI backend (`copilot`, `antigravity`, etc.) |
-| `SMTP_HOST/PORT/USER` | SMTP credentials for email delivery         |
-| `EMAIL_FROM/TO`       | Sender and recipient addresses              |
-| `DB_FILE`             | SQLite database path                        |
-| `KEYS_DIR`            | Directory for RSA keys (JWT auth)           |
-| `RATE_LIMIT_REQUESTS` | API rate limit (requests per window)        |
 
 ---
 

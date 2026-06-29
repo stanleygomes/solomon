@@ -4,6 +4,7 @@ from core.container import Container
 from loguru import logger
 from core.services.ai.prompt import Prompt
 from core.utils.date import DateUtils
+from core.utils.disk import DiskUtils
 from core.constants.themes import PREDEFINED_THEMES
 from core.services.render.renderer import TemplateRenderer
 from core.utils.markdown import MarkdownUtils
@@ -40,8 +41,8 @@ class DailyBreadWorkflow(Workflow):
     logger.info("🚀 Executing Daily Bread Workflow")
 
     # 1. Execute the prompt
-    logger.debug("📝 Running AI prompt: daily-bread.md")
-    prompt_output = Prompt.execute("daily-bread.md")
+    prompt_path = DiskUtils.resolve_path(__file__, "..", "prompts", "daily-bread.md")
+    prompt_output = Prompt.execute(prompt_path)
 
     # 2. Compile HTML email template with generated text and current date
     today = DateUtils.today_str()

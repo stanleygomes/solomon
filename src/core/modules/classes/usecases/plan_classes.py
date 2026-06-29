@@ -3,6 +3,7 @@ from loguru import logger
 from core.workflow.base import Workflow
 from core.services.ai.prompt import Prompt
 from core.database.repositories.study_class import StudyClassRepository
+from core.utils.disk import DiskUtils
 from core.utils.json import JsonUtils
 from core.exceptions.ValidationError import (
   ValidationError,
@@ -53,7 +54,8 @@ class PlanClassesUseCase(Workflow):
         "subject": plan.subject,
         "duration_days": cast(int, plan.duration_days),
       }
-      prompt_output = Prompt.execute("class-planning.md", context=prompt_context)
+      prompt_path = DiskUtils.resolve_path(__file__, "..", "prompts", "class-planning.md")
+      prompt_output = Prompt.execute(prompt_path, context=prompt_context)
 
       try:
         lessons_data = JsonUtils.parse(prompt_output)

@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 from core.services.ai.factory import AIProviderFactory
 from core.utils.disk import DiskUtils
@@ -10,14 +11,11 @@ class Prompt:
   """
 
   @staticmethod
-  def execute(filename: str, context: dict[str, Any] | None = None) -> str:
+  def execute(prompt_path: str | Path, context: dict[str, Any] | None = None) -> str:
     """
-    Reads the prompt from the prompts folder, interpolates it with context if provided,
+    Reads the prompt from the specified path, interpolates it with context if provided,
     and executes it using the configured AI provider.
     """
-    prompts_dir = DiskUtils.resolve_path(__file__, "prompts")
-    prompt_path = prompts_dir / filename
-
     prompt_content = DiskUtils.read_text(prompt_path)
 
     if context:

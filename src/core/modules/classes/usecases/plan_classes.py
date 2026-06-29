@@ -54,7 +54,9 @@ class PlanClassesUseCase(Workflow):
         "subject": plan.subject,
         "duration_days": cast(int, plan.duration_days),
       }
-      prompt_path = DiskUtils.resolve_path(__file__, "..", "prompts", "class-planning.md")
+      prompt_path = DiskUtils.resolve_path(
+        __file__, "..", "prompts", "class-planning.md"
+      )
       prompt_output = Prompt.execute(prompt_path, context=prompt_context)
 
       try:

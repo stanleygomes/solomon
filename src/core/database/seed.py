@@ -2,6 +2,7 @@ import sys
 from loguru import logger
 from core.config.environment import Config
 from core.database.setup import DatabaseSetup
+from core.database.migrator import DatabaseMigrator
 from core.database.seeders import UserSeeder
 
 
@@ -15,6 +16,11 @@ def run_seeders() -> None:
     # 1. Load config and set up database connection
     config = Config.load()
     db_manager = DatabaseSetup(config.db.path)
+
+    # Run database migrations before seeding
+    logger.info("🔄 Running pending database migrations...")
+    migrator = DatabaseMigrator(db_manager)
+    migrator.migrate()
 
     # 2. Register and execute seeders in dependency order
     seeders = [

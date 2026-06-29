@@ -34,7 +34,6 @@ class DiskUtils:
     """
     return Path(base_file).parent.joinpath(*parts).resolve()
 
-
   @staticmethod
   def write_bytes(path: str | Path, data: bytes) -> None:
     """

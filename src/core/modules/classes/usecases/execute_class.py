@@ -65,7 +65,9 @@ class ExecuteClassUseCase(Workflow):
         "current_day": cast(int, active_class.current_day),
         "duration_days": cast(int, active_class.duration_days),
       }
-      prompt_path = DiskUtils.resolve_path(__file__, "..", "prompts", "class-segment.md")
+      prompt_path = DiskUtils.resolve_path(
+        __file__, "..", "prompts", "class-segment.md"
+      )
       prompt_output = Prompt.execute(prompt_path, context=prompt_context)
 
       html_content = MarkdownUtils.to_html(prompt_output)

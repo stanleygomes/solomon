@@ -3,18 +3,21 @@ import typer
 from loguru import logger
 from core.config.environment import Config
 from core.config.logger import setup_logger
-from core.services.ai.factory import AIProviderFactory
+from core.container import Container
+from core.workflow.orchestrator import WorkflowOrchestrator
 from core.workflow.workflows import WORKFLOWS
+from core.services.ai.dto import ChatMessage
+from core.constants.message_role import MessageRole
 
 
 class ChatCommand:
   """
-  Command to select a workflow action, input prompt text, and execute.
+  Command to select a workflow action, input prompt text, and execute via WorkflowOrchestrator.
   """
 
   def execute(self, action: str | None = None, message: str | None = None) -> None:
     """
-    Prompt user for action and input if not provided, then send to AI provider.
+    Prompt user for action and input if not provided, then execute via orchestrator.
     """
     config = Config.load()
     setup_logger(config.logger)
@@ -45,13 +48,22 @@ class ChatCommand:
 
     full_message = f"{selected_action} {text_input.strip()}".strip()
 
-    logger.debug("💬 Sending full message to AI provider: {}", full_message)
+    logger.debug("💬 Orchestrating workflow: {}", full_message)
 
     try:
-      ai_provider = AIProviderFactory.generate()
-      response = ai_provider.generate(full_message)
-      typer.echo(response)
+      container = Container(config)
+      container.wire()
+      orchestrator = WorkflowOrchestrator(container)
+
+      chat_msg = ChatMessage(role=MessageRole.USER, content=full_message)
+      response = orchestrator.execute(message=chat_msg)
+
+      if response.assistant_message and response.assistant_message.content:
+        typer.echo("✨ Workflow executed successfully!")
+        typer.echo(response.assistant_message.content)
+      else:
+        typer.echo("✨ Workflow executed.")
     except Exception as e:
-      logger.error("❌ Chat failed: {}", e)
+      logger.error("❌ Workflow execution failed: {}", e)
       typer.echo(f"❌ Error: {e}", err=True)
       raise typer.Exit(code=1)

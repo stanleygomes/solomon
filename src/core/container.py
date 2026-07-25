@@ -2,7 +2,6 @@ from core.config.environment import Config
 from core.database.setup import DatabaseSetup
 from core.database.migrator import DatabaseMigrator
 from core.services.mail.mailer import Mailer
-from core.services.auth.auth_service import AuthService
 from core.database.repositories.task_execution import TaskExecutionRepository
 
 
@@ -15,7 +14,6 @@ class Container:
   db_manager: DatabaseSetup
   migrator: DatabaseMigrator
   mailer: Mailer
-  auth_service: AuthService
   task_execution_repo: TaskExecutionRepository
 
   def __init__(self, config: Config) -> None:
@@ -30,14 +28,6 @@ class Container:
 
     # 3. Services
     self.mailer = Mailer(self.config.mail)
-    self.auth_service = AuthService(
-      db_manager=self.db_manager,
-      mailer=self.mailer,
-      keys_dir=self.config.auth.keys_dir,
-      refresh_token_expiration=self.config.auth.refresh_token_expiration,
-      magic_code_expiration=self.config.auth.magic_code_expiration,
-      jwt_algorithm=self.config.auth.jwt_algorithm,
-    )
 
   def wire(self) -> None:
     """

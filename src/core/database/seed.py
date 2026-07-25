@@ -3,7 +3,6 @@ from loguru import logger
 from core.config.environment import Config
 from core.database.setup import DatabaseSetup
 from core.database.migrator import DatabaseMigrator
-from core.database.seeders import UserSeeder
 
 
 def run_seeders() -> None:
@@ -22,14 +21,14 @@ def run_seeders() -> None:
     migrator = DatabaseMigrator(db_manager)
     migrator.migrate()
 
-    # 2. Register and execute seeders in dependency order
+# 2. Register and execute seeders in dependency order
     seeders = [
-      UserSeeder(),
+      # Add your seeders here in the order they should be executed
+      # Example: UserSeeder(), ProductSeeder(), etc.
     ]
 
     for seeder in seeders:
       seeder.seed(db_manager)
-
     logger.info("✨ Database seeding completed successfully!")
 
   except Exception as e:

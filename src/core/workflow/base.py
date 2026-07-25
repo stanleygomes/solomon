@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from core.container import Container
-from core.database.models.user import UserModel
 from core.services.ai.dto import ChatMessage
 
 
@@ -10,7 +9,6 @@ class Workflow(ABC):
   """
 
   container: Container
-  user: UserModel | None = None
   conversation_id: str | None = None
   message: ChatMessage | None = None
 

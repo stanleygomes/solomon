@@ -1,6 +1,5 @@
 import uuid
-from peewee import CharField, ForeignKeyField, Model, UUIDField
-from core.database.models.user import UserModel
+from peewee import CharField, Model, UUIDField
 
 
 class ConversationModel(Model):
@@ -9,13 +8,6 @@ class ConversationModel(Model):
   """
 
   id = UUIDField(primary_key=True, default=uuid.uuid4)
-  user = ForeignKeyField(
-    UserModel,
-    backref="conversations",
-    column_name="user_id",
-    null=True,
-    on_delete="CASCADE",
-  )
   title = CharField(null=True)
   created_at = CharField(null=False)
   updated_at = CharField(null=False)

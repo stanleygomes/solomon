@@ -2,12 +2,10 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from core.exceptions.SolomonError import SolomonError
 from core.exceptions.PreconditionFailedError import PreconditionFailedError
-from core.exceptions.UnauthorizedError import UnauthorizedError
 from core.exceptions.NotFoundError import NotFoundError
 from core.exceptions.ValidationError import ValidationError
 from core.exceptions.DatabaseError import DatabaseError
 from core.exceptions.ExternalServiceError import ExternalServiceError
-from core.exceptions.AuthenticationError import AuthenticationError
 
 
 def register_exception_handlers(app: FastAPI) -> None:
@@ -28,24 +26,6 @@ def register_exception_handlers(app: FastAPI) -> None:
   async def validation_handler(request: Request, exc: ValidationError) -> JSONResponse:
     return JSONResponse(
       status_code=status.HTTP_400_BAD_REQUEST,
-      content={"detail": str(exc)},
-    )
-
-  @app.exception_handler(UnauthorizedError)
-  async def unauthorized_handler(
-    request: Request, exc: UnauthorizedError
-  ) -> JSONResponse:
-    return JSONResponse(
-      status_code=status.HTTP_401_UNAUTHORIZED,
-      content={"detail": str(exc)},
-    )
-
-  @app.exception_handler(AuthenticationError)
-  async def authentication_handler(
-    request: Request, exc: AuthenticationError
-  ) -> JSONResponse:
-    return JSONResponse(
-      status_code=status.HTTP_401_UNAUTHORIZED,
       content={"detail": str(exc)},
     )
 

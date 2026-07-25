@@ -5,7 +5,6 @@ from core.config.environment import Config
 from core.config.logger import setup_logger
 from core.container import Container
 from api.routes.status.status import router as status_router
-from api.routes.auth.auth import router as auth_router
 from api.routes.chat.chat import router as chat_router
 from api.exceptions import register_exception_handlers
 from api.middlewares.rate_limit import RateLimitMiddleware
@@ -35,5 +34,4 @@ app.add_middleware(
   window_seconds=config.rate_limit.window_seconds,
 )
 app.include_router(status_router)
-app.include_router(auth_router)
 app.include_router(chat_router)

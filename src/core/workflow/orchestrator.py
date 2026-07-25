@@ -5,7 +5,6 @@ from core.exceptions.NotFoundError import NotFoundError
 from core.exceptions.ValidationError import ValidationError
 from core.utils.date import DateUtils
 from core.constants.execution_status import ExecutionStatus
-from core.database.models.user import UserModel
 import time
 import uuid
 from core.services.ai.dto import ChatMessage
@@ -28,7 +27,6 @@ class WorkflowOrchestrator:
 
   def execute(
     self,
-    user: UserModel | None = None,
     conversation_id: str | None = None,
     message: ChatMessage | None = None,
   ) -> OrchestratorResponse:
@@ -55,7 +53,6 @@ class WorkflowOrchestrator:
 
     logger.debug("🎬 Instantiating Workflow: {}", workflow_name)
     workflow = workflow_cls(self.container)
-    workflow.user = user
     workflow.conversation_id = conversation_id
     workflow.message = message
 
@@ -73,10 +70,10 @@ class WorkflowOrchestrator:
 
     # Persist user message and create conversation if not exists
     if message:
-      if not conversation_id and user:
+      if not conversation_id:
         title = message.content[:50]
         conv_repo = ConversationRepository(self.container.db_manager)
-        conv = conv_repo.create(user_id=str(user.id), title=title)
+        conv = conv_repo.create(title=title)
         conversation_id = str(conv.id)
         workflow.conversation_id = conversation_id
 

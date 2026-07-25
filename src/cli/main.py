@@ -1,52 +1,27 @@
 import typer
 from typing import Annotated
-from cli.commands import TuiCommand, StatusCommand, UpdateCommand, ConfigCommand
+from cli.commands import ChatCommand, UpdateCommand
 
 app = typer.Typer(
   name="solomon",
-  help="👑 Solomon - Personal automation hub and task scheduler CLI client.",
-  no_args_is_help=False,
+  help="👑 Solomon - Personal automation hub and task scheduler.",
+  no_args_is_help=True,
   add_completion=False,
 )
 
 
-@app.callback(invoke_without_command=True)
-def default_callback(ctx: typer.Context) -> None:
-  """
-  By default, launches the Terminal User Interface (TUI) if no command is specified.
-  """
-  if ctx.invoked_subcommand is None:
-    TuiCommand().execute()
-
-
-@app.command(name="tui", help="Launch the Terminal User Interface dashboard.")
-def launch_tui() -> None:
-  """Launch the Textual TUI dashboard."""
-  TuiCommand().execute()
-
-
-@app.command(
-  name="status", help="Check the connection status of the remote Solomon API."
-)
-def check_status(
-  url: Annotated[
-    str, typer.Option(help="The status endpoint URL of the Solomon API")
-  ] = "http://127.0.0.1:7000/status",
+@app.command(name="chat", help="Send a message to Solomon and get a response.")
+def chat(
+  message: Annotated[str, typer.Argument(help="The message to send to Solomon")],
 ) -> None:
-  """Check the Solomon API status."""
-  StatusCommand().execute(url)
+  """Send a message to Solomon."""
+  ChatCommand().execute(message)
 
 
-@app.command(name="update", help="Update the Solomon CLI client to the latest version.")
+@app.command(name="update", help="Update Solomon to the latest version.")
 def update_cli() -> None:
-  """Update the Solomon CLI client."""
+  """Update Solomon."""
   UpdateCommand().execute()
-
-
-@app.command(name="config", help="Configure local settings for the Solomon CLI client.")
-def configure_cli() -> None:
-  """Configure the Solomon CLI client."""
-  ConfigCommand().execute()
 
 
 def main() -> None:

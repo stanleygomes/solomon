@@ -9,7 +9,7 @@ class MarkdownUtils:
   @staticmethod
   def to_html(text: str) -> str:
     """
-    Converts GFM-flavor Markdown text to HTML.
+    Converts Markdown text to HTML using standard commonmark.
     """
-    md = MarkdownIt("gfm-like")
+    md = MarkdownIt("commonmark")
     return md.render(text)

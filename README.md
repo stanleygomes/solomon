@@ -1,5 +1,3 @@
-![solomon-banner](assets/logo/solomon-banner.png)
-
 # 👑 solomon
 
 A personal automation hub and task scheduler. Orchestrates daily workflows, integrates with AI models, compiles email templates, and exposes both an HTTP API and a Terminal User Interface (TUI) for management.

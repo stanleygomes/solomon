@@ -65,10 +65,11 @@ solomon update
 make seed    # Run database migrations and seeders
 ```
 
-### Background Cron Daemon & Logs
+### Background Cron Daemon, Status & Logs
 
 ```bash
 make cron    # Start cron daemon in foreground
+make status  # Check process status (RUNNING/STOPPED, PID, memory, uptime)
 make logs    # Tail application and cron logs in real time
 ```
 

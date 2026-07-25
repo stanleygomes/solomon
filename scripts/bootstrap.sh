@@ -20,24 +20,38 @@ if ! command -v uv &> /dev/null; then
   UV_BIN="$HOME/.local/bin/uv"
 fi
 
-# Step 5: Install shell alias (idempotent)
-log_step "5" "Installing shell alias"
-ALIAS_CMD="alias solomon=\"PYTHONPATH=$TARGET_DIR/src $UV_BIN run $TARGET_DIR/src/cli/main.py\""
+# Step 5: Install shell function (idempotent)
+log_step "5" "Installing shell launcher function"
 
-add_alias_to_file() {
+# Using shell function instead of alias with subshell parentheses to avoid zsh parse error when arguments are passed
+FUNC_CMD="solomon() { (cd \"$TARGET_DIR\" && PYTHONPATH=\"$TARGET_DIR/src\" \"$UV_BIN\" run \"$TARGET_DIR/src/cli/main.py\" \"\$@\"); }"
+
+add_function_to_file() {
   local shell_rc="$1"
-  if [ -f "$shell_rc" ]; then
-    if ! grep -q "alias solomon=" "$shell_rc"; then
-      echo -e "\n# Solomon CLI Alias\n$ALIAS_CMD" >> "$shell_rc"
-      log_success "Alias added to $shell_rc"
-    else
-      log_info "Alias already exists in $shell_rc — skipping"
-    fi
+  local rc_dir="$(dirname "$shell_rc")"
+  mkdir -p "$rc_dir"
+  touch "$shell_rc"
+
+  # Remove old alias if exists
+  if grep -q "alias solomon=" "$shell_rc"; then
+    log_info "Removing old alias from $shell_rc..."
+    sed -i '/alias solomon=/d' "$shell_rc"
+  fi
+
+  # Add/update shell function
+  if ! grep -q "solomon() {" "$shell_rc"; then
+    echo -e "\n# Solomon CLI Launcher\n$FUNC_CMD" >> "$shell_rc"
+    log_success "Function added to $shell_rc"
+  else
+    # Update function definition
+    sed -i '/solomon() {/d' "$shell_rc"
+    echo -e "$FUNC_CMD" >> "$shell_rc"
+    log_info "Function updated in $shell_rc"
   fi
 }
 
-add_alias_to_file "$HOME/.bashrc"
-add_alias_to_file "$HOME/.zshrc"
+add_function_to_file "$HOME/.bashrc"
+add_function_to_file "$HOME/.zshrc"
 
 # Step 6: Seed the database (idempotent)
 log_step "6" "Seeding the database"
@@ -62,6 +76,10 @@ fi
 # Summary
 echo -e "\n${BOLD}${GREEN}🎉 Solomon is up and running!${NC}\n"
 echo -e "  🚀 ${BOLD}Activate the 'solomon' command:${NC}"
-echo -e "     run: ${BOLD}source ~/.bashrc${NC}  (or ${BOLD}source ~/.zshrc${NC})\n"
+if [ -n "$ZSH_VERSION" ] || [ "${SHELL##*/}" = "zsh" ]; then
+  echo -e "     run: ${BOLD}source ~/.zshrc${NC}\n"
+else
+  echo -e "     run: ${BOLD}source ~/.bashrc${NC}\n"
+fi
 echo -e "  📋 ${BOLD}Logs:${NC}    $TARGET_DIR/logs/"
 echo -e "  ⚙️  ${BOLD}Config:${NC}  edit $TARGET_DIR/.env\n"

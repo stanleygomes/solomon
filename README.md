@@ -1,18 +1,14 @@
 # 👑 solomon
 
-A personal automation hub and task scheduler. Orchestrates daily workflows, integrates with AI models, compiles email templates, and exposes both an HTTP API and a Terminal User Interface (TUI) for management.
+A personal automation hub and task scheduler. Orchestrates daily workflows, integrates with AI models, compiles email templates, and exposes a CLI client and background Cron daemon.
 
-### 🚀 CLI Client Setup
+Single-tenant, non-authenticated architecture designed to run directly on your server or local machine.
 
-To install the client and set up the global `solomon` command in your terminal:
+---
 
-```bash
-curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/scripts/bootstrap_cli.sh | bash
-```
+### 🚀 Server Setup & Installation
 
-### 🌐 Server Setup
-
-To deploy the backend, seeds the database, and runs the API and Cron daemon in background:
+To deploy Solomon on your server, clone the repository, install dependencies, seed the database, register the global `solomon` CLI alias, and start the background Cron daemon:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/scripts/bootstrap.sh | bash
@@ -22,14 +18,13 @@ curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/mast
 
 ## 🏗️ Architecture
 
-Solomon is split into four independent entrypoints:
+Solomon is split into three main modules:
 
-| Module  | Description                                             |
-| ------- | ------------------------------------------------------- |
-| `api/`  | FastAPI HTTP server — chat, auth, and status routes     |
-| `cli/`  | Typer-based CLI & Textual Terminal User Interface (TUI) |
-| `cron/` | Background daemon running scheduled jobs                |
-| `core/` | Shared domain logic — services, database, workflows     |
+| Module  | Description                                                         |
+| ------- | ------------------------------------------------------------------- |
+| `cli/`  | Typer-based CLI client — interactive workflow command runner (`solomon chat`) |
+| `cron/` | Background daemon running scheduled jobs (APScheduler)              |
+| `core/` | Shared domain logic — services, database, workflows                 |
 
 ---
 
@@ -43,49 +38,50 @@ All shortcuts are in the [Makefile](./Makefile).
 make install
 ```
 
-### Running
+### Running the CLI
 
-By default, the CLI launches the Textual TUI dashboard, but it also supports client-side subcommands (powered by `typer`):
+Run interactive or direct chat commands:
 
 ```bash
-make cli          # Launches the TUI Dashboard (default)
+make cli                         # Interactive mode: select action & input message
 
-# Or run subcommands via uv:
-uv run src/cli/main.py --help    # Show help and CLI usage
-uv run src/cli/main.py status    # Check status of the remote API
-uv run src/cli/main.py update    # Update the Solomon CLI to the latest version
-uv run src/cli/main.py config    # Configure local settings (API host URL, etc.)
+# Or run direct subcommands via uv:
+uv run src/cli/main.py chat      # Interactive mode
+uv run src/cli/main.py chat /daily-bread "good morning"  # Direct execution
+uv run src/cli/main.py update    # Re-run bootstrap script to update installation
 ```
 
-If you installed the CLI via the quick start script, you can use the global `solomon` command:
+If installed via `bootstrap.sh`, use the global `solomon` command:
 
 ```bash
-solomon --help
-solomon status
+solomon chat
+solomon chat /daily-bread
 solomon update
-solomon config
 ```
 
 ### Database
 
 ```bash
-make seed    # Populate with initial seeds
+make seed    # Run database migrations and seeders
 ```
 
-### Code Quality
+### Background Cron Daemon
+
+```bash
+make cron    # Start cron daemon in foreground
+```
+
+### Code Quality & Cleanup
 
 ```bash
 make lint    # Check with ruff
 make format  # Fix & format with ruff
-```
-
-### Cleanup
-
-```bash
 make clean   # Remove cache, venv, temp files
 ```
 
-### ⚙️ Configuration
+---
+
+## ⚙️ Configuration
 
 Copy `.env.example` to `.env` and fill in your values:
 
@@ -95,7 +91,7 @@ cp .env.example .env
 
 ---
 
-## 💡 Features
+## 💡 Workflows & Features
 
 ### @daily-bread
 
@@ -108,29 +104,12 @@ Generates and sends a daily Bible study via email.
 > [!IMPORTANT]
 > **Once-per-day lock**: Repeat executions on the same calendar day are skipped automatically via database log checks.
 
-Triggered by the cron daemon or manually:
-
-```bash
-make cron
-```
-
 ### @classes (Study Planner & Delivery)
 
 Automated daily study routines for any topic.
 
-**Planning** — generates a structured syllabus for an `ACTIVE` course using an AI prompt, parses the response as JSON, and persists lessons in the database.
-
-**Execution** — retrieves the lesson for today, generates full content via AI, compiles a themed HTML email, sends it, and marks the lesson as completed.
-
----
-
-## 🔌 API
-
-The FastAPI server exposes an OpenAI-compatible chat interface and authentication endpoints.
-
-- **Docs**: `http://127.0.0.1:7000/docs`
-- **Auth**: Magic Code + JWT (RS256) — passwordless, cookie-based sessions
-- **Rate Limiting**: Configurable via `RATE_LIMIT_REQUESTS` and `RATE_LIMIT_WINDOW_SECONDS`
+- **Planning** — generates a structured syllabus for an `ACTIVE` course using an AI prompt, parses the response as JSON, and persists lessons in the database.
+- **Execution** — retrieves the lesson for today, generates full content via AI, compiles a themed HTML email, sends it, and marks the lesson as completed.
 
 ---
 
@@ -139,27 +118,14 @@ The FastAPI server exposes an OpenAI-compatible chat interface and authenticatio
 | Layer            | Technology                                                        |
 | ---------------- | ----------------------------------------------------------------- |
 | Runtime          | Python 3.14+ via **[uv](https://github.com/astral-sh/uv)**        |
-| API              | **FastAPI** + **Uvicorn**                                         |
-| TUI              | **[Textual](https://github.com/Textualize/textual)**              |
+| CLI              | **[Typer](https://github.com/fastapi/typer)** + **InquirerPy**    |
+| Scheduler        | **[APScheduler](https://github.com/agronholm/apscheduler)**      |
 | Persistence      | **SQLite** + **[Peewee ORM](https://github.com/coleifer/peewee)** |
 | AI Orchestration | Custom multi-provider client (Copilot, Antigravity, etc.)         |
 | Templates        | **[Jinja2](https://github.com/pallets/jinja2)**                   |
 | Mail Delivery    | SMTP with TLS/STARTTLS                                            |
 | Logging          | **[Loguru](https://github.com/Delgan/loguru)**                    |
-| Auth             | **PyJWT** (RS256) + Magic Code verification                       |
 | Code Quality     | **[Ruff](https://github.com/astral-sh/ruff)**                     |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ---
 

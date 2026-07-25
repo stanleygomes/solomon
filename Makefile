@@ -2,7 +2,7 @@
 
 UV := uv
 
-.PHONY: help install cli api lint format clean seed cron
+.PHONY: help install cli lint format clean seed cron
 
 help:
 	@echo "👑 Solomon - Automation Hub"
@@ -11,7 +11,6 @@ help:
 	@echo "├─────────────────────┼────────────────────────────────────────┤"
 	@echo "│ make install        │ Setup project and install dependencies │"
 	@echo "│ make cli            │ Start the Terminal User Interface (TUI)│"
-	@echo "│ make api            │ Start the FastAPI server               │"
 	@echo "│ make cron           │ Start the background cron daemon       │"
 	@echo "│ make seed           │ Populate database with initial seeds   │"
 	@echo "│ make lint           │ Run linter (ruff) to check for issues  │"
@@ -32,11 +31,6 @@ format:
 cli:
 	$(UV) run src/cli/main.py
 
-api:
-	@echo "🚀 Starting Solomon API..."
-	@echo "🌐 API URL:   http://127.0.0.1:7000"
-	@echo "📖 API Docs:  http://127.0.0.1:7000/docs"
-	@PYTHONPATH=src $(UV) run uvicorn api.main:app --host 0.0.0.0 --port 7000 --reload
 
 cron:
 	@echo "⏰ Starting Solomon Cron Daemon..."

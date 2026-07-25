@@ -6,7 +6,6 @@ from core.services.mail.config import MailConfig
 from core.services.ai.config import AiConfig
 from core.database.dto.db_config import DbConfig
 from core.utils.env import EnvUtils
-from api.middlewares.rate_limit import RateLimitConfig
 
 
 load_dotenv()
@@ -18,7 +17,6 @@ class Config:
   mail: MailConfig
   ai: AiConfig
   db: DbConfig
-  rate_limit: RateLimitConfig
 
   @classmethod
   def load(cls) -> "Config":
@@ -39,8 +37,4 @@ class Config:
       ),
       ai=AiConfig(provider=EnvUtils.get("AI_PROVIDER")),
       db=DbConfig(path=Path(EnvUtils.get("DB_FILE"))),
-      rate_limit=RateLimitConfig(
-        requests_limit=int(EnvUtils.get("RATE_LIMIT_REQUESTS")),
-        window_seconds=int(EnvUtils.get("RATE_LIMIT_WINDOW_SECONDS")),
-      ),
     )

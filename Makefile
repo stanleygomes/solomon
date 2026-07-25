@@ -2,7 +2,7 @@
 
 UV := uv
 
-.PHONY: help install cli lint format clean seed cron logs
+.PHONY: help install cli lint format clean seed cron logs status
 
 help:
 	@echo "👑 Solomon - Automation Hub"
@@ -11,6 +11,7 @@ help:
 	@echo "├─────────────────────┼────────────────────────────────────────┤"
 	@echo "│ make install        │ Setup project and install dependencies │"
 	@echo "│ make cli            │ Run the interactive CLI chat command   │"
+	@echo "│ make status         │ Check background daemon process status │"
 	@echo "│ make cron           │ Start the background cron daemon       │"
 	@echo "│ make logs           │ Tail application and cron logs         │"
 	@echo "│ make seed           │ Populate database with initial seeds   │"
@@ -35,6 +36,18 @@ cli:
 cron:
 	@echo "⏰ Starting Solomon Cron Daemon..."
 	@PYTHONPATH=src $(UV) run src/cron/main.py
+
+status:
+	@echo "🔍 Checking Solomon Cron Daemon Status..."
+	@PID=$$(pgrep -f "src/cron/main.py" | head -n 1); \
+	if [ -n "$$PID" ]; then \
+		echo "✅ Status:  RUNNING (PID $$PID)"; \
+		echo "📊 Memory:  $$(ps -o rss= -p $$PID | awk '{print int($$1/1024)" MB"}')"; \
+		echo "⏱️ Uptime:  $$(ps -o etime= -p $$PID | xargs)"; \
+		echo "📋 Log file: $$(pwd)/logs/cron.log"; \
+	else \
+		echo "❌ Status:  STOPPED (Cron daemon is not running)"; \
+	fi
 
 logs:
 	@echo "📋 Tailing Solomon logs (Ctrl+C to exit)..."

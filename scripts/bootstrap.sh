@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Run shared repository setup (clones/updates the repo)
+# Run shared repository setup (clones/updates repo, installs uv and deps, copies .env)
 curl -sSL https://raw.githubusercontent.com/stanleygomes/solomon/refs/heads/master/scripts/setup_repo.sh | bash
 
 TARGET_DIR="${SOLOMON_DIR:-$HOME/.solomon}"
@@ -20,30 +20,48 @@ if ! command -v uv &> /dev/null; then
   UV_BIN="$HOME/.local/bin/uv"
 fi
 
-# Step 5: Seed the database
-log_step "5" "Seeding the database"
+# Step 5: Install shell alias (idempotent)
+log_step "5" "Installing shell alias"
+ALIAS_CMD="alias solomon=\"PYTHONPATH=$TARGET_DIR/src $UV_BIN run $TARGET_DIR/src/cli/main.py\""
+
+add_alias_to_file() {
+  local shell_rc="$1"
+  if [ -f "$shell_rc" ]; then
+    if ! grep -q "alias solomon=" "$shell_rc"; then
+      echo -e "\n# Solomon CLI Alias\n$ALIAS_CMD" >> "$shell_rc"
+      log_success "Alias added to $shell_rc"
+    else
+      log_info "Alias already exists in $shell_rc — skipping"
+    fi
+  fi
+}
+
+add_alias_to_file "$HOME/.bashrc"
+add_alias_to_file "$HOME/.zshrc"
+
+# Step 6: Seed the database (idempotent)
+log_step "6" "Seeding the database"
 log_info "Running database seed..."
 PYTHONPATH=src "$UV_BIN" run src/core/database/seed.py
 log_success "Database seeded."
 
-# Step 6: Start API server
-log_step "6" "Starting API server"
-mkdir -p "$TARGET_DIR/logs"
-nohup bash -c "PYTHONPATH=src $UV_BIN run uvicorn api.main:app --host 0.0.0.0 --port 7000" \
-    > "$TARGET_DIR/logs/api.log" 2>&1 &
-API_PID=$!
-log_success "API server started (PID $API_PID) → http://0.0.0.0:7000"
-
-# Step 7: Start Cron daemon
+# Step 7: Start Cron daemon (idempotent — skip if already running)
 log_step "7" "Starting Cron daemon"
-nohup bash -c "PYTHONPATH=src $UV_BIN run src/cron/main.py" \
-    > "$TARGET_DIR/logs/cron.log" 2>&1 &
-CRON_PID=$!
-log_success "Cron daemon started (PID $CRON_PID)"
+mkdir -p "$TARGET_DIR/logs"
+
+CRON_SCRIPT="$TARGET_DIR/src/cron/main.py"
+if pgrep -f "$CRON_SCRIPT" > /dev/null 2>&1; then
+  log_info "Cron daemon is already running — skipping"
+else
+  nohup bash -c "PYTHONPATH=src $UV_BIN run $CRON_SCRIPT" \
+      > "$TARGET_DIR/logs/cron.log" 2>&1 &
+  CRON_PID=$!
+  log_success "Cron daemon started (PID $CRON_PID)"
+fi
 
 # Summary
-echo -e "\n${BOLD}${GREEN}🎉 Solomon server is up and running!${NC}\n"
-echo -e "  🌐 ${BOLD}API:${NC}       http://0.0.0.0:7000"
-echo -e "  📖 ${BOLD}API Docs:${NC}  http://0.0.0.0:7000/docs"
-echo -e "  📋 ${BOLD}Logs:${NC}      $TARGET_DIR/logs/"
-echo -e "  ⚙️  ${BOLD}Config:${NC}    edit $TARGET_DIR/.env\n"
+echo -e "\n${BOLD}${GREEN}🎉 Solomon is up and running!${NC}\n"
+echo -e "  🚀 ${BOLD}Activate the 'solomon' command:${NC}"
+echo -e "     run: ${BOLD}source ~/.bashrc${NC}  (or ${BOLD}source ~/.zshrc${NC})\n"
+echo -e "  📋 ${BOLD}Logs:${NC}    $TARGET_DIR/logs/"
+echo -e "  ⚙️  ${BOLD}Config:${NC}  edit $TARGET_DIR/.env\n"

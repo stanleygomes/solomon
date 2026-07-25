@@ -10,12 +10,19 @@ app = typer.Typer(
 )
 
 
-@app.command(name="chat", help="Send a message to Solomon and get a response.")
+@app.command(name="chat", help="Send a message to Solomon in 2 steps or via arguments.")
 def chat(
-  message: Annotated[str, typer.Argument(help="The message to send to Solomon")],
+  action: Annotated[
+    str | None,
+    typer.Argument(help="Optional action (e.g. /daily-bread)"),
+  ] = None,
+  message: Annotated[
+    str | None,
+    typer.Argument(help="Optional message content"),
+  ] = None,
 ) -> None:
   """Send a message to Solomon."""
-  ChatCommand().execute(message)
+  ChatCommand().execute(action=action, message=message)
 
 
 @app.command(name="update", help="Update Solomon to the latest version.")

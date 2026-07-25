@@ -31,7 +31,6 @@ format:
 cli:
 	$(UV) run src/cli/main.py
 
-
 cron:
 	@echo "⏰ Starting Solomon Cron Daemon..."
 	@PYTHONPATH=src $(UV) run src/cron/main.py

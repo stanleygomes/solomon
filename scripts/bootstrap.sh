@@ -20,38 +20,50 @@ if ! command -v uv &> /dev/null; then
   UV_BIN="$HOME/.local/bin/uv"
 fi
 
-# Step 5: Install shell function (idempotent)
-log_step "5" "Installing shell launcher function"
+# Step 5: Install shell wrapper script in ~/.local/bin (cleanest solution for both bash & zsh)
+log_step "5" "Installing solomon binary wrapper"
 
-# Using shell function instead of alias with subshell parentheses to avoid zsh parse error when arguments are passed
-FUNC_CMD="solomon() { (cd \"$TARGET_DIR\" && PYTHONPATH=\"$TARGET_DIR/src\" \"$UV_BIN\" run \"$TARGET_DIR/src/cli/main.py\" \"\$@\"); }"
+BIN_DIR="$HOME/.local/bin"
+mkdir -p "$BIN_DIR"
+WRAPPER_FILE="$BIN_DIR/solomon"
 
-add_function_to_file() {
+cat << EOF > "$WRAPPER_FILE"
+#!/usr/bin/env bash
+cd "$TARGET_DIR"
+exec "$UV_BIN" run --directory "$TARGET_DIR" "$TARGET_DIR/src/cli/main.py" "\$@"
+EOF
+
+chmod +x "$WRAPPER_FILE"
+log_success "Binary wrapper installed to $WRAPPER_FILE"
+
+# Clean up legacy aliases or functions from rc files if present
+clean_rc_file() {
+  local shell_rc="$1"
+  if [ -f "$shell_rc" ]; then
+    sed -i '/alias solomon=/d' "$shell_rc"
+    sed -i '/solomon()/d' "$shell_rc"
+    sed -i '/# Solomon CLI/d' "$shell_rc"
+  fi
+}
+
+clean_rc_file "$HOME/.bashrc"
+clean_rc_file "$HOME/.zshrc"
+
+# Ensure ~/.local/bin is in PATH in rc files if not already present
+add_path_to_file() {
   local shell_rc="$1"
   local rc_dir="$(dirname "$shell_rc")"
   mkdir -p "$rc_dir"
   touch "$shell_rc"
 
-  # Remove old alias if exists
-  if grep -q "alias solomon=" "$shell_rc"; then
-    log_info "Removing old alias from $shell_rc..."
-    sed -i '/alias solomon=/d' "$shell_rc"
-  fi
-
-  # Add/update shell function
-  if ! grep -q "solomon() {" "$shell_rc"; then
-    echo -e "\n# Solomon CLI Launcher\n$FUNC_CMD" >> "$shell_rc"
-    log_success "Function added to $shell_rc"
-  else
-    # Update function definition
-    sed -i '/solomon() {/d' "$shell_rc"
-    echo -e "$FUNC_CMD" >> "$shell_rc"
-    log_info "Function updated in $shell_rc"
+  if ! grep -q 'PATH=.*\$HOME/\.local/bin' "$shell_rc" && ! grep -q 'PATH=.*\.local/bin' "$shell_rc"; then
+    echo -e '\nexport PATH="$HOME/.local/bin:$PATH"' >> "$shell_rc"
+    log_success "Added ~/.local/bin to PATH in $shell_rc"
   fi
 }
 
-add_function_to_file "$HOME/.bashrc"
-add_function_to_file "$HOME/.zshrc"
+add_path_to_file "$HOME/.bashrc"
+add_path_to_file "$HOME/.zshrc"
 
 # Step 6: Seed the database (idempotent)
 log_step "6" "Seeding the database"
